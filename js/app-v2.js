@@ -51,6 +51,8 @@ const appState = {
         },
         products: {
             enabled: true,
+            headline: 'Our Products',
+            subheadline: '',
             layout: 'grid',
             columns: 3,
             showPricing: true,
@@ -525,6 +527,8 @@ function initializeSectionControls() {
     // Products Section
     const productsEnabled = document.getElementById('productsEnabled');
     const productsOptions = document.getElementById('productsOptions');
+    const productsHeadline = document.getElementById('productsHeadline');
+    const productsSubheadline = document.getElementById('productsSubheadline');
     const productsShowDescription = document.getElementById('productsShowDescription');
     const productsShowPricing = document.getElementById('productsShowPricing');
     
@@ -534,6 +538,22 @@ function initializeSectionControls() {
         updatePreview();
         saveToLocalStorage();
     });
+    
+    if (productsHeadline) {
+        productsHeadline.addEventListener('input', debounce(() => {
+            appState.sections.products.headline = productsHeadline.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
+    if (productsSubheadline) {
+        productsSubheadline.addEventListener('input', debounce(() => {
+            appState.sections.products.subheadline = productsSubheadline.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
     
     document.querySelectorAll('input[name="productsLayout"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
@@ -1975,6 +1995,25 @@ function generatePreviewHTML() {
             padding: 60px 20px;
             background: ${productsSectionBg};
         }
+        .preview-section-header {
+            text-align: center;
+            margin-bottom: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .preview-section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: ${productsTextColor};
+        }
+        .preview-section-subtitle {
+            font-size: 16px;
+            color: ${productsTextColor};
+            opacity: 0.8;
+            line-height: 1.6;
+        }
         .preview-products-section h2 {
             font-size: 32px;
             font-weight: 700;
@@ -2320,8 +2359,22 @@ function generatePreviewHTML() {
     const productsSection = appState.sections.products;
     if (productsSection.enabled && appState.products.length > 0) {
         const productsLayout = productsSection.layout || 'grid';
+        const productsHeadline = productsSection.headline || 'Our Products';
+        const productsSubheadline = productsSection.subheadline || '';
         
         html += `<section class="preview-products-section">`;
+        
+        // Section header
+        if (productsHeadline || productsSubheadline) {
+            html += `<div class="preview-section-header">`;
+            if (productsHeadline) {
+                html += `<h2 class="preview-section-title">${escapeHtml(productsHeadline)}</h2>`;
+            }
+            if (productsSubheadline) {
+                html += `<p class="preview-section-subtitle">${escapeHtml(productsSubheadline)}</p>`;
+            }
+            html += `</div>`;
+        }
         
         if (productsLayout === 'list') {
             // List layout: full width cards with horizontal layout
@@ -3214,7 +3267,8 @@ function generateCompleteHTML() {
     ${productsSection.enabled && appState.products.length > 0 ? `
     <!-- Products Section -->
     <section class="products-section">
-        <h2 class="section-title">Our Products</h2>
+        ${productsSection.headline ? `<h2 class="section-title">${escapeHtml(productsSection.headline)}</h2>` : ''}
+        ${productsSection.subheadline ? `<p style="text-align: center; font-size: 16px; color: ${productsTextColor}; opacity: 0.8; max-width: 800px; margin: 0 auto 48px auto; line-height: 1.6;">${escapeHtml(productsSection.subheadline)}</p>` : ''}
         <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">
             ${appState.products.map(product => {
                 const imageHtml = product.images && product.images.length > 0 
@@ -3545,9 +3599,13 @@ function loadFromLocalStorage() {
             
             // Products
             const productsEnabled = document.getElementById('productsEnabled');
+            const productsHeadline = document.getElementById('productsHeadline');
+            const productsSubheadline = document.getElementById('productsSubheadline');
             const productsShowDescription = document.getElementById('productsShowDescription');
             const productsShowPricing = document.getElementById('productsShowPricing');
             if (productsEnabled) productsEnabled.checked = appState.sections.products.enabled;
+            if (productsHeadline && appState.sections.products.headline) productsHeadline.value = appState.sections.products.headline;
+            if (productsSubheadline && appState.sections.products.subheadline) productsSubheadline.value = appState.sections.products.subheadline;
             if (productsShowDescription) productsShowDescription.checked = appState.sections.products.showDescription;
             if (productsShowPricing) productsShowPricing.checked = appState.sections.products.showPricing;
             
