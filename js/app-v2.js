@@ -26,53 +26,112 @@ const appState = {
     sections: {
         hero: {
             enabled: true,
-            layout: 'centered', // centered, split, minimal
+            layout: 'centered',
             headline: '',
             subheadline: '',
             ctaText: 'Shop Now',
             showCTA: true,
-            backgroundColor: null, // null = use primary color from design
+            // Design controls
+            backgroundType: 'solid', // solid, gradient, image
+            backgroundColor: '#667eea',
             textColor: '#ffffff',
-            useGradient: true,
-            backgroundImage: null, // base64 image data
-            imageOverlay: 50 // 0-100 opacity
+            gradientStart: '#667eea',
+            gradientEnd: '#764ba2',
+            gradientAngle: 135,
+            backgroundImage: null,
+            imageOverlay: 50,
+            headlineSize: 48,
+            fontWeight: 700,
+            ctaBackground: '#ffffff',
+            ctaTextColor: '#667eea',
+            ctaHoverBg: '#f0f0f0',
+            ctaBorderRadius: 8,
+            height: 600,
+            contentWidth: 1000
         },
         products: {
             enabled: true,
-            layout: 'grid', // grid, carousel, masonry, list
-            columns: 3, // 2, 3, 4
+            layout: 'grid',
+            columns: 3,
             showPricing: true,
-            showDescription: true
+            showDescription: true,
+            // Design controls
+            sectionBg: '#f8f9fa',
+            cardBg: '#ffffff',
+            textColor: '#1e293b',
+            cardRadius: 8,
+            cardShadow: 'sm',
+            hoverEffect: 'lift',
+            hoverBorder: '#667eea',
+            titleSize: 16,
+            titleWeight: 600,
+            priceColor: '#667eea',
+            priceSize: 20,
+            cardPadding: 16,
+            gap: 24
         },
         about: {
             enabled: false,
-            layout: 'two-column', // two-column, centered, side-image
+            layout: 'two-column',
             headline: 'About Us',
-            content: ''
+            content: '',
+            // Design controls
+            backgroundColor: '#ffffff',
+            textColor: '#1e293b',
+            headingSize: 32,
+            headingWeight: 700,
+            contentSize: 16,
+            lineHeight: 1.6,
+            padding: 60,
+            contentWidth: 1000,
+            accentColor: '#667eea',
+            borderStyle: 'left'
         },
         features: {
             enabled: false,
-            layout: 'grid', // grid, list, icons
+            layout: 'grid',
             items: []
         },
         testimonials: {
             enabled: false,
-            layout: 'carousel', // carousel, grid, single
+            layout: 'carousel',
             items: []
         },
         contact: {
             enabled: false,
-            layout: 'form', // form, details, map
+            layout: 'form',
             email: '',
             phone: '',
             address: '',
-            mapEmbed: '' // Google Maps iframe embed code
+            mapEmbed: '',
+            // Design controls
+            backgroundColor: '#f8f9fa',
+            textColor: '#1e293b',
+            inputBg: '#ffffff',
+            inputBorder: '#e2e8f0',
+            focusBorder: '#667eea',
+            inputRadius: 8,
+            buttonBg: '#667eea',
+            buttonText: '#ffffff',
+            buttonHover: '#5568d3',
+            buttonSize: 'md',
+            labelSize: 14,
+            labelWeight: 500,
+            padding: 60,
+            formWidth: 600
         },
         whatsapp: {
             enabled: false,
             number: '',
             message: 'Hi! I\'m interested in your products',
-            position: 'bottom-right' // bottom-right, bottom-left
+            position: 'bottom-right',
+            // Design controls
+            bgColor: '#25D366',
+            iconColor: '#ffffff',
+            size: 60,
+            shadow: 'md',
+            hoverBg: '#20ba5a',
+            hoverEffect: 'scale'
         }
     },
     content: {
@@ -302,6 +361,133 @@ function initializeSectionControls() {
         });
     }
     
+    // Hero Design Controls - Background Type
+    const heroBackgroundTypeRadios = document.querySelectorAll('input[name="heroBackgroundType"]');
+    const heroSolidBg = document.getElementById('heroSolidBg');
+    const heroGradientBg = document.getElementById('heroGradientBg');
+    const heroImageBg = document.getElementById('heroImageBg');
+    
+    heroBackgroundTypeRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.hero.backgroundType = e.target.value;
+            // Show/hide relevant controls
+            if (heroSolidBg) heroSolidBg.style.display = e.target.value === 'solid' ? 'grid' : 'none';
+            if (heroGradientBg) heroGradientBg.style.display = e.target.value === 'gradient' ? 'block' : 'none';
+            if (heroImageBg) heroImageBg.style.display = e.target.value === 'image' ? 'block' : 'none';
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    // Hero Gradient Controls
+    const heroGradientStart = document.getElementById('heroGradientStart');
+    const heroGradientEnd = document.getElementById('heroGradientEnd');
+    const heroGradientAngle = document.getElementById('heroGradientAngle');
+    const heroGradientAngleValue = document.getElementById('heroGradientAngleValue');
+    
+    if (heroGradientStart) {
+        heroGradientStart.addEventListener('input', debounce((e) => {
+            appState.sections.hero.gradientStart = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroGradientEnd) {
+        heroGradientEnd.addEventListener('input', debounce((e) => {
+            appState.sections.hero.gradientEnd = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroGradientAngle) {
+        heroGradientAngle.addEventListener('input', (e) => {
+            appState.sections.hero.gradientAngle = parseInt(e.target.value);
+            if (heroGradientAngleValue) heroGradientAngleValue.textContent = e.target.value + '°';
+            updatePreview();
+        });
+        heroGradientAngle.addEventListener('change', () => saveToLocalStorage());
+    }
+    
+    // Hero Typography Controls
+    const heroHeadlineSize = document.getElementById('heroHeadlineSize');
+    const heroFontWeight = document.getElementById('heroFontWeight');
+    
+    if (heroHeadlineSize) {
+        heroHeadlineSize.addEventListener('change', (e) => {
+            appState.sections.hero.headlineSize = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (heroFontWeight) {
+        heroFontWeight.addEventListener('change', (e) => {
+            appState.sections.hero.fontWeight = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    // Hero CTA Button Design
+    const heroCtaBackground = document.getElementById('heroCtaBackground');
+    const heroCtaTextColor = document.getElementById('heroCtaTextColor');
+    const heroCtaHoverBg = document.getElementById('heroCtaHoverBg');
+    const heroCtaBorderRadius = document.getElementById('heroCtaBorderRadius');
+    
+    if (heroCtaBackground) {
+        heroCtaBackground.addEventListener('input', debounce((e) => {
+            appState.sections.hero.ctaBackground = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroCtaTextColor) {
+        heroCtaTextColor.addEventListener('input', debounce((e) => {
+            appState.sections.hero.ctaTextColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroCtaHoverBg) {
+        heroCtaHoverBg.addEventListener('input', debounce((e) => {
+            appState.sections.hero.ctaHoverBg = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroCtaBorderRadius) {
+        heroCtaBorderRadius.addEventListener('change', (e) => {
+            appState.sections.hero.ctaBorderRadius = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    // Hero Spacing Controls
+    const heroHeight = document.getElementById('heroHeight');
+    const heroContentWidth = document.getElementById('heroContentWidth');
+    
+    if (heroHeight) {
+        heroHeight.addEventListener('change', (e) => {
+            appState.sections.hero.height = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (heroContentWidth) {
+        heroContentWidth.addEventListener('change', (e) => {
+            appState.sections.hero.contentWidth = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
     if (heroImageOverlay) {
         heroImageOverlay.addEventListener('input', (e) => {
             appState.sections.hero.imageOverlay = parseInt(e.target.value);
@@ -354,6 +540,125 @@ function initializeSectionControls() {
         updatePreview();
         saveToLocalStorage();
     });
+    
+    // Products Design Controls
+    const productsSectionBg = document.getElementById('productsSectionBg');
+    const productsCardBg = document.getElementById('productsCardBg');
+    const productsTextColor = document.getElementById('productsTextColor');
+    const productsCardRadius = document.getElementById('productsCardRadius');
+    const productsCardShadow = document.getElementById('productsCardShadow');
+    const productsHoverEffect = document.getElementById('productsHoverEffect');
+    const productsHoverBorder = document.getElementById('productsHoverBorder');
+    const productsTitleSize = document.getElementById('productsTitleSize');
+    const productsTitleWeight = document.getElementById('productsTitleWeight');
+    const productsPriceColor = document.getElementById('productsPriceColor');
+    const productsPriceSize = document.getElementById('productsPriceSize');
+    const productsCardPadding = document.getElementById('productsCardPadding');
+    const productsGap = document.getElementById('productsGap');
+    
+    if (productsSectionBg) {
+        productsSectionBg.addEventListener('input', debounce((e) => {
+            appState.sections.products.sectionBg = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsCardBg) {
+        productsCardBg.addEventListener('input', debounce((e) => {
+            appState.sections.products.cardBg = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsTextColor) {
+        productsTextColor.addEventListener('input', debounce((e) => {
+            appState.sections.products.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsCardRadius) {
+        productsCardRadius.addEventListener('change', (e) => {
+            appState.sections.products.cardRadius = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsCardShadow) {
+        productsCardShadow.addEventListener('change', (e) => {
+            appState.sections.products.cardShadow = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsHoverEffect) {
+        productsHoverEffect.addEventListener('change', (e) => {
+            appState.sections.products.hoverEffect = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsHoverBorder) {
+        productsHoverBorder.addEventListener('input', debounce((e) => {
+            appState.sections.products.hoverBorder = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsTitleSize) {
+        productsTitleSize.addEventListener('change', (e) => {
+            appState.sections.products.titleSize = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsTitleWeight) {
+        productsTitleWeight.addEventListener('change', (e) => {
+            appState.sections.products.titleWeight = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsPriceColor) {
+        productsPriceColor.addEventListener('input', debounce((e) => {
+            appState.sections.products.priceColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsPriceSize) {
+        productsPriceSize.addEventListener('change', (e) => {
+            appState.sections.products.priceSize = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsCardPadding) {
+        productsCardPadding.addEventListener('change', (e) => {
+            appState.sections.products.cardPadding = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsGap) {
+        productsGap.addEventListener('change', (e) => {
+            appState.sections.products.gap = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
     
     // About Section
     const aboutEnabled = document.getElementById('aboutEnabled');
@@ -612,6 +917,98 @@ function attachEventListeners() {
         }, 500));
     }
     
+    // About Design Controls
+    const aboutBackgroundColor = document.getElementById('aboutBackgroundColor');
+    const aboutTextColor = document.getElementById('aboutTextColor');
+    const aboutHeadingSize = document.getElementById('aboutHeadingSize');
+    const aboutHeadingWeight = document.getElementById('aboutHeadingWeight');
+    const aboutContentSize = document.getElementById('aboutContentSize');
+    const aboutLineHeight = document.getElementById('aboutLineHeight');
+    const aboutPadding = document.getElementById('aboutPadding');
+    const aboutContentWidth = document.getElementById('aboutContentWidth');
+    const aboutAccentColor = document.getElementById('aboutAccentColor');
+    const aboutBorderStyle = document.getElementById('aboutBorderStyle');
+    
+    if (aboutBackgroundColor) {
+        aboutBackgroundColor.addEventListener('input', debounce((e) => {
+            appState.sections.about.backgroundColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (aboutTextColor) {
+        aboutTextColor.addEventListener('input', debounce((e) => {
+            appState.sections.about.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (aboutHeadingSize) {
+        aboutHeadingSize.addEventListener('change', (e) => {
+            appState.sections.about.headingSize = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutHeadingWeight) {
+        aboutHeadingWeight.addEventListener('change', (e) => {
+            appState.sections.about.headingWeight = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutContentSize) {
+        aboutContentSize.addEventListener('change', (e) => {
+            appState.sections.about.contentSize = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutLineHeight) {
+        aboutLineHeight.addEventListener('change', (e) => {
+            appState.sections.about.lineHeight = parseFloat(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutPadding) {
+        aboutPadding.addEventListener('change', (e) => {
+            appState.sections.about.padding = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutContentWidth) {
+        aboutContentWidth.addEventListener('change', (e) => {
+            appState.sections.about.contentWidth = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (aboutAccentColor) {
+        aboutAccentColor.addEventListener('input', debounce((e) => {
+            appState.sections.about.accentColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (aboutBorderStyle) {
+        aboutBorderStyle.addEventListener('change', (e) => {
+            appState.sections.about.borderStyle = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
     // Contact section content
     const contactEmail = document.getElementById('contactEmail');
     const contactPhone = document.getElementById('contactPhone');
@@ -647,6 +1044,121 @@ function attachEventListeners() {
             saveToLocalStorage();
         }, 500));
     }
+
+    // Contact Design Controls
+    const contactBackgroundColor = document.getElementById('contactBackgroundColor');
+    const contactTextColor = document.getElementById('contactTextColor');
+    const contactInputBg = document.getElementById('contactInputBg');
+    const contactInputBorder = document.getElementById('contactInputBorder');
+    const contactFocusBorder = document.getElementById('contactFocusBorder');
+    const contactInputRadius = document.getElementById('contactInputRadius');
+    const contactButtonBg = document.getElementById('contactButtonBg');
+    const contactButtonText = document.getElementById('contactButtonText');
+    const contactButtonHover = document.getElementById('contactButtonHover');
+    const contactButtonSize = document.getElementById('contactButtonSize');
+    const contactLabelSize = document.getElementById('contactLabelSize');
+    const contactLabelWeight = document.getElementById('contactLabelWeight');
+    const contactPadding = document.getElementById('contactPadding');
+    const contactFormWidth = document.getElementById('contactFormWidth');
+
+    if (contactBackgroundColor) {
+        contactBackgroundColor.addEventListener('input', debounce(() => {
+            appState.sections.contact.backgroundColor = contactBackgroundColor.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactTextColor) {
+        contactTextColor.addEventListener('input', debounce(() => {
+            appState.sections.contact.textColor = contactTextColor.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactInputBg) {
+        contactInputBg.addEventListener('input', debounce(() => {
+            appState.sections.contact.inputBg = contactInputBg.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactInputBorder) {
+        contactInputBorder.addEventListener('input', debounce(() => {
+            appState.sections.contact.inputBorder = contactInputBorder.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactFocusBorder) {
+        contactFocusBorder.addEventListener('input', debounce(() => {
+            appState.sections.contact.focusBorder = contactFocusBorder.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactInputRadius) {
+        contactInputRadius.addEventListener('change', () => {
+            appState.sections.contact.inputRadius = contactInputRadius.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (contactButtonBg) {
+        contactButtonBg.addEventListener('input', debounce(() => {
+            appState.sections.contact.buttonBg = contactButtonBg.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactButtonText) {
+        contactButtonText.addEventListener('input', debounce(() => {
+            appState.sections.contact.buttonText = contactButtonText.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactButtonHover) {
+        contactButtonHover.addEventListener('input', debounce(() => {
+            appState.sections.contact.buttonHover = contactButtonHover.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (contactButtonSize) {
+        contactButtonSize.addEventListener('change', () => {
+            appState.sections.contact.buttonSize = contactButtonSize.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (contactLabelSize) {
+        contactLabelSize.addEventListener('change', () => {
+            appState.sections.contact.labelSize = contactLabelSize.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (contactLabelWeight) {
+        contactLabelWeight.addEventListener('change', () => {
+            appState.sections.contact.labelWeight = contactLabelWeight.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (contactPadding) {
+        contactPadding.addEventListener('change', () => {
+            appState.sections.contact.padding = contactPadding.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (contactFormWidth) {
+        contactFormWidth.addEventListener('change', () => {
+            appState.sections.contact.formWidth = contactFormWidth.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
     
     // WhatsApp inputs
     const whatsappNumber = document.getElementById('whatsappNumber');
@@ -664,6 +1176,57 @@ function attachEventListeners() {
             updatePreview();
             saveToLocalStorage();
         }, 500));
+    }
+
+    // WhatsApp Design Controls
+    const whatsappBgColor = document.getElementById('whatsappBgColor');
+    const whatsappIconColor = document.getElementById('whatsappIconColor');
+    const whatsappSize = document.getElementById('whatsappSize');
+    const whatsappShadow = document.getElementById('whatsappShadow');
+    const whatsappHoverBg = document.getElementById('whatsappHoverBg');
+    const whatsappHoverEffect = document.getElementById('whatsappHoverEffect');
+
+    if (whatsappBgColor) {
+        whatsappBgColor.addEventListener('input', debounce(() => {
+            appState.sections.whatsapp.bgColor = whatsappBgColor.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (whatsappIconColor) {
+        whatsappIconColor.addEventListener('input', debounce(() => {
+            appState.sections.whatsapp.iconColor = whatsappIconColor.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (whatsappSize) {
+        whatsappSize.addEventListener('change', () => {
+            appState.sections.whatsapp.size = whatsappSize.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (whatsappShadow) {
+        whatsappShadow.addEventListener('change', () => {
+            appState.sections.whatsapp.shadow = whatsappShadow.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    if (whatsappHoverBg) {
+        whatsappHoverBg.addEventListener('input', debounce(() => {
+            appState.sections.whatsapp.hoverBg = whatsappHoverBg.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    if (whatsappHoverEffect) {
+        whatsappHoverEffect.addEventListener('change', () => {
+            appState.sections.whatsapp.hoverEffect = whatsappHoverEffect.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
     }
     
     // Generate button
@@ -1208,103 +1771,105 @@ function updatePreview() {
 }
 
 function generatePreviewHTML() {
-    const industry = appState.design.industry || 'saas';
-    const style = appState.design.style || 'minimal';
-    const primaryColor = appState.design.primaryColor;
-    const secondaryColor = appState.design.secondaryColor;
-    const accentColor = appState.design.accentColor || '#48bb78';
-    const layoutOptions = appState.design.layoutOptions;
+    console.log('🎨 Generating preview with per-section design controls');
     
-    console.log(`🎨 Generating preview with style: ${style}, industry: ${industry}`);
+    // Extract per-section design values
+    const hero = appState.sections.hero;
+    const products = appState.sections.products;
+    const about = appState.sections.about;
+    const contact = appState.sections.contact;
+    const whatsapp = appState.sections.whatsapp;
     
-    // Get style configuration from DesignEngine if available
-    let styleConfig = {
-        spacing: 1.0,
-        borderRadius: 8,
-        shadow: '0 2px 8px rgba(0,0,0,0.08)',
-        shadowHover: '0 8px 24px rgba(0,0,0,0.12)',
-        fontWeight: 600,
-        fontSize: 1.0,
-        transition: '0.2s ease'
+    // Hero Section Styles
+    const heroBackgroundType = hero.backgroundType || 'solid';
+    const heroBgColor = hero.backgroundColor || '#6366f1';
+    const heroTextColor = hero.textColor || '#ffffff';
+    const heroGradientStart = hero.gradientStart || '#6366f1';
+    const heroGradientEnd = hero.gradientEnd || '#8b5cf6';
+    const heroGradientAngle = hero.gradientAngle || '135';
+    const heroBackgroundImage = hero.backgroundImage;
+    const heroImageOverlay = hero.imageOverlay || 50;
+    const heroHeadlineSize = hero.headlineSize || '48px';
+    const heroFontWeight = hero.fontWeight || '700';
+    const heroCtaBackground = hero.ctaBackground || '#ffffff';
+    const heroCtaTextColor = hero.ctaTextColor || '#6366f1';
+    const heroCtaHoverBg = hero.ctaHoverBg || '#f3f4f6';
+    const heroCtaBorderRadius = hero.ctaBorderRadius || '8px';
+    const heroHeight = hero.height || '600px';
+    const heroContentWidth = hero.contentWidth || '1200px';
+    
+    // Products Section Styles
+    const productsSectionBg = products.sectionBg || '#f7fafc';
+    const productsCardBg = products.cardBg || '#ffffff';
+    const productsTextColor = products.textColor || '#1a202c';
+    const productsCardRadius = products.cardRadius || '8px';
+    const productsCardShadow = products.cardShadow || 'md';
+    const productsHoverEffect = products.hoverEffect || 'lift';
+    const productsHoverBorder = products.hoverBorder || '#6366f1';
+    const productsTitleSize = products.titleSize || '18px';
+    const productsTitleWeight = products.titleWeight || '600';
+    const productsPriceColor = products.priceColor || '#6366f1';
+    const productsPriceSize = products.priceSize || '24px';
+    const productsCardPadding = products.cardPadding || '20px';
+    const productsGap = products.gap || '24px';
+    
+    // About Section Styles
+    const aboutBackgroundColor = about.backgroundColor || '#ffffff';
+    const aboutTextColor = about.textColor || '#4a5568';
+    const aboutHeadingSize = about.headingSize || '32px';
+    const aboutHeadingWeight = about.headingWeight || '700';
+    const aboutContentSize = about.contentSize || '16px';
+    const aboutLineHeight = about.lineHeight || '1.6';
+    const aboutPadding = about.padding || '60px';
+    const aboutContentWidth = about.contentWidth || '1000px';
+    const aboutAccentColor = about.accentColor || '#6366f1';
+    const aboutBorderStyle = about.borderStyle || 'none';
+    
+    // Contact Section Styles
+    const contactBackgroundColor = contact.backgroundColor || '#f7fafc';
+    const contactTextColor = contact.textColor || '#1a202c';
+    const contactInputBg = contact.inputBg || '#ffffff';
+    const contactInputBorder = contact.inputBorder || '#e2e8f0';
+    const contactFocusBorder = contact.focusBorder || '#6366f1';
+    const contactInputRadius = contact.inputRadius || '8px';
+    const contactButtonBg = contact.buttonBg || '#6366f1';
+    const contactButtonText = contact.buttonText || '#ffffff';
+    const contactButtonHover = contact.buttonHover || '#4f46e5';
+    const contactButtonSize = contact.buttonSize || 'md';
+    const contactLabelSize = contact.labelSize || '14px';
+    const contactLabelWeight = contact.labelWeight || '500';
+    const contactPadding = contact.padding || '60px';
+    const contactFormWidth = contact.formWidth || '600px';
+    
+    // WhatsApp Button Styles
+    const whatsappBgColor = whatsapp.bgColor || '#25D366';
+    const whatsappIconColor = whatsapp.iconColor || '#ffffff';
+    const whatsappSize = whatsapp.size || '60px';
+    const whatsappShadow = whatsapp.shadow || 'lg';
+    const whatsappHoverBg = whatsapp.hoverBg || '#128C7E';
+    const whatsappHoverEffect = whatsapp.hoverEffect || 'scale';
+    
+    // Shadow mapping
+    const shadowMap = {
+        'none': 'none',
+        'sm': '0 1px 2px rgba(0,0,0,0.05)',
+        'md': '0 4px 6px rgba(0,0,0,0.1)',
+        'lg': '0 10px 15px rgba(0,0,0,0.1)',
+        'xl': '0 20px 25px rgba(0,0,0,0.15)'
     };
     
-    if (appState.designEngine && appState.designEngine.designStyles[style]) {
-        const engineStyle = appState.designEngine.designStyles[style];
-        styleConfig.spacing = engineStyle.spacing.scale;
-        styleConfig.borderRadius = engineStyle.borderRadius.cards;
-        
-        console.log(`✅ Applied ${engineStyle.name} style config:`, {
-            spacing: styleConfig.spacing,
-            borderRadius: styleConfig.borderRadius,
-            shadows: engineStyle.shadows.intensity
-        });
-        
-        // Apply shadow based on style
-        if (engineStyle.shadows.intensity === 'none') {
-            styleConfig.shadow = 'none';
-            styleConfig.shadowHover = 'none';
-        } else if (engineStyle.shadows.intensity === 'subtle') {
-            styleConfig.shadow = '0 1px 3px rgba(0,0,0,0.08)';
-            styleConfig.shadowHover = '0 4px 12px rgba(0,0,0,0.1)';
-        } else if (engineStyle.shadows.intensity === 'dramatic') {
-            styleConfig.shadow = '0 4px 16px rgba(0,0,0,0.15)';
-            styleConfig.shadowHover = '0 12px 32px rgba(0,0,0,0.25)';
-        }
-        
-        styleConfig.fontWeight = engineStyle.typography.weights.heading;
-        styleConfig.fontSize = engineStyle.typography.scale;
-        styleConfig.transition = engineStyle.animations.speed === 'instant' ? 'none' : 
-                                engineStyle.animations.speed === 'fast' ? '0.15s ease' :
-                                engineStyle.animations.speed === 'slow' ? '0.5s ease' : '0.3s ease';
-    }
-    
-    // Override with user's layout options if set
-    if (layoutOptions) {
-        console.log('📐 Applying layout options override:', layoutOptions);
-        
-        if (layoutOptions.spacing === 'compact') styleConfig.spacing = 0.8;
-        if (layoutOptions.spacing === 'spacious') styleConfig.spacing = 1.3;
-        
-        if (layoutOptions.borderRadius === 'sharp') styleConfig.borderRadius = 0;
-        if (layoutOptions.borderRadius === 'pill') styleConfig.borderRadius = 24;
-        
-        if (layoutOptions.shadows === 'none') {
-            styleConfig.shadow = 'none';
-            styleConfig.shadowHover = 'none';
-        } else if (layoutOptions.shadows === 'dramatic') {
-            styleConfig.shadow = '0 4px 16px rgba(0,0,0,0.15)';
-            styleConfig.shadowHover = '0 12px 32px rgba(0,0,0,0.25)';
-        }
-        
-        if (layoutOptions.animations === 'none') {
-            styleConfig.transition = 'none';
-        } else if (layoutOptions.animations === 'playful') {
-            styleConfig.transition = '0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        }
-        
-        console.log('✅ Final styleConfig after overrides:', styleConfig);
-    }
-    
-    const basePadding = 40 * styleConfig.spacing;
-    const cardPadding = 24 * styleConfig.spacing;
-    const gap = 32 * styleConfig.spacing;
-    const heroFontSize = 48 * styleConfig.fontSize;
-    const cardTitleSize = 20 * styleConfig.fontSize;
-    
-    // Get hero section styling (reference early for CSS generation)
-    const heroSectionStyle = appState.sections.hero;
-    const heroBgColor = heroSectionStyle.backgroundColor || primaryColor;
-    const heroTextColor = heroSectionStyle.textColor || '#ffffff';
-    const heroUseGradient = heroSectionStyle.useGradient !== false;
-    const heroBackgroundImage = heroSectionStyle.backgroundImage;
-    const heroImageOverlay = heroSectionStyle.imageOverlay || 50;
+    const shadowHoverMap = {
+        'none': 'none',
+        'sm': '0 2px 4px rgba(0,0,0,0.1)',
+        'md': '0 8px 12px rgba(0,0,0,0.15)',
+        'lg': '0 15px 25px rgba(0,0,0,0.15)',
+        'xl': '0 25px 35px rgba(0,0,0,0.2)'
+    };
     
     // Generate hero background based on settings
-    let heroBackground;
     let heroBackgroundStyle;
     
-    if (heroBackgroundImage) {
-        // If image is uploaded, use it with overlay
+    if (heroBackgroundType === 'image' && heroBackgroundImage) {
         const overlayOpacity = heroImageOverlay / 100;
         heroBackgroundStyle = `
             background-image: linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${heroBackgroundImage}');
@@ -1312,13 +1877,10 @@ function generatePreviewHTML() {
             background-position: center;
             background-repeat: no-repeat;
         `;
-        heroBackground = ''; // Not used when we have custom style
+    } else if (heroBackgroundType === 'gradient') {
+        heroBackgroundStyle = `background: linear-gradient(${heroGradientAngle}deg, ${heroGradientStart} 0%, ${heroGradientEnd} 100%);`;
     } else {
-        // Use gradient or solid color
-        heroBackground = heroUseGradient 
-            ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
-            : heroBgColor;
-        heroBackgroundStyle = `background: ${heroBackground};`;
+        heroBackgroundStyle = `background: ${heroBgColor};`;
     }
     
     let html = `<style>
@@ -1327,115 +1889,94 @@ function generatePreviewHTML() {
             max-width: 100%;
             overflow-x: hidden;
         }
+        
+        /* Hero Section Styles */
         .preview-hero-v2 {
-            padding: ${basePadding * 2}px ${basePadding}px;
+            min-height: ${heroHeight};
+            padding: 60px 20px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
             position: relative;
-        }
-        .preview-hero-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-            padding: ${basePadding * 2}px ${basePadding}px;
-            ${heroBackgroundStyle}
-            color: ${heroTextColor};
-            text-align: left;
-            position: relative;
-        }
-        .preview-hero-minimal {
-            padding: ${basePadding}px ${basePadding}px;
-            text-align: left;
-            ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
-            color: ${heroTextColor};
-            border-bottom: 4px solid ${secondaryColor};
-        }
-        .preview-hero-minimal h1 {
-            font-size: clamp(24px, 4vw, 32px) !important;
-            margin-bottom: 8px !important;
-        }
-        .preview-hero-minimal p {
-            font-size: clamp(14px, 2vw, 16px) !important;
-            margin-bottom: 16px !important;
-        }
-        .hero-image-placeholder {
-            width: 100%;
-            height: 300px;
-            background: rgba(255,255,255,0.2);
-            border-radius: ${styleConfig.borderRadius}px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            backdrop-filter: blur(10px);
         }
-        @media (max-width: 768px) {
-            .preview-hero-split {
-                grid-template-columns: 1fr;
-            }
+        .preview-hero-v2 .hero-content {
+            max-width: ${heroContentWidth};
+            margin: 0 auto;
         }
         .preview-hero-v2 h1 {
-            font-size: clamp(28px, 5vw, ${heroFontSize}px);
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            font-size: clamp(32px, 5vw, ${heroHeadlineSize});
+            font-weight: ${heroFontWeight};
+            margin-bottom: 24px;
             line-height: 1.2;
         }
         .preview-hero-v2 p {
             font-size: clamp(16px, 3vw, 20px);
             opacity: 0.95;
-            margin-bottom: ${32 * styleConfig.spacing}px;
+            margin-bottom: 32px;
+            line-height: 1.6;
         }
         .preview-cta-btn {
             display: inline-block;
-            padding: ${16 * styleConfig.spacing}px ${40 * styleConfig.spacing}px;
-            background: ${heroTextColor === '#ffffff' ? 'white' : heroBgColor};
-            color: ${heroTextColor === '#ffffff' ? heroBgColor : '#ffffff'};
-            border-radius: ${styleConfig.borderRadius}px;
+            padding: 16px 40px;
+            background: ${heroCtaBackground};
+            color: ${heroCtaTextColor};
+            border-radius: ${heroCtaBorderRadius};
             text-decoration: none;
             font-weight: 600;
-            box-shadow: ${styleConfig.shadow};
-            transition: ${styleConfig.transition};
+            box-shadow: ${shadowMap[productsCardShadow]};
+            transition: all 0.3s ease;
         }
         .preview-cta-btn:hover {
-            box-shadow: ${styleConfig.shadowHover};
-            transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-2px)'};
+            background: ${heroCtaHoverBg};
+            transform: translateY(-2px);
+            box-shadow: ${shadowHoverMap[productsCardShadow]};
         }
+        
+        /* Products Section Styles */
         .preview-products-section {
-            padding: ${basePadding * 2}px ${basePadding}px;
-            background: #f7fafc;
+            padding: 60px 20px;
+            background: ${productsSectionBg};
+        }
+        .preview-products-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+            color: ${productsTextColor};
         }
         .preview-products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: ${gap}px;
+            gap: ${productsGap};
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 16px;
         }
         @media (max-width: 768px) {
             .preview-products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: ${gap * 0.75}px;
             }
         }
         @media (max-width: 480px) {
             .preview-products-grid {
                 grid-template-columns: 1fr;
-                gap: ${gap * 0.5}px;
             }
         }
         .preview-product-card {
-            background: white;
-            border-radius: ${styleConfig.borderRadius}px;
+            background: ${productsCardBg};
+            border-radius: ${productsCardRadius};
             overflow: hidden;
-            box-shadow: ${styleConfig.shadow};
-            transition: ${styleConfig.transition};
+            box-shadow: ${shadowMap[productsCardShadow]};
+            transition: all 0.3s ease;
+            ${productsHoverEffect === 'none' ? '' : 'cursor: pointer;'}
         }
         .preview-product-card:hover {
-            transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-4px)'};
-            box-shadow: ${styleConfig.shadowHover};
+            ${productsHoverEffect === 'lift' ? 'transform: translateY(-8px);' : ''}
+            ${productsHoverEffect === 'scale' ? 'transform: scale(1.03);' : ''}
+            ${productsHoverEffect === 'shadow' ? `box-shadow: ${shadowHoverMap[productsCardShadow]};` : `box-shadow: ${shadowHoverMap[productsCardShadow]};`}
+            ${productsHoverEffect !== 'none' ? `border: 2px solid ${productsHoverBorder};` : ''}
         }
         .preview-product-image {
             width: 100%;
@@ -1444,184 +1985,128 @@ function generatePreviewHTML() {
             background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
         }
         .preview-product-info {
-            padding: ${cardPadding}px;
+            padding: ${productsCardPadding};
         }
         .preview-product-name {
-            font-size: ${cardTitleSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            color: #1a202c;
-            margin-bottom: ${8 * styleConfig.spacing}px;
+            font-size: ${productsTitleSize};
+            font-weight: ${productsTitleWeight};
+            color: ${productsTextColor};
+            margin-bottom: 12px;
         }
         .preview-product-desc {
             font-size: 14px;
-            color: #718096;
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            color: ${productsTextColor};
+            opacity: 0.7;
+            margin-bottom: 16px;
             line-height: 1.6;
         }
         .preview-product-price {
-            font-size: ${28 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            color: ${primaryColor};
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            font-size: ${productsPriceSize};
+            font-weight: ${productsTitleWeight};
+            color: ${productsPriceColor};
+            margin-bottom: 16px;
         }
         .preview-buy-btn {
             width: 100%;
-            padding: ${12 * styleConfig.spacing}px;
-            background: ${primaryColor};
+            padding: 12px;
+            background: ${productsPriceColor};
             color: white;
             border: none;
-            border-radius: ${styleConfig.borderRadius}px;
+            border-radius: ${productsCardRadius};
             font-weight: 600;
             cursor: pointer;
-            transition: ${styleConfig.transition};
+            transition: all 0.3s ease;
         }
         .preview-buy-btn:hover {
-            background: ${secondaryColor};
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
         
         /* About Section Styles */
         .preview-about-section {
-            padding: ${basePadding * 2}px ${basePadding}px;
-            background: white;
+            padding: ${aboutPadding} 20px;
+            background: ${aboutBackgroundColor};
+            ${aboutBorderStyle === 'top' ? `border-top: 3px solid ${aboutAccentColor};` : ''}
+            ${aboutBorderStyle === 'bottom' ? `border-bottom: 3px solid ${aboutAccentColor};` : ''}
+            ${aboutBorderStyle === 'left' ? `border-left: 3px solid ${aboutAccentColor};` : ''}
         }
         .preview-about-centered {
-            max-width: 800px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             text-align: center;
         }
-        .preview-about-two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
-        }
-        .preview-about-side-image {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
-        }
         .preview-about-section h2 {
-            font-size: ${32 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${24 * styleConfig.spacing}px;
-            color: #1a202c;
+            font-size: ${aboutHeadingSize};
+            font-weight: ${aboutHeadingWeight};
+            margin-bottom: 24px;
+            color: ${aboutTextColor};
+            opacity: 0.9;
         }
         .preview-about-section p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #4a5568;
-        }
-        .about-image-placeholder {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
-            border-radius: ${styleConfig.borderRadius}px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-        }
-        @media (max-width: 768px) {
-            .preview-about-two-column,
-            .preview-about-side-image {
-                grid-template-columns: 1fr;
-            }
+            font-size: ${aboutContentSize};
+            line-height: ${aboutLineHeight};
+            color: ${aboutTextColor};
+            opacity: 0.8;
         }
         
         /* Contact Section Styles */
         .preview-contact-section {
-            padding: ${basePadding * 2}px ${basePadding}px;
-            background: #f7fafc;
-        }
-        .preview-contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .preview-contact-details {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .preview-contact-map {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: ${contactPadding} 20px;
+            background: ${contactBackgroundColor};
         }
         .preview-contact-section h2 {
-            font-size: ${32 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${32 * styleConfig.spacing}px;
-            color: #1a202c;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: ${contactTextColor};
             text-align: center;
         }
-        .contact-info-item {
-            margin-bottom: ${24 * styleConfig.spacing}px;
-            padding: ${20 * styleConfig.spacing}px;
-            background: white;
-            border-radius: ${styleConfig.borderRadius}px;
-            box-shadow: ${styleConfig.shadow};
-        }
-        .contact-info-item strong {
-            display: block;
-            margin-bottom: 8px;
-            color: ${primaryColor};
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .map-placeholder {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
-            border-radius: ${styleConfig.borderRadius}px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
+        .preview-contact-form {
+            max-width: ${contactFormWidth};
+            margin: 0 auto;
         }
         .contact-form-field {
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            margin-bottom: 20px;
         }
         .contact-form-field label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #2d3748;
+            font-weight: ${contactLabelWeight};
+            font-size: ${contactLabelSize};
+            color: ${contactTextColor};
         }
         .contact-form-field input,
         .contact-form-field textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: ${styleConfig.borderRadius}px;
+            padding: ${contactButtonSize === 'sm' ? '10px' : contactButtonSize === 'lg' ? '16px' : '12px'};
+            background: ${contactInputBg};
+            border: 2px solid ${contactInputBorder};
+            border-radius: ${contactInputRadius};
             font-family: inherit;
             font-size: 14px;
+            color: ${contactTextColor};
+            transition: all 0.3s ease;
+        }
+        .contact-form-field input:focus,
+        .contact-form-field textarea:focus {
+            outline: none;
+            border-color: ${contactFocusBorder};
         }
         .contact-submit-btn {
             width: 100%;
-            padding: ${16 * styleConfig.spacing}px;
-            background: ${primaryColor};
-            color: white;
+            padding: ${contactButtonSize === 'sm' ? '12px' : contactButtonSize === 'lg' ? '20px' : '16px'};
+            background: ${contactButtonBg};
+            color: ${contactButtonText};
             border: none;
-            border-radius: ${styleConfig.borderRadius}px;
+            border-radius: ${contactInputRadius};
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: ${styleConfig.transition};
+            transition: all 0.3s ease;
         }
         .contact-submit-btn:hover {
-            background: ${secondaryColor};
-        }
-        @media (max-width: 768px) {
-            .preview-contact-map {
-                grid-template-columns: 1fr;
-            }
+            background: ${contactButtonHover};
+            transform: translateY(-2px);
         }
         
         /* WhatsApp Button */
@@ -1629,21 +2114,24 @@ function generatePreviewHTML() {
             position: fixed;
             bottom: 24px;
             z-index: 1000;
-            width: 60px;
-            height: 60px;
-            background: #25D366;
+            width: ${whatsappSize};
+            height: ${whatsappSize};
+            background: ${whatsappBgColor};
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            box-shadow: ${shadowMap[whatsappShadow]};
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
         }
         .whatsapp-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            background: ${whatsappHoverBg};
+            ${whatsappHoverEffect === 'scale' ? 'transform: scale(1.15);' : ''}
+            ${whatsappHoverEffect === 'pulse' ? 'animation: pulse 1s infinite;' : ''}
+            ${whatsappHoverEffect === 'bounce' ? 'animation: bounce 0.5s;' : ''}
+            box-shadow: ${shadowHoverMap[whatsappShadow]};
         }
         .whatsapp-button.position-right {
             right: 24px;
@@ -1652,9 +2140,18 @@ function generatePreviewHTML() {
             left: 24px;
         }
         .whatsapp-button svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
+            width: ${parseInt(whatsappSize) * 0.5}px;
+            height: ${parseInt(whatsappSize) * 0.5}px;
+            fill: ${whatsappIconColor};
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
     </style>`;
     
