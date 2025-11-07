@@ -2137,7 +2137,7 @@ function generatePreviewHTML() {
         
         if (heroLayout === 'split') {
             // Split layout: text left, image right - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: auto; text-align: left; padding: 60px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; text-align: left; padding: 60px 40px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
@@ -2151,7 +2151,7 @@ function generatePreviewHTML() {
             </section>`;
         } else if (heroLayout === 'minimal') {
             // Minimal layout: compact header style - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: auto; padding: 40px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; padding: 40px 40px;">
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
                     <div style="flex: 1; min-width: 250px;">
                         <h1 style="font-size: ${parseInt(heroHeadlineSize) * 0.7}px !important; margin-bottom: 8px;">${escapeHtml(headline)}</h1>
