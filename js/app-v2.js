@@ -540,6 +540,10 @@ function initializeSectionControls() {
     const productsShowDescription = document.getElementById('productsShowDescription');
     const productsShowPricing = document.getElementById('productsShowPricing');
     
+    if (!productsShowDescription || !productsShowPricing) {
+        console.error('Product description/pricing toggles not found');
+    }
+    
     productsEnabled.addEventListener('change', (e) => {
         appState.sections.products.enabled = e.target.checked;
         productsOptions.style.display = e.target.checked ? 'block' : 'none';
@@ -581,6 +585,7 @@ function initializeSectionControls() {
     
     productsShowDescription.addEventListener('change', (e) => {
         appState.sections.products.showDescription = e.target.checked;
+        console.log('Show description toggled:', e.target.checked);
         updatePreview();
         saveToLocalStorage();
     });
