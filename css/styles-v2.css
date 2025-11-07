@@ -1114,10 +1114,12 @@ body {
     bottom: 0;
     z-index: 9999;
     background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .preview-panel.active {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
   }
   
