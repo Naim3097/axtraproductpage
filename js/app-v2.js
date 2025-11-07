@@ -71,7 +71,7 @@ const appState = {
             priceSize: 20,
             cardPadding: 16,
             gap: 24,
-            headerSpacing: 12,
+            headerSpacing: 8,
             sectionSpacing: 48
         },
         about: {
