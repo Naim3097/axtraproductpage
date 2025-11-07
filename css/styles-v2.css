@@ -257,19 +257,33 @@ body {
   flex-direction: column;
   background: var(--gray-50);
   overflow: hidden;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-/* Desktop: preview always visible in side-by-side layout */
+/* Desktop: Preview can be toggled - when NOT active, hide it and expand form panel */
+@media (min-width: 769px) {
+  .preview-panel:not(.active) {
+    display: none;
+  }
+  
+  .workspace:has(.preview-panel:not(.active)) .form-panel {
+    flex: 1;
+    max-width: 100%;
+  }
+  
+  .workspace:has(.preview-panel.active) .form-panel {
+    flex: 0 0 50%;
+  }
+  
+  .preview-panel.active {
+    display: flex;
+  }
+}
+
 /* Mobile: preview is overlay that can be toggled */
 
 .preview-close-btn {
   display: none; /* Hidden on desktop, shown on mobile when active */
-}
-
-/* Hide preview toggle button on desktop - preview always visible */
-#previewToggleBtn {
-  display: none;
 }
 
 @media (max-width: 768px) {

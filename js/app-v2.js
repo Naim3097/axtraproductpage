@@ -70,7 +70,9 @@ const appState = {
             priceColor: '#667eea',
             priceSize: 20,
             cardPadding: 16,
-            gap: 24
+            gap: 24,
+            headerSpacing: 12,
+            sectionSpacing: 48
         },
         about: {
             enabled: false,
@@ -205,6 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
     attachEventListeners();
     loadFromLocalStorage();
+    
+    // Initialize preview panel as visible (active) by default on desktop
+    const previewPanel = document.getElementById('previewPanel');
+    if (previewPanel && window.innerWidth > 768) {
+        previewPanel.classList.add('active');
+    }
 });
 
 function initializeApp() {
@@ -702,6 +710,25 @@ function initializeSectionControls() {
         });
     }
     
+    const productsHeaderSpacing = document.getElementById('productsHeaderSpacing');
+    const productsSectionSpacing = document.getElementById('productsSectionSpacing');
+    
+    if (productsHeaderSpacing) {
+        productsHeaderSpacing.addEventListener('change', (e) => {
+            appState.sections.products.headerSpacing = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsSectionSpacing) {
+        productsSectionSpacing.addEventListener('change', (e) => {
+            appState.sections.products.sectionSpacing = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
     // About Section
     const aboutEnabled = document.getElementById('aboutEnabled');
     const aboutOptions = document.getElementById('aboutOptions');
@@ -827,22 +854,19 @@ function attachEventListeners() {
     const previewToggleBtn = document.getElementById('previewToggleBtn');
     const previewCloseBtn = document.getElementById('previewCloseBtn');
     
-    // Toggle button behavior - only for mobile
+    // Toggle button behavior - works for both mobile and desktop
     if (previewToggleBtn) {
         previewToggleBtn.addEventListener('click', () => {
-            // Only allow toggling on mobile (< 768px)
-            if (window.innerWidth <= 768) {
-                const previewPanel = document.getElementById('previewPanel');
-                previewPanel.classList.toggle('active');
-                const isActive = previewPanel.classList.contains('active');
-                
-                previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
-                
-                // Update mobile menu text if exists
-                const mobileToggleText = document.querySelector('.mobile-toggle-text');
-                if (mobileToggleText) {
-                    mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
-                }
+            const previewPanel = document.getElementById('previewPanel');
+            previewPanel.classList.toggle('active');
+            const isActive = previewPanel.classList.contains('active');
+            
+            previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            
+            // Update mobile menu text if exists
+            const mobileToggleText = document.querySelector('.mobile-toggle-text');
+            if (mobileToggleText) {
+                mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
             }
         });
     }
@@ -1866,6 +1890,8 @@ function generatePreviewHTML() {
     const productsPriceSize = products.priceSize || 24;
     const productsCardPadding = products.cardPadding || 20;
     const productsGap = products.gap || 24;
+    const productsHeaderSpacing = products.headerSpacing || 12;
+    const productsSectionSpacing = products.sectionSpacing || 48;
     
     // About Section Styles
     const aboutBackgroundColor = about.backgroundColor || '#ffffff';
@@ -1997,7 +2023,7 @@ function generatePreviewHTML() {
         }
         .preview-section-header {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: ${productsSectionSpacing}px;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
@@ -2005,7 +2031,7 @@ function generatePreviewHTML() {
         .preview-section-title {
             font-size: 32px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: ${productsHeaderSpacing}px;
             color: ${productsTextColor};
         }
         .preview-section-subtitle {
@@ -2793,6 +2819,8 @@ function generateCompleteHTML() {
     const productsPriceSize = productsSection.priceSize || 24;
     const productsCardPadding = productsSection.cardPadding || 20;
     const productsGap = productsSection.gap || 24;
+    const productsHeaderSpacing = productsSection.headerSpacing || 12;
+    const productsSectionSpacing = productsSection.sectionSpacing || 48;
     
     // Get about section styling (match generatePreviewHTML)
     const aboutSection = appState.sections.about;
@@ -3267,8 +3295,8 @@ function generateCompleteHTML() {
     ${productsSection.enabled && appState.products.length > 0 ? `
     <!-- Products Section -->
     <section class="products-section">
-        ${productsSection.headline ? `<h2 class="section-title">${escapeHtml(productsSection.headline)}</h2>` : ''}
-        ${productsSection.subheadline ? `<p style="text-align: center; font-size: 16px; color: ${productsTextColor}; opacity: 0.8; max-width: 800px; margin: 0 auto 48px auto; line-height: 1.6;">${escapeHtml(productsSection.subheadline)}</p>` : ''}
+        ${productsSection.headline ? `<h2 class="section-title" style="margin-bottom: ${productsHeaderSpacing}px;">${escapeHtml(productsSection.headline)}</h2>` : ''}
+        ${productsSection.subheadline ? `<p style="text-align: center; font-size: 16px; color: ${productsTextColor}; opacity: 0.8; max-width: 800px; margin: 0 auto ${productsSectionSpacing}px auto; line-height: 1.6;">${escapeHtml(productsSection.subheadline)}</p>` : ''}
         <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">
             ${appState.products.map(product => {
                 const imageHtml = product.images && product.images.length > 0 
