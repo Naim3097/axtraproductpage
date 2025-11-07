@@ -307,6 +307,26 @@ function initializeSectionControls() {
         }, 300));
     }
     
+    // Hero Text Color for Gradient Background
+    const heroTextColorGradient = document.getElementById('heroTextColorGradient');
+    if (heroTextColorGradient) {
+        heroTextColorGradient.addEventListener('input', debounce((e) => {
+            appState.sections.hero.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    // Hero Text Color for Image Background
+    const heroTextColorImage = document.getElementById('heroTextColorImage');
+    if (heroTextColorImage) {
+        heroTextColorImage.addEventListener('input', debounce((e) => {
+            appState.sections.hero.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
     if (heroUseGradient) {
         heroUseGradient.addEventListener('change', (e) => {
             appState.sections.hero.useGradient = e.target.checked;
@@ -3411,6 +3431,8 @@ function loadFromLocalStorage() {
             // Hero styling
             const heroBackgroundColor = document.getElementById('heroBackgroundColor');
             const heroTextColor = document.getElementById('heroTextColor');
+            const heroTextColorGradient = document.getElementById('heroTextColorGradient');
+            const heroTextColorImage = document.getElementById('heroTextColorImage');
             const heroUseGradient = document.getElementById('heroUseGradient');
             const ctaTextPreset = document.getElementById('ctaTextPreset');
             const ctaTextCustom = document.getElementById('ctaTextCustom');
@@ -3420,6 +3442,12 @@ function loadFromLocalStorage() {
             }
             if (heroTextColor && appState.sections.hero.textColor) {
                 heroTextColor.value = appState.sections.hero.textColor;
+            }
+            if (heroTextColorGradient && appState.sections.hero.textColor) {
+                heroTextColorGradient.value = appState.sections.hero.textColor;
+            }
+            if (heroTextColorImage && appState.sections.hero.textColor) {
+                heroTextColorImage.value = appState.sections.hero.textColor;
             }
             if (heroUseGradient) {
                 heroUseGradient.checked = appState.sections.hero.useGradient !== false;
