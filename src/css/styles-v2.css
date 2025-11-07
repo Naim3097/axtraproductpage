@@ -334,6 +334,7 @@ body {
 
 .preview-frame {
   width: 100%;
+  max-width: 100%;
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -351,6 +352,7 @@ body {
 
 .preview-content {
   min-height: 500px;
+  width: 100%;
 }
 
 .preview-placeholder {

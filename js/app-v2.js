@@ -2136,7 +2136,7 @@ function generatePreviewHTML() {
         
         if (heroLayout === 'split') {
             // Split layout: text left, image right
-            html += `<section class="preview-hero-v2" style="text-align: left;">
+            html += `<section class="preview-hero-v2" style="text-align: left; padding: 60px 40px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: ${heroContentWidth}; margin: 0 auto;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
