@@ -63,11 +63,6 @@
                     <div class="step-number">3</div>
                     <div class="step-label">Products</div>
                 </div>
-                <div class="step-line"></div>
-                <div class="step" data-step="4">
-                    <div class="step-number">4</div>
-                    <div class="step-label">Content</div>
-                </div>
             </div>
         </header>
 
@@ -109,6 +104,14 @@
                                             <label><input type="radio" name="heroLayout" value="split"> Split</label>
                                             <label><input type="radio" name="heroLayout" value="minimal"> Minimal</label>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Headline</label>
+                                        <input type="text" class="form-input" id="heroHeadline" placeholder="Transform Your Life Today">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Subheadline</label>
+                                        <textarea class="form-input" id="heroSubheadline" rows="2" placeholder="Discover amazing products..."></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="checkbox-label">
@@ -184,6 +187,14 @@
                                             <label><input type="radio" name="aboutLayout" value="side-image"> Side Image</label>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Headline</label>
+                                        <input type="text" class="form-input" id="aboutHeadline" placeholder="About Us">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Content</label>
+                                        <textarea class="form-input" id="aboutContent" rows="4" placeholder="Tell your brand story..."></textarea>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -207,6 +218,18 @@
                                             <label><input type="radio" name="contactLayout" value="details"> Details</label>
                                             <label><input type="radio" name="contactLayout" value="map"> With Map</label>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-input" id="contactEmail" placeholder="hello@example.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Phone</label>
+                                        <input type="tel" class="form-input" id="contactPhone" placeholder="+1 (555) 123-4567">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-input" id="contactAddress" rows="2" placeholder="123 Business Street, City, State 12345"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -471,94 +494,6 @@
                         
                         <div class="step-actions">
                             <button class="btn-secondary" data-prev="2">← Back</button>
-                            <button class="btn-primary" data-next="4">Continue to Content →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 4: CONTENT & COPY -->
-                    <div class="step-content" id="step4">
-                        <div class="step-header">
-                            <h1>Content & Copy</h1>
-                            <p>Customize text for your enabled sections</p>
-                        </div>
-                        
-                        <!-- Hero Section -->
-                        <div class="form-section">
-                            <label class="form-label">Hero Headline *</label>
-                            <input type="text" class="form-input" id="heroHeadline" placeholder="Transform Your Life Today">
-                        </div>
-                        
-                        <div class="form-section">
-                            <label class="form-label">Hero Subheadline</label>
-                            <textarea class="form-textarea" id="heroSubheadline" rows="2" placeholder="The ultimate solution for..."></textarea>
-                        </div>
-                        
-                        <!-- About Section Content -->
-                        <div class="form-section">
-                            <label class="form-label">About Headline</label>
-                            <input type="text" class="form-input" id="aboutHeadline" placeholder="About Us">
-                        </div>
-                        
-                        <div class="form-section">
-                            <label class="form-label">About Content</label>
-                            <textarea class="form-input" id="aboutContent" rows="4" placeholder="Tell your brand story..."></textarea>
-                        </div>
-                        
-                        <!-- Contact Section Content -->
-                        <div class="form-section">
-                            <label class="form-label">Contact Email</label>
-                            <input type="email" class="form-input" id="contactEmail" placeholder="hello@example.com">
-                        </div>
-                        
-                        <div class="form-section">
-                            <label class="form-label">Contact Phone</label>
-                            <input type="tel" class="form-input" id="contactPhone" placeholder="+1 (555) 123-4567">
-                        </div>
-                        
-                        <div class="form-section">
-                            <label class="form-label">Contact Address</label>
-                            <textarea class="form-input" id="contactAddress" rows="2" placeholder="123 Business Street, City, State 12345"></textarea>
-                        </div>
-                        
-                        <!-- Features -->
-                        <div class="form-section">
-                            <label class="form-label">Key Features</label>
-                            <div id="featuresList">
-                                <div class="dynamic-input">
-                                    <input type="text" class="form-input" placeholder="Feature 1">
-                                    <button class="btn-icon" onclick="removeInput(this)">×</button>
-                                </div>
-                            </div>
-                            <button class="btn-ghost btn-sm" onclick="addFeature()">+ Add Feature</button>
-                        </div>
-                        
-                        <!-- Benefits -->
-                        <div class="form-section">
-                            <label class="form-label">Benefits</label>
-                            <div id="benefitsList">
-                                <div class="dynamic-input">
-                                    <textarea class="form-textarea" rows="2" placeholder="Benefit description"></textarea>
-                                    <button class="btn-icon" onclick="removeInput(this)">×</button>
-                                </div>
-                            </div>
-                            <button class="btn-ghost btn-sm" onclick="addBenefit()">+ Add Benefit</button>
-                        </div>
-                        
-                        <!-- Testimonials -->
-                        <div class="form-section">
-                            <label class="form-label">Testimonials</label>
-                            <div id="testimonialsList">
-                                <div class="testimonial-input">
-                                    <textarea class="form-textarea" rows="3" placeholder="Testimonial text"></textarea>
-                                    <input type="text" class="form-input" placeholder="Customer name">
-                                    <button class="btn-icon" onclick="removeInput(this)">×</button>
-                                </div>
-                            </div>
-                            <button class="btn-ghost btn-sm" onclick="addTestimonial()">+ Add Testimonial</button>
-                        </div>
-                        
-                        <div class="step-actions">
-                            <button class="btn-secondary" data-prev="3">← Back</button>
                             <button class="btn-primary" id="generatePageBtn">Generate Product Page</button>
                         </div>
                     </div>

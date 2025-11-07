@@ -1769,11 +1769,57 @@ function generateCompleteHTML() {
             position: relative;
         }
         
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            padding: ${sectionPadding}px ${basePadding}px;
+            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
+            color: white;
+            text-align: left;
+        }
+        
+        .hero-minimal {
+            padding: ${basePadding}px;
+            text-align: left;
+            background: ${primaryColor};
+            color: white;
+            border-bottom: 4px solid ${secondaryColor};
+        }
+        
+        .hero-minimal .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .hero-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: rgba(255,255,255,0.2);
+            border-radius: ${styleConfig.borderRadius}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
         .hero h1 {
             font-size: ${48 * styleConfig.fontSize}px;
             font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${16 * styleConfig.spacing}px;
             line-height: 1.2;
+        }
+        
+        .hero-minimal h1 {
+            font-size: ${32 * styleConfig.fontSize}px;
+            margin-bottom: 8px;
         }
         
         .hero p {
@@ -1783,6 +1829,15 @@ function generateCompleteHTML() {
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+        }
+        
+        .hero-split p {
+            margin-left: 0;
+        }
+        
+        .hero-minimal p {
+            font-size: 16px;
+            margin-bottom: 16px;
         }
         
         .cta-button {
@@ -1908,6 +1963,39 @@ function generateCompleteHTML() {
             transform: ${styleConfig.transition === 'none' ? 'none' : 'scale(1.02)'};
         }
         
+        /* About Section */
+        .about-section {
+            padding: ${sectionPadding}px ${basePadding}px;
+            background: white;
+        }
+        
+        .about-section h2 {
+            font-size: ${36 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            margin-bottom: ${24 * styleConfig.spacing}px;
+            color: #1a202c;
+        }
+        
+        .about-section p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: ${sectionPadding}px ${basePadding}px;
+            background: #f7fafc;
+        }
+        
+        .contact-section h2 {
+            font-size: ${36 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            margin-bottom: ${32 * styleConfig.spacing}px;
+            color: #1a202c;
+            text-align: center;
+        }
+        
         /* Features Section */
         .features-section {
             padding: ${sectionPadding}px ${basePadding}px;
@@ -1963,6 +2051,10 @@ function generateCompleteHTML() {
                 font-size: ${32 * styleConfig.fontSize}px;
             }
             
+            .hero-split {
+                grid-template-columns: 1fr;
+            }
+            
             .products-grid {
                 grid-template-columns: 1fr;
             }
@@ -1970,20 +2062,41 @@ function generateCompleteHTML() {
             .section-title {
                 font-size: ${28 * styleConfig.fontSize}px;
             }
+            
+            .about-section > div {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .contact-section > div {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
 <body>
     ${heroSection.enabled ? `
     <!-- Hero Section -->
-    <section class="hero">
-        <h1>${escapeHtml(headline)}</h1>
-        <p>${escapeHtml(subheadline)}</p>
-        ${heroSection.showCTA ? `
-        <button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">
-            ${escapeHtml(ctaText)}
-        </button>
-        ` : ''}
+    <section class="${heroSection.layout === 'split' ? 'hero-split' : heroSection.layout === 'minimal' ? 'hero-minimal' : 'hero'}">
+        ${heroSection.layout === 'split' ? `
+            <div>
+                <h1>${escapeHtml(headline)}</h1>
+                <p>${escapeHtml(subheadline)}</p>
+                ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            </div>
+            <div class="hero-image-placeholder">Hero Image</div>
+        ` : heroSection.layout === 'minimal' ? `
+            <div class="hero-content">
+                <div>
+                    <h1>${escapeHtml(headline)}</h1>
+                    <p>${escapeHtml(subheadline)}</p>
+                </div>
+                ${heroSection.showCTA ? `<button class="cta-button" style="padding: 12px 24px; font-size: 14px;" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            </div>
+        ` : `
+            <h1>${escapeHtml(headline)}</h1>
+            <p>${escapeHtml(subheadline)}</p>
+            ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+        `}
     </section>
     ` : ''}
     
@@ -2042,6 +2155,76 @@ function generateCompleteHTML() {
                 </div>
             `).join('')}
         </div>
+    </section>
+    ` : ''}
+    
+    ${appState.sections.about.enabled ? `
+    <!-- About Section -->
+    <section class="about-section" style="padding: 80px 20px; background: white;">
+        <div style="max-width: 1200px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+            ${appState.sections.about.layout !== 'centered' ? '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>' : ''}
+            <div>
+                <h2 style="font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 24px; color: #1a202c;">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568;">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
+            </div>
+        </div>
+    </section>
+    ` : ''}
+    
+    ${appState.sections.contact.enabled ? `
+    <!-- Contact Section -->
+    <section class="contact-section" style="padding: 80px 20px; background: #f7fafc;">
+        <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: #1a202c;">Contact Us</h2>
+        ${appState.sections.contact.layout === 'form' ? `
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Name</label>
+                <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Email</label>
+                <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Message</label>
+                <textarea rows="5" placeholder="Your message" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;"></textarea>
+            </div>
+            <button style="width: 100%; padding: 16px; background: ${primaryColor}; color: white; border: none; border-radius: ${styleConfig.borderRadius}px; font-weight: 600; font-size: 16px; cursor: pointer;">Send Message</button>
+        </div>
+        ` : appState.sections.contact.layout === 'map' ? `
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
+            <div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">Map Location</div>
+            <div>
+                <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                    <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">EMAIL</strong>
+                    ${escapeHtml(appState.sections.contact.email || 'hello@example.com')}
+                </div>
+                <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                    <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">PHONE</strong>
+                    ${escapeHtml(appState.sections.contact.phone || '+1 (555) 123-4567')}
+                </div>
+                <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                    <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">ADDRESS</strong>
+                    ${escapeHtml(appState.sections.contact.address || '123 Business Street, City, State 12345')}
+                </div>
+            </div>
+        </div>
+        ` : `
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">EMAIL</strong>
+                ${escapeHtml(appState.sections.contact.email || 'hello@example.com')}
+            </div>
+            <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">PHONE</strong>
+                ${escapeHtml(appState.sections.contact.phone || '+1 (555) 123-4567')}
+            </div>
+            <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
+                <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">ADDRESS</strong>
+                ${escapeHtml(appState.sections.contact.address || '123 Business Street, City, State 12345')}
+            </div>
+        </div>
+        `}
     </section>
     ` : ''}
     
