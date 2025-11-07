@@ -486,7 +486,7 @@ function initializeSectionControls() {
     
     if (heroHeight) {
         heroHeight.addEventListener('change', (e) => {
-            appState.sections.hero.height = e.target.value;
+            appState.sections.hero.height = parseInt(e.target.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -494,7 +494,7 @@ function initializeSectionControls() {
     
     if (heroContentWidth) {
         heroContentWidth.addEventListener('change', (e) => {
-            appState.sections.hero.contentWidth = e.target.value;
+            appState.sections.hero.contentWidth = parseInt(e.target.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -1104,7 +1104,7 @@ function attachEventListeners() {
     }
     if (contactInputRadius) {
         contactInputRadius.addEventListener('change', () => {
-            appState.sections.contact.inputRadius = contactInputRadius.value;
+            appState.sections.contact.inputRadius = parseInt(contactInputRadius.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -1139,28 +1139,28 @@ function attachEventListeners() {
     }
     if (contactLabelSize) {
         contactLabelSize.addEventListener('change', () => {
-            appState.sections.contact.labelSize = contactLabelSize.value;
+            appState.sections.contact.labelSize = parseInt(contactLabelSize.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactLabelWeight) {
         contactLabelWeight.addEventListener('change', () => {
-            appState.sections.contact.labelWeight = contactLabelWeight.value;
+            appState.sections.contact.labelWeight = parseInt(contactLabelWeight.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactPadding) {
         contactPadding.addEventListener('change', () => {
-            appState.sections.contact.padding = contactPadding.value;
+            appState.sections.contact.padding = parseInt(contactPadding.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactFormWidth) {
         contactFormWidth.addEventListener('change', () => {
-            appState.sections.contact.formWidth = contactFormWidth.value;
+            appState.sections.contact.formWidth = parseInt(contactFormWidth.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -1208,7 +1208,7 @@ function attachEventListeners() {
     }
     if (whatsappSize) {
         whatsappSize.addEventListener('change', () => {
-            appState.sections.whatsapp.size = whatsappSize.value;
+            appState.sections.whatsapp.size = parseInt(whatsappSize.value);
             updatePreview();
             saveToLocalStorage();
         });
