@@ -23,6 +23,46 @@ const appState = {
             animations: 'subtle'
         }
     },
+    sections: {
+        hero: {
+            enabled: true,
+            layout: 'centered', // centered, split, minimal
+            headline: '',
+            subheadline: '',
+            ctaText: 'Shop Now',
+            showCTA: true
+        },
+        products: {
+            enabled: true,
+            layout: 'grid', // grid, carousel, masonry, list
+            columns: 3, // 2, 3, 4
+            showPricing: true,
+            showDescription: true
+        },
+        about: {
+            enabled: false,
+            layout: 'two-column', // two-column, centered, side-image
+            headline: 'About Us',
+            content: ''
+        },
+        features: {
+            enabled: false,
+            layout: 'grid', // grid, list, icons
+            items: []
+        },
+        testimonials: {
+            enabled: false,
+            layout: 'carousel', // carousel, grid, single
+            items: []
+        },
+        contact: {
+            enabled: false,
+            layout: 'form', // form, details, map
+            email: '',
+            phone: '',
+            address: ''
+        }
+    },
     content: {
         heroHeadline: '',
         heroSubheadline: '',
@@ -873,6 +913,8 @@ function generatePreviewHTML() {
     let html = `<style>
         .preview-content {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 100%;
+            overflow-x: hidden;
         }
         .preview-hero-v2 {
             padding: ${basePadding * 2}px ${basePadding}px;
@@ -881,13 +923,13 @@ function generatePreviewHTML() {
             color: white;
         }
         .preview-hero-v2 h1 {
-            font-size: ${heroFontSize}px;
+            font-size: clamp(28px, 5vw, ${heroFontSize}px);
             font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${16 * styleConfig.spacing}px;
             line-height: 1.2;
         }
         .preview-hero-v2 p {
-            font-size: 20px;
+            font-size: clamp(16px, 3vw, 20px);
             opacity: 0.95;
             margin-bottom: ${32 * styleConfig.spacing}px;
         }
@@ -916,6 +958,19 @@ function generatePreviewHTML() {
             gap: ${gap}px;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 16px;
+        }
+        @media (max-width: 768px) {
+            .preview-products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: ${gap * 0.75}px;
+            }
+        }
+        @media (max-width: 480px) {
+            .preview-products-grid {
+                grid-template-columns: 1fr;
+                gap: ${gap * 0.5}px;
+            }
         }
         .preview-product-card {
             background: white;
