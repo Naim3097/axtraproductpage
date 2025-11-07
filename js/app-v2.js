@@ -843,12 +843,6 @@ function attachEventListeners() {
         });
     }
     
-    // Full preview button (opens in new window)
-    const openFullPreviewBtn = document.getElementById('openFullPreviewBtn');
-    if (openFullPreviewBtn) {
-        openFullPreviewBtn.addEventListener('click', generatePage);
-    }
-    
     // Industry selection
     document.querySelectorAll('input[name="industry"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
@@ -1866,15 +1860,15 @@ function generatePreviewHTML() {
     const aboutBorderStyle = about.borderStyle || 'none';
     
     // Contact Section Styles
-    const contactBackgroundColor = contact.backgroundColor || '#f7fafc';
-    const contactTextColor = contact.textColor || '#1a202c';
+    const contactBackgroundColor = contact.backgroundColor || '#f8f9fa';
+    const contactTextColor = contact.textColor || '#1e293b';
     const contactInputBg = contact.inputBg || '#ffffff';
     const contactInputBorder = contact.inputBorder || '#e2e8f0';
-    const contactFocusBorder = contact.focusBorder || '#6366f1';
+    const contactFocusBorder = contact.focusBorder || '#667eea';
     const contactInputRadius = contact.inputRadius || 8;
-    const contactButtonBg = contact.buttonBg || '#6366f1';
+    const contactButtonBg = contact.buttonBg || '#667eea';
     const contactButtonText = contact.buttonText || '#ffffff';
-    const contactButtonHover = contact.buttonHover || '#4f46e5';
+    const contactButtonHover = contact.buttonHover || '#5568d3';
     const contactButtonSize = contact.buttonSize || 'md';
     const contactLabelSize = contact.labelSize || 14;
     const contactLabelWeight = contact.labelWeight || 500;
@@ -2762,15 +2756,15 @@ function generateCompleteHTML() {
     
     // Get contact section styling (match generatePreviewHTML)
     const contactSection = appState.sections.contact;
-    const contactBackgroundColor = contactSection.backgroundColor || '#f7fafc';
-    const contactTextColor = contactSection.textColor || '#1a202c';
+    const contactBackgroundColor = contactSection.backgroundColor || '#f8f9fa';
+    const contactTextColor = contactSection.textColor || '#1e293b';
     const contactInputBg = contactSection.inputBg || '#ffffff';
     const contactInputBorder = contactSection.inputBorder || '#e2e8f0';
-    const contactFocusBorder = contactSection.focusBorder || '#6366f1';
+    const contactFocusBorder = contactSection.focusBorder || '#667eea';
     const contactInputRadius = contactSection.inputRadius || 8;
-    const contactButtonBg = contactSection.buttonBg || '#6366f1';
+    const contactButtonBg = contactSection.buttonBg || '#667eea';
     const contactButtonText = contactSection.buttonText || '#ffffff';
-    const contactButtonHover = contactSection.buttonHover || '#4f46e5';
+    const contactButtonHover = contactSection.buttonHover || '#5568d3';
     const contactButtonSize = contactSection.buttonSize || 'md';
     const contactLabelSize = contactSection.labelSize || 14;
     const contactLabelWeight = contactSection.labelWeight || 500;
