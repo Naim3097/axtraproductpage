@@ -3441,7 +3441,35 @@ function loadFromLocalStorage() {
             }
         }
         
+        // Sync section options display with enabled state
+        syncSectionOptionsDisplay();
+        
         updatePreview();
+    }
+}
+
+// Sync section options display based on enabled state
+function syncSectionOptionsDisplay() {
+    const heroOptions = document.getElementById('heroOptions');
+    const productsOptions = document.getElementById('productsOptions');
+    const aboutOptions = document.getElementById('aboutOptions');
+    const contactOptions = document.getElementById('contactOptions');
+    const whatsappOptions = document.getElementById('whatsappOptions');
+    
+    if (heroOptions) {
+        heroOptions.style.display = appState.sections.hero.enabled ? 'block' : 'none';
+    }
+    if (productsOptions) {
+        productsOptions.style.display = appState.sections.products.enabled ? 'block' : 'none';
+    }
+    if (aboutOptions) {
+        aboutOptions.style.display = appState.sections.about.enabled ? 'block' : 'none';
+    }
+    if (contactOptions) {
+        contactOptions.style.display = appState.sections.contact.enabled ? 'block' : 'none';
+    }
+    if (whatsappOptions) {
+        whatsappOptions.style.display = appState.sections.whatsapp.enabled ? 'block' : 'none';
     }
 }
 
