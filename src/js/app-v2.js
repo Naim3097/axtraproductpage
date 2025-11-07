@@ -2136,8 +2136,8 @@ function generatePreviewHTML() {
         const heroLayout = heroSection.layout || 'centered';
         
         if (heroLayout === 'split') {
-            // Split layout: text left, image right - full width
-            html += `<section class="preview-hero-v2" style="text-align: left; padding: 60px 40px;">
+            // Split layout: text left, image right - full width, auto height
+            html += `<section class="preview-hero-v2" style="min-height: auto; text-align: left; padding: 60px 40px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
@@ -2150,7 +2150,7 @@ function generatePreviewHTML() {
                 </div>
             </section>`;
         } else if (heroLayout === 'minimal') {
-            // Minimal layout: compact header style - full width
+            // Minimal layout: compact header style - full width, auto height
             html += `<section class="preview-hero-v2" style="min-height: auto; padding: 40px 40px;">
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
                     <div style="flex: 1; min-width: 250px;">
@@ -2161,7 +2161,7 @@ function generatePreviewHTML() {
                 </div>
             </section>`;
         } else {
-            // Centered layout (default)
+            // Centered layout (default) - keeps min-height for full hero banner effect
             html += `<section class="preview-hero-v2">
                 <div class="hero-content">
                     <h1>${escapeHtml(headline)}</h1>
