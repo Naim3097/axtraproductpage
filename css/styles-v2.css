@@ -261,7 +261,7 @@ body {
 }
 
 /* Desktop: Preview can be toggled - when NOT active, hide it and expand form panel */
-@media (min-width: 769px) {
+@media (min-width: 601px) {
   .preview-panel:not(.active) {
     display: none;
   }
@@ -286,7 +286,7 @@ body {
   display: none; /* Hidden on desktop, shown on mobile when active */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   /* Show toggle button on mobile */
   #previewToggleBtn {
     display: inline-flex;
@@ -1094,7 +1094,7 @@ body {
    ============================================ */
 
 /* Only change layout on tablet/mobile, not on desktop */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .workspace {
     flex-direction: column;
   }
