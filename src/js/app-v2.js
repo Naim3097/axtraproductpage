@@ -1872,7 +1872,8 @@ function generatePreviewHTML() {
             justify-content: center;
         }
         .preview-hero-v2 .hero-content {
-            max-width: ${heroContentWidth};
+            width: 90%;
+            max-width: 1200px;
             margin: 0 auto;
         }
         .preview-hero-v2 h1 {
@@ -2135,9 +2136,9 @@ function generatePreviewHTML() {
         const heroLayout = heroSection.layout || 'centered';
         
         if (heroLayout === 'split') {
-            // Split layout: text left, image right
+            // Split layout: text left, image right - full width
             html += `<section class="preview-hero-v2" style="text-align: left; padding: 60px 40px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: ${heroContentWidth}; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
                         <p>${escapeHtml(subheadline)}</p>
@@ -2149,9 +2150,9 @@ function generatePreviewHTML() {
                 </div>
             </section>`;
         } else if (heroLayout === 'minimal') {
-            // Minimal layout: compact header style
-            html += `<section class="preview-hero-v2" style="min-height: auto; padding: 40px 20px;">
-                <div style="max-width: ${heroContentWidth}; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
+            // Minimal layout: compact header style - full width
+            html += `<section class="preview-hero-v2" style="min-height: auto; padding: 40px 40px;">
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
                     <div style="flex: 1; min-width: 250px;">
                         <h1 style="font-size: ${parseInt(heroHeadlineSize) * 0.7}px !important; margin-bottom: 8px;">${escapeHtml(headline)}</h1>
                         <p style="font-size: 16px; margin-bottom: 0;">${escapeHtml(subheadline)}</p>
