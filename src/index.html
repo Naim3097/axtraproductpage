@@ -1,1048 +1,1048 @@
-<!DOCTYPEhtml>
-<htmllang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<metacharset="UTF-8">
-<metaname="viewport"content="width=device-width,initial-scale=1.0">
-<title>AxtraProductPageBuilder-ProfessionalEdition</title>
-<linkrel="stylesheet"href="css/styles-v2.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axtra Product Page Builder - Professional Edition</title>
+    <link rel="stylesheet" href="css/styles-v2.css">
 </head>
 <body>
-<divclass="builder-app">
-<!--Header-->
-<headerclass="app-header">
-<divclass="header-content">
-<divclass="logo">
-<imgsrc="assets/logo/LOGOBLACK.png"alt="Axtra"class="logo-img">
-</div>
+    <div class="builder-app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/logo/LOGO BLACK.png" alt="Axtra" class="logo-img">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary btn-sm desktop-only" id="clearDataBtn" title="Clear all data and start fresh">
+                        Reset
+                    </button>
+                    <button class="btn-secondary btn-sm desktop-only" id="saveDraftBtn">
+                        Save Draft
+                    </button>
+                    <button class="btn-secondary btn-sm desktop-only" id="previewToggleBtn">
+                        <span class="toggle-text">Show Preview</span>
+                    </button>
+                    <button class="btn-primary btn-sm" id="openFullPreviewBtn" title="Open full page in new window">
+                        Preview
+                    </button>
+                    <button class="btn-icon" id="mobileMenuBtn" title="More options">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Dropdown -->
+                <div class="mobile-menu" id="mobileMenu">
+                    <button class="mobile-menu-item" id="mobilePreviewToggle">
+                        <span class="mobile-toggle-text">Show Preview</span>
+                    </button>
+                    <button class="mobile-menu-item" id="mobileSaveDraft">Save Draft</button>
+                    <button class="mobile-menu-item" id="mobileClearData">Reset</button>
+                </div>
+            </div>
+        </header>
 
-<divclass="header-actions">
-<buttonclass="btn-secondarybtn-smdesktop-only"id="clearDataBtn"title="Clearalldataandstartfresh">
-Reset
-</button>
-<buttonclass="btn-secondarybtn-smdesktop-only"id="saveDraftBtn">
-SaveDraft
-</button>
-<buttonclass="btn-secondarybtn-smdesktop-only"id="previewToggleBtn">
-<spanclass="toggle-text">ShowPreview</span>
-</button>
-<buttonclass="btn-primarybtn-sm"id="openFullPreviewBtn"title="Openfullpageinnewwindow">
-Preview
-</button>
-<buttonclass="btn-icon"id="mobileMenuBtn"title="Moreoptions">
-<svgwidth="20"height="20"viewBox="002020"fill="none"xmlns="http://www.w3.org/2000/svg">
-<circlecx="10"cy="4"r="1.5"fill="currentColor"/>
-<circlecx="10"cy="10"r="1.5"fill="currentColor"/>
-<circlecx="10"cy="16"r="1.5"fill="currentColor"/>
-</svg>
-</button>
-</div>
+        <!-- Workspace -->
+        <main class="workspace">
+            <!-- Left Panel: Page Builder -->
+            <div class="form-panel">
+                <div class="form-container">
+                    
+                    <!-- PAGE BUILDER -->
+                    <div class="builder-content">
+                        <div class="builder-header">
+                            <h1>Product Page Builder</h1>
+                            <p>Customize each section with its own design and content</p>
+                        </div>
+                        
+                        <!-- Section Manager -->
+                        <div class="form-section">
+                            <label class="form-label">Page Sections</label>
+                            <p class="field-hint">Toggle sections on/off and customize each independently</p>
+                            
+                            <!-- Hero Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="heroEnabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Hero Section</h3>
+                                        <p>Main headline and call-to-action</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="heroOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="heroLayout" value="centered" checked> Centered</label>
+                                            <label><input type="radio" name="heroLayout" value="split"> Split</label>
+                                            <label><input type="radio" name="heroLayout" value="minimal"> Minimal</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Headline</label>
+                                        <input type="text" class="form-input" id="heroHeadline" placeholder="Transform Your Life Today">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Subheadline</label>
+                                        <textarea class="form-input" id="heroSubheadline" rows="2" placeholder="Discover amazing products..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="heroShowCTA" checked>
+                                            Show Call-to-Action Button
+                                        </label>
+                                    </div>
+                                    <div class="form-group" id="ctaTextGroup">
+                                        <label class="form-label">Button Text</label>
+                                        <select class="form-input" id="ctaTextPreset" style="margin-bottom: 8px;">
+                                            <option value="Shop Now">Shop Now</option>
+                                            <option value="Get Started">Get Started</option>
+                                            <option value="Learn More">Learn More</option>
+                                            <option value="Buy Now">Buy Now</option>
+                                            <option value="View Products">View Products</option>
+                                            <option value="Explore">Explore</option>
+                                            <option value="Contact Us">Contact Us</option>
+                                            <option value="custom">Custom Text...</option>
+                                        </select>
+                                        <input type="text" class="form-input" id="ctaTextCustom" placeholder="Enter custom button text" style="display: none;">
+                                    </div>
+                                    
+                                    <!-- Hero Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background Settings -->
+                                        <div class="form-group">
+                                            <label class="form-label">Background Type</label>
+                                            <div class="radio-group-inline">
+                                                <label><input type="radio" name="heroBackgroundType" value="solid" checked> Solid</label>
+                                                <label><input type="radio" name="heroBackgroundType" value="gradient"> Gradient</label>
+                                                <label><input type="radio" name="heroBackgroundType" value="image"> Image</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="heroSolidBg" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                            <div>
+                                                <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background Color</label>
+                                                <input type="color" class="form-input" id="heroBackgroundColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                            </div>
+                                            <div>
+                                                <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                <input type="color" class="form-input" id="heroTextColor" value="#ffffff" style="height: 40px; padding: 4px;">
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="heroGradientBg" style="display: none;">
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient Start</label>
+                                                    <input type="color" class="form-input" id="heroGradientStart" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient End</label>
+                                                    <input type="color" class="form-input" id="heroGradientEnd" value="#764ba2" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient Angle</label>
+                                                    <input type="range" id="heroGradientAngle" min="0" max="360" value="135" class="form-range">
+                                                    <span id="heroGradientAngleValue" style="font-size: 12px; color: #64748b;">135°</span>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="heroTextColorGradient" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="heroImageBg" style="display: none;">
+                                            <label class="form-label">Background Image</label>
+                                            <input type="file" class="form-input" id="heroBackgroundImage" accept="image/*" style="padding: 8px;">
+                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Recommended: 1920x1080px</p>
+                                            <div id="heroImagePreview" style="display: none; margin-top: 8px;">
+                                                <img id="heroImagePreviewImg" style="max-width: 100%; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                                <button type="button" id="heroImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
+                                            </div>
+                                            <div style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label class="form-label">Overlay Opacity</label>
+                                                    <input type="range" id="heroImageOverlay" min="0" max="100" value="50" class="form-range">
+                                                    <span id="heroOverlayValue" style="font-size: 12px; color: #64748b;">50%</span>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="heroTextColorImage" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Headline Size</label>
+                                                    <select class="form-input" id="heroHeadlineSize">
+                                                        <option value="32">Small (32px)</option>
+                                                        <option value="48" selected>Medium (48px)</option>
+                                                        <option value="64">Large (64px)</option>
+                                                        <option value="80">XLarge (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Font Weight</label>
+                                                    <select class="form-input" id="heroFontWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                        <option value="700" selected>Bold</option>
+                                                        <option value="800">Extra Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- CTA Button Design -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">CTA Button Design</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Color</label>
+                                                    <input type="color" class="form-input" id="heroCtaBackground" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Text</label>
+                                                    <input type="color" class="form-input" id="heroCtaTextColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="heroCtaHoverBg" value="#f0f0f0" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Radius</label>
+                                                    <select class="form-input" id="heroCtaBorderRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="4">Slightly Rounded</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="24">Pill</option>
+                                                        <option value="50">Circle</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing & Layout -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">Spacing & Padding</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Height</label>
+                                                    <select class="form-input" id="heroHeight">
+                                                        <option value="400">Compact (400px)</option>
+                                                        <option value="500">Medium (500px)</option>
+                                                        <option value="600" selected>Tall (600px)</option>
+                                                        <option value="100vh">Full Screen</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Width</label>
+                                                    <select class="form-input" id="heroContentWidth">
+                                                        <option value="800">Narrow (800px)</option>
+                                                        <option value="1000" selected>Medium (1000px)</option>
+                                                        <option value="1200">Wide (1200px)</option>
+                                                        <option value="100%">Full Width</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Products Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="productsEnabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Products Section</h3>
+                                        <p>Display your product catalog</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="productsOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="productsLayout" value="grid" checked> Grid</label>
+                                            <label><input type="radio" name="productsLayout" value="list"> List</label>
+                                            <label><input type="radio" name="productsLayout" value="masonry"> Masonry</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Grid Columns</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="productsColumns" value="2"> 2 Columns</label>
+                                            <label><input type="radio" name="productsColumns" value="3" checked> 3 Columns</label>
+                                            <label><input type="radio" name="productsColumns" value="4"> 4 Columns</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productsShowDescription" checked>
+                                            Show Product Descriptions
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productsShowPricing" checked>
+                                            Show Pricing
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- Product Management -->
+                                    <div class="products-section" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--color-border);">
+                                        <div class="section-title-row">
+                                            <h3 style="font-size: 16px; font-weight: 600;">Manage Products</h3>
+                                            <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
+                                        </div>
+                                        
+                                        <div id="productsList" class="products-list">
+                                            <!-- Product cards will be added here -->
+                                            <div class="empty-state" id="emptyProducts">
+                                                <p style="font-size: 14px; color: var(--gray-500);">No products yet. Click "Add Product" to get started.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Products Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Section Background -->
+                                        <div class="form-group">
+                                            <label class="form-label">Section Background</label>
+                                            <input type="color" class="form-input" id="productsSectionBg" value="#f8f9fa" style="height: 40px; padding: 4px;">
+                                        </div>
+                                        
+                                        <!-- Product Card Design -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Product Card Design</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Card Background</label>
+                                                    <input type="color" class="form-input" id="productsCardBg" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="productsTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Radius</label>
+                                                    <select class="form-input" id="productsCardRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="16">Very Rounded</option>
+                                                        <option value="24">Pill-like</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Shadow</label>
+                                                    <select class="form-input" id="productsCardShadow">
+                                                        <option value="none">None</option>
+                                                        <option value="sm" selected>Small</option>
+                                                        <option value="md">Medium</option>
+                                                        <option value="lg">Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hover Effects -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Hover Effects</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Transform</label>
+                                                    <select class="form-input" id="productsHoverEffect">
+                                                        <option value="none">None</option>
+                                                        <option value="lift" selected>Lift Up</option>
+                                                        <option value="scale">Scale</option>
+                                                        <option value="shadow">Shadow Grow</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Border</label>
+                                                    <input type="color" class="form-input" id="productsHoverBorder" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Title Size</label>
+                                                    <select class="form-input" id="productsTitleSize">
+                                                        <option value="14">Small (14px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="18">Large (18px)</option>
+                                                        <option value="20">XLarge (20px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Title Weight</label>
+                                                    <select class="form-input" id="productsTitleWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600" selected>Semi Bold</option>
+                                                        <option value="700">Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Price Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Price Styling</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Price Color</label>
+                                                    <input type="color" class="form-input" id="productsPriceColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Price Size</label>
+                                                    <select class="form-input" id="productsPriceSize">
+                                                        <option value="18">Small (18px)</option>
+                                                        <option value="20" selected>Medium (20px)</option>
+                                                        <option value="24">Large (24px)</option>
+                                                        <option value="28">XLarge (28px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Card Padding</label>
+                                                    <select class="form-input" id="productsCardPadding">
+                                                        <option value="12">Compact (12px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="20">Comfortable (20px)</option>
+                                                        <option value="24">Spacious (24px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gap Between Cards</label>
+                                                    <select class="form-input" id="productsGap">
+                                                        <option value="16">Tight (16px)</option>
+                                                        <option value="24" selected>Medium (24px)</option>
+                                                        <option value="32">Wide (32px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- About Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="aboutEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>About Section</h3>
+                                        <p>Tell your brand story</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="aboutOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="aboutLayout" value="two-column" checked> Two Column</label>
+                                            <label><input type="radio" name="aboutLayout" value="centered"> Centered</label>
+                                            <label><input type="radio" name="aboutLayout" value="side-image"> Side Image</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Headline</label>
+                                        <input type="text" class="form-input" id="aboutHeadline" placeholder="About Us">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Content</label>
+                                        <textarea class="form-input" id="aboutContent" rows="4" placeholder="Tell your brand story..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">About Image (for Two Column & Side Image layouts)</label>
+                                        <input type="url" class="form-input" id="aboutImage" placeholder="https://example.com/about-image.jpg">
+                                        <small style="display: block; margin-top: 4px; color: #64748b; font-size: 12px;">Enter image URL or leave empty for placeholder</small>
+                                    </div>
+                                    
+                                    <!-- About Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background & Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background</label>
+                                                    <input type="color" class="form-input" id="aboutBackgroundColor" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="aboutTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Heading Size</label>
+                                                    <select class="form-input" id="aboutHeadingSize">
+                                                        <option value="24">Small (24px)</option>
+                                                        <option value="32" selected>Medium (32px)</option>
+                                                        <option value="40">Large (40px)</option>
+                                                        <option value="48">XLarge (48px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Heading Weight</label>
+                                                    <select class="form-input" id="aboutHeadingWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                        <option value="700" selected>Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Size</label>
+                                                    <select class="form-input" id="aboutContentSize">
+                                                        <option value="14">Small (14px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="18">Large (18px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Line Height</label>
+                                                    <select class="form-input" id="aboutLineHeight">
+                                                        <option value="1.4">Compact (1.4)</option>
+                                                        <option value="1.6" selected>Normal (1.6)</option>
+                                                        <option value="1.8">Relaxed (1.8)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing & Layout -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing & Layout</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Padding</label>
+                                                    <select class="form-input" id="aboutPadding">
+                                                        <option value="40">Compact (40px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="80">Large (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Width</label>
+                                                    <select class="form-input" id="aboutContentWidth">
+                                                        <option value="800">Narrow (800px)</option>
+                                                        <option value="1000" selected>Medium (1000px)</option>
+                                                        <option value="1200">Wide (1200px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Accent Color -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Accent & Highlights</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Accent Color</label>
+                                                    <input type="color" class="form-input" id="aboutAccentColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Style</label>
+                                                    <select class="form-input" id="aboutBorderStyle">
+                                                        <option value="none">None</option>
+                                                        <option value="top">Top Border</option>
+                                                        <option value="left" selected>Left Border</option>
+                                                        <option value="bottom">Bottom Border</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="contactEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Contact Section</h3>
+                                        <p>Contact form or details</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="contactOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="contactLayout" value="form" checked> Form</label>
+                                            <label><input type="radio" name="contactLayout" value="details"> Details</label>
+                                            <label><input type="radio" name="contactLayout" value="map"> With Map</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-input" id="contactEmail" placeholder="hello@example.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Phone</label>
+                                        <input type="tel" class="form-input" id="contactPhone" placeholder="+1 (555) 123-4567">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-input" id="contactAddress" rows="2" placeholder="123 Business Street, City, State 12345"></textarea>
+                                    </div>
+                                    <div class="form-group" id="mapLinkGroup" style="display: none;">
+                                        <label class="form-label">Google Maps Embed Link</label>
+                                        <p class="field-hint" style="font-size: 12px; margin-bottom: 8px;">
+                                            1. Go to <a href="https://www.google.com/maps" target="_blank" style="color: #667eea;">Google Maps</a><br>
+                                            2. Search your location → Click "Share" → "Embed a map"<br>
+                                            3. Copy the entire &lt;iframe&gt; code or just the src URL
+                                        </p>
+                                        <textarea class="form-input" id="contactMapEmbed" rows="3" placeholder='Paste: <iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>'></textarea>
+                                    </div>
+                                    
+                                    <!-- Contact Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background & Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Section Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background</label>
+                                                    <input type="color" class="form-input" id="contactBackgroundColor" value="#f8f9fa" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="contactTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Form Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Form Styling</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Background</label>
+                                                    <input type="color" class="form-input" id="contactInputBg" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Border</label>
+                                                    <input type="color" class="form-input" id="contactInputBorder" value="#e2e8f0" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Focus Border</label>
+                                                    <input type="color" class="form-input" id="contactFocusBorder" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Radius</label>
+                                                    <select class="form-input" id="contactInputRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="4">Slightly Rounded</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="16">Very Rounded</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Button Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Submit Button</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Color</label>
+                                                    <input type="color" class="form-input" id="contactButtonBg" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Text</label>
+                                                    <input type="color" class="form-input" id="contactButtonText" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="contactButtonHover" value="#5568d3" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Size</label>
+                                                    <select class="form-input" id="contactButtonSize">
+                                                        <option value="sm">Small</option>
+                                                        <option value="md" selected>Medium</option>
+                                                        <option value="lg">Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Label Size</label>
+                                                    <select class="form-input" id="contactLabelSize">
+                                                        <option value="12">Small (12px)</option>
+                                                        <option value="14" selected>Medium (14px)</option>
+                                                        <option value="16">Large (16px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Label Weight</label>
+                                                    <select class="form-input" id="contactLabelWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500" selected>Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Padding</label>
+                                                    <select class="form-input" id="contactPadding">
+                                                        <option value="40">Compact (40px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="80">Large (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Form Width</label>
+                                                    <select class="form-input" id="contactFormWidth">
+                                                        <option value="500">Narrow (500px)</option>
+                                                        <option value="600" selected>Medium (600px)</option>
+                                                        <option value="800">Wide (800px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- WhatsApp Button -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="whatsappEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>WhatsApp Button</h3>
+                                        <p>Floating contact button</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="whatsappOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">WhatsApp Number</label>
+                                        <input type="tel" class="form-input" id="whatsappNumber" placeholder="+60123456789 (include country code)">
+                                        <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Format: +[country code][number] (e.g., +60123456789)</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Default Message (Optional)</label>
+                                        <input type="text" class="form-input" id="whatsappMessage" placeholder="Hi! I'm interested in your products">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Button Position</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="whatsappPosition" value="bottom-right" checked> Bottom Right</label>
+                                            <label><input type="radio" name="whatsappPosition" value="bottom-left"> Bottom Left</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- WhatsApp Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Button Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Button Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background Color</label>
+                                                    <input type="color" class="form-input" id="whatsappBgColor" value="#25D366" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Icon Color</label>
+                                                    <input type="color" class="form-input" id="whatsappIconColor" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Button Size & Style -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Button Size & Style</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Size</label>
+                                                    <select class="form-input" id="whatsappSize">
+                                                        <option value="50">Small (50px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="70">Large (70px)</option>
+                                                        <option value="80">XLarge (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Shadow</label>
+                                                    <select class="form-input" id="whatsappShadow">
+                                                        <option value="sm">Small</option>
+                                                        <option value="md" selected>Medium</option>
+                                                        <option value="lg">Large</option>
+                                                        <option value="xl">Extra Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hover Effects -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Hover Effects</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="whatsappHoverBg" value="#20ba5a" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Effect</label>
+                                                    <select class="form-input" id="whatsappHoverEffect">
+                                                        <option value="none">None</option>
+                                                        <option value="scale" selected>Scale</option>
+                                                        <option value="pulse">Pulse</option>
+                                                        <option value="bounce">Bounce</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Generate Button -->
+                        <div class="builder-actions" style="margin-top: 32px; padding-top: 24px; border-top: 2px solid var(--color-border); text-align: center;">
+                            <button class="btn-primary" id="generatePageBtn" style="padding: 16px 48px; font-size: 16px; font-weight: 600;">
+                                🚀 Generate Product Page
+                            </button>
+                        </div>
+                    </div>
 
-<!--MobileMenuDropdown-->
-<divclass="mobile-menu"id="mobileMenu">
-<buttonclass="mobile-menu-item"id="mobilePreviewToggle">
-<spanclass="mobile-toggle-text">ShowPreview</span>
-</button>
-<buttonclass="mobile-menu-item"id="mobileSaveDraft">SaveDraft</button>
-<buttonclass="mobile-menu-item"id="mobileClearData">Reset</button>
-</div>
-</div>
-</header>
+                </div>
+            </div>
 
-<!--Workspace-->
-<mainclass="workspace">
-<!--LeftPanel:PageBuilder-->
-<divclass="form-panel">
-<divclass="form-container">
+            <!-- Right Panel: Live Preview -->
+            <div class="preview-panel" id="previewPanel">
+                <div class="preview-header">
+                    <div class="preview-title">Live Preview</div>
+                    <button class="preview-close-btn" id="previewCloseBtn" title="Close Preview">✕</button>
+                    <div class="device-toggle">
+                        <button class="device-btn active" data-device="desktop" title="Desktop">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <rect x="1" y="3" width="14" height="9" stroke="currentColor" stroke-width="1.5"/>
+                                <line x1="5" y1="15" x2="11" y2="15" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </button>
+                        <button class="device-btn" data-device="tablet" title="Tablet">
+                            <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
+                                <rect x="1" y="1" width="12" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="7" cy="13" r="0.5" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <button class="device-btn" data-device="mobile" title="Mobile">
+                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+                                <rect x="1" y="1" width="8" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                                <line x1="4" y1="13" x2="6" y2="13" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-viewport" data-device="desktop">
+                    <div class="preview-frame">
+                        <div id="livePreview" class="preview-content">
+                            <div class="preview-placeholder">
+                                <p>Add products to see your page come to life</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-<!--PAGEBUILDER-->
-<divclass="builder-content">
-<divclass="builder-header">
-<h1>ProductPageBuilder</h1>
-<p>Customizeeachsectionwithitsowndesignandcontent</p>
-</div>
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Product</h2>
+                <button class="modal-close" onclick="closeProductModal()">×</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Basic Info -->
+                <div class="form-group">
+                    <label>Product Name *</label>
+                    <input type="text" class="form-input" id="productName" placeholder="Premium Cotton T-Shirt">
+                </div>
+                
+                <div class="form-group">
+                    <label>Product Type</label>
+                    <select class="form-select" id="productType">
+                        <option value="physical">Physical Product</option>
+                        <option value="digital">Digital Product</option>
+                        <option value="service">Service</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Base Price (RM) *</label>
+                        <input type="number" class="form-input" id="productPrice" placeholder="49.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Compare At Price (RM)</label>
+                        <input type="number" class="form-input" id="productComparePrice" placeholder="79.00" step="0.01">
+                        <small style="color: var(--gray-500); font-size: 12px;">Original price (shows as strikethrough)</small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-textarea" id="productDescription" rows="3" placeholder="High-quality cotton t-shirt with premium finishing..."></textarea>
+                </div>
+                
+                <!-- Images -->
+                <div class="form-group">
+                    <label>Product Images</label>
+                    <input type="file" class="form-input" id="productImages" accept="image/*" multiple>
+                    <small style="color: var(--gray-500); font-size: 12px;">Upload multiple images. First image will be the main image.</small>
+                    <div id="imagePreviewContainer" style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;"></div>
+                </div>
+                
+                <!-- Inventory -->
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="trackInventory" checked>
+                        Track Inventory
+                    </label>
+                </div>
+                
+                <div class="form-row" id="inventoryFields">
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" class="form-input" id="productStock" placeholder="100" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>SKU</label>
+                        <input type="text" class="form-input" id="productSKU" placeholder="TS-001">
+                    </div>
+                </div>
+                
+                <!-- Variants -->
+                <div class="form-section" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--color-border);">
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                        <input type="checkbox" id="hasVariants">
+                        <strong>This product has variants (e.g., Size, Color)</strong>
+                    </label>
+                    
+                    <div id="variantsSection" style="display: none;">
+                        <!-- Variant Types -->
+                        <div class="form-group">
+                            <label>Variant Options</label>
+                            <div id="variantOptions">
+                                <!-- Variant options will be added here -->
+                            </div>
+                            <button type="button" class="btn-ghost btn-sm" onclick="addVariantOption()" style="margin-top: 8px;">+ Add Option (e.g., Size, Color)</button>
+                        </div>
+                        
+                        <!-- Variant Combinations -->
+                        <div id="variantCombinations" style="margin-top: 16px;">
+                            <!-- Auto-generated variant combinations will appear here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shipping (for physical products) -->
+                <div class="form-section" id="shippingSection" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--color-border);">
+                    <label style="margin-bottom: 16px;"><strong>Shipping Information</strong></label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" class="form-input" id="productWeight" placeholder="0.5" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Dimensions (L×W×H cm)</label>
+                            <input type="text" class="form-input" id="productDimensions" placeholder="30×20×5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeProductModal()">Cancel</button>
+                <button class="btn-primary" id="saveProductBtn">Save Product</button>
+            </div>
+        </div>
+    </div>
 
-<!--SectionManager-->
-<divclass="form-section">
-<labelclass="form-label">PageSections</label>
-<pclass="field-hint">Togglesectionson/offandcustomizeeachindependently</p>
-
-<!--HeroSection-->
-<divclass="section-control">
-<divclass="section-header">
-<labelclass="toggle-switch">
-<inputtype="checkbox"id="heroEnabled"checked>
-<spanclass="toggle-slider"></span>
-</label>
-<divclass="section-info">
-<h3>HeroSection</h3>
-<p>Mainheadlineandcall-to-action</p>
-</div>
-</div>
-<divclass="section-options"id="heroOptions"style="display:none;">
-<divclass="form-group">
-<labelclass="form-label">LayoutStyle</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="heroLayout"value="centered"checked>Centered</label>
-<label><inputtype="radio"name="heroLayout"value="split">Split</label>
-<label><inputtype="radio"name="heroLayout"value="minimal">Minimal</label>
-</div>
-</div>
-<divclass="form-group">
-<labelclass="form-label">Headline</label>
-<inputtype="text"class="form-input"id="heroHeadline"placeholder="TransformYourLifeToday">
-</div>
-<divclass="form-group">
-<labelclass="form-label">Subheadline</label>
-<textareaclass="form-input"id="heroSubheadline"rows="2"placeholder="Discoveramazingproducts..."></textarea>
-</div>
-<divclass="form-group">
-<labelclass="checkbox-label">
-<inputtype="checkbox"id="heroShowCTA"checked>
-ShowCall-to-ActionButton
-</label>
-</div>
-<divclass="form-group"id="ctaTextGroup">
-<labelclass="form-label">ButtonText</label>
-<selectclass="form-input"id="ctaTextPreset"style="margin-bottom:8px;">
-<optionvalue="ShopNow">ShopNow</option>
-<optionvalue="GetStarted">GetStarted</option>
-<optionvalue="LearnMore">LearnMore</option>
-<optionvalue="BuyNow">BuyNow</option>
-<optionvalue="ViewProducts">ViewProducts</option>
-<optionvalue="Explore">Explore</option>
-<optionvalue="ContactUs">ContactUs</option>
-<optionvalue="custom">CustomText...</option>
-</select>
-<inputtype="text"class="form-input"id="ctaTextCustom"placeholder="Entercustombuttontext"style="display:none;">
-</div>
-
-<!--HeroDesignControls-->
-<divclass="design-controls-section"style="border-top:2pxsolid#e2e8f0;padding-top:20px;margin-top:20px;">
-<h4style="font-size:14px;font-weight:600;margin-bottom:16px;color:#1e293b;">🎨Design&Styling</h4>
-
-<!--BackgroundSettings-->
-<divclass="form-group">
-<labelclass="form-label">BackgroundType</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="heroBackgroundType"value="solid"checked>Solid</label>
-<label><inputtype="radio"name="heroBackgroundType"value="gradient">Gradient</label>
-<label><inputtype="radio"name="heroBackgroundType"value="image">Image</label>
-</div>
-</div>
-
-<divid="heroSolidBg"style="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">BackgroundColor</label>
-<inputtype="color"class="form-input"id="heroBackgroundColor"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="heroTextColor"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-</div>
-
-<divid="heroGradientBg"style="display:none;">
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">GradientStart</label>
-<inputtype="color"class="form-input"id="heroGradientStart"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">GradientEnd</label>
-<inputtype="color"class="form-input"id="heroGradientEnd"value="#764ba2"style="height:40px;padding:4px;">
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">GradientAngle</label>
-<inputtype="range"id="heroGradientAngle"min="0"max="360"value="135"class="form-range">
-<spanid="heroGradientAngleValue"style="font-size:12px;color:#64748b;">135°</span>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="heroTextColorGradient"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<divid="heroImageBg"style="display:none;">
-<labelclass="form-label">BackgroundImage</label>
-<inputtype="file"class="form-input"id="heroBackgroundImage"accept="image/*"style="padding:8px;">
-<pclass="field-hint"style="font-size:12px;margin-top:4px;">Recommended:1920x1080px</p>
-<divid="heroImagePreview"style="display:none;margin-top:8px;">
-<imgid="heroImagePreviewImg"style="max-width:100%;height:80px;object-fit:cover;border-radius:8px;border:1pxsolid#e2e8f0;">
-<buttontype="button"id="heroImageRemove"class="btn-ghostbtn-sm"style="margin-top:4px;font-size:12px;">RemoveImage</button>
-</div>
-<divstyle="margin-top:12px;display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelclass="form-label">OverlayOpacity</label>
-<inputtype="range"id="heroImageOverlay"min="0"max="100"value="50"class="form-range">
-<spanid="heroOverlayValue"style="font-size:12px;color:#64748b;">50%</span>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="heroTextColorImage"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<!--Typography-->
-<divclass="form-group"style="margin-top:20px;">
-<labelclass="form-label">Typography</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HeadlineSize</label>
-<selectclass="form-input"id="heroHeadlineSize">
-<optionvalue="32">Small(32px)</option>
-<optionvalue="48"selected>Medium(48px)</option>
-<optionvalue="64">Large(64px)</option>
-<optionvalue="80">XLarge(80px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">FontWeight</label>
-<selectclass="form-input"id="heroFontWeight">
-<optionvalue="400">Normal</option>
-<optionvalue="500">Medium</option>
-<optionvalue="600">SemiBold</option>
-<optionvalue="700"selected>Bold</option>
-<optionvalue="800">ExtraBold</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--CTAButtonDesign-->
-<divclass="form-group"style="margin-top:20px;">
-<labelclass="form-label">CTAButtonDesign</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonColor</label>
-<inputtype="color"class="form-input"id="heroCtaBackground"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonText</label>
-<inputtype="color"class="form-input"id="heroCtaTextColor"value="#667eea"style="height:40px;padding:4px;">
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverColor</label>
-<inputtype="color"class="form-input"id="heroCtaHoverBg"value="#f0f0f0"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">BorderRadius</label>
-<selectclass="form-input"id="heroCtaBorderRadius">
-<optionvalue="0">Square</option>
-<optionvalue="4">SlightlyRounded</option>
-<optionvalue="8"selected>Rounded</option>
-<optionvalue="24">Pill</option>
-<optionvalue="50">Circle</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--Spacing&Layout-->
-<divclass="form-group"style="margin-top:20px;">
-<labelclass="form-label">Spacing&Padding</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">SectionHeight</label>
-<selectclass="form-input"id="heroHeight">
-<optionvalue="400">Compact(400px)</option>
-<optionvalue="500">Medium(500px)</option>
-<optionvalue="600"selected>Tall(600px)</option>
-<optionvalue="100vh">FullScreen</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ContentWidth</label>
-<selectclass="form-input"id="heroContentWidth">
-<optionvalue="800">Narrow(800px)</option>
-<optionvalue="1000"selected>Medium(1000px)</option>
-<optionvalue="1200">Wide(1200px)</option>
-<optionvalue="100%">FullWidth</option>
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--ProductsSection-->
-<divclass="section-control">
-<divclass="section-header">
-<labelclass="toggle-switch">
-<inputtype="checkbox"id="productsEnabled"checked>
-<spanclass="toggle-slider"></span>
-</label>
-<divclass="section-info">
-<h3>ProductsSection</h3>
-<p>Displayyourproductcatalog</p>
-</div>
-</div>
-<divclass="section-options"id="productsOptions"style="display:none;">
-<divclass="form-group">
-<labelclass="form-label">LayoutStyle</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="productsLayout"value="grid"checked>Grid</label>
-<label><inputtype="radio"name="productsLayout"value="list">List</label>
-<label><inputtype="radio"name="productsLayout"value="masonry">Masonry</label>
-</div>
-</div>
-<divclass="form-group">
-<labelclass="form-label">GridColumns</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="productsColumns"value="2">2Columns</label>
-<label><inputtype="radio"name="productsColumns"value="3"checked>3Columns</label>
-<label><inputtype="radio"name="productsColumns"value="4">4Columns</label>
-</div>
-</div>
-<divclass="form-group">
-<labelclass="checkbox-label">
-<inputtype="checkbox"id="productsShowDescription"checked>
-ShowProductDescriptions
-</label>
-</div>
-<divclass="form-group">
-<labelclass="checkbox-label">
-<inputtype="checkbox"id="productsShowPricing"checked>
-ShowPricing
-</label>
-</div>
-
-<!--ProductManagement-->
-<divclass="products-section"style="margin-top:24px;padding-top:24px;border-top:1pxsolidvar(--color-border);">
-<divclass="section-title-row">
-<h3style="font-size:16px;font-weight:600;">ManageProducts</h3>
-<buttonclass="btn-primarybtn-sm"id="addProductBtn">+AddProduct</button>
-</div>
-
-<divid="productsList"class="products-list">
-<!--Productcardswillbeaddedhere-->
-<divclass="empty-state"id="emptyProducts">
-<pstyle="font-size:14px;color:var(--gray-500);">Noproductsyet.Click"AddProduct"togetstarted.</p>
-</div>
-</div>
-</div>
-
-<!--ProductsDesignControls-->
-<divclass="design-controls-section"style="border-top:2pxsolid#e2e8f0;padding-top:20px;margin-top:20px;">
-<h4style="font-size:14px;font-weight:600;margin-bottom:16px;color:#1e293b;">🎨Design&Styling</h4>
-
-<!--SectionBackground-->
-<divclass="form-group">
-<labelclass="form-label">SectionBackground</label>
-<inputtype="color"class="form-input"id="productsSectionBg"value="#f8f9fa"style="height:40px;padding:4px;">
-</div>
-
-<!--ProductCardDesign-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">ProductCardDesign</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">CardBackground</label>
-<inputtype="color"class="form-input"id="productsCardBg"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="productsTextColor"value="#1e293b"style="height:40px;padding:4px;">
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">BorderRadius</label>
-<selectclass="form-input"id="productsCardRadius">
-<optionvalue="0">Square</option>
-<optionvalue="8"selected>Rounded</option>
-<optionvalue="16">VeryRounded</option>
-<optionvalue="24">Pill-like</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">Shadow</label>
-<selectclass="form-input"id="productsCardShadow">
-<optionvalue="none">None</option>
-<optionvalue="sm"selected>Small</option>
-<optionvalue="md">Medium</option>
-<optionvalue="lg">Large</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--HoverEffects-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">HoverEffects</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverTransform</label>
-<selectclass="form-input"id="productsHoverEffect">
-<optionvalue="none">None</option>
-<optionvalue="lift"selected>LiftUp</option>
-<optionvalue="scale">Scale</option>
-<optionvalue="shadow">ShadowGrow</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverBorder</label>
-<inputtype="color"class="form-input"id="productsHoverBorder"value="#667eea"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<!--Typography-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Typography</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TitleSize</label>
-<selectclass="form-input"id="productsTitleSize">
-<optionvalue="14">Small(14px)</option>
-<optionvalue="16"selected>Medium(16px)</option>
-<optionvalue="18">Large(18px)</option>
-<optionvalue="20">XLarge(20px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TitleWeight</label>
-<selectclass="form-input"id="productsTitleWeight">
-<optionvalue="400">Normal</option>
-<optionvalue="500">Medium</option>
-<optionvalue="600"selected>SemiBold</option>
-<optionvalue="700">Bold</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--PriceStyling-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">PriceStyling</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">PriceColor</label>
-<inputtype="color"class="form-input"id="productsPriceColor"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">PriceSize</label>
-<selectclass="form-input"id="productsPriceSize">
-<optionvalue="18">Small(18px)</option>
-<optionvalue="20"selected>Medium(20px)</option>
-<optionvalue="24">Large(24px)</option>
-<optionvalue="28">XLarge(28px)</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--Spacing-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Spacing</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">CardPadding</label>
-<selectclass="form-input"id="productsCardPadding">
-<optionvalue="12">Compact(12px)</option>
-<optionvalue="16"selected>Medium(16px)</option>
-<optionvalue="20">Comfortable(20px)</option>
-<optionvalue="24">Spacious(24px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">GapBetweenCards</label>
-<selectclass="form-input"id="productsGap">
-<optionvalue="16">Tight(16px)</option>
-<optionvalue="24"selected>Medium(24px)</option>
-<optionvalue="32">Wide(32px)</option>
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--AboutSection-->
-<divclass="section-control">
-<divclass="section-header">
-<labelclass="toggle-switch">
-<inputtype="checkbox"id="aboutEnabled">
-<spanclass="toggle-slider"></span>
-</label>
-<divclass="section-info">
-<h3>AboutSection</h3>
-<p>Tellyourbrandstory</p>
-</div>
-</div>
-<divclass="section-options"id="aboutOptions"style="display:none;">
-<divclass="form-group">
-<labelclass="form-label">LayoutStyle</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="aboutLayout"value="two-column"checked>TwoColumn</label>
-<label><inputtype="radio"name="aboutLayout"value="centered">Centered</label>
-<label><inputtype="radio"name="aboutLayout"value="side-image">SideImage</label>
-</div>
-</div>
-<divclass="form-group">
-<labelclass="form-label">Headline</label>
-<inputtype="text"class="form-input"id="aboutHeadline"placeholder="AboutUs">
-</div>
-<divclass="form-group">
-<labelclass="form-label">Content</label>
-<textareaclass="form-input"id="aboutContent"rows="4"placeholder="Tellyourbrandstory..."></textarea>
-</div>
-<divclass="form-group">
-<labelclass="form-label">AboutImage(forTwoColumn&SideImagelayouts)</label>
-<inputtype="url"class="form-input"id="aboutImage"placeholder="https://example.com/about-image.jpg">
-<smallstyle="display:block;margin-top:4px;color:#64748b;font-size:12px;">EnterimageURLorleaveemptyforplaceholder</small>
-</div>
-
-<!--AboutDesignControls-->
-<divclass="design-controls-section"style="border-top:2pxsolid#e2e8f0;padding-top:20px;margin-top:20px;">
-<h4style="font-size:14px;font-weight:600;margin-bottom:16px;color:#1e293b;">🎨Design&Styling</h4>
-
-<!--Background&Colors-->
-<divclass="form-group">
-<labelclass="form-label">Colors</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">Background</label>
-<inputtype="color"class="form-input"id="aboutBackgroundColor"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="aboutTextColor"value="#1e293b"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<!--Typography-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Typography</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HeadingSize</label>
-<selectclass="form-input"id="aboutHeadingSize">
-<optionvalue="24">Small(24px)</option>
-<optionvalue="32"selected>Medium(32px)</option>
-<optionvalue="40">Large(40px)</option>
-<optionvalue="48">XLarge(48px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HeadingWeight</label>
-<selectclass="form-input"id="aboutHeadingWeight">
-<optionvalue="400">Normal</option>
-<optionvalue="500">Medium</option>
-<optionvalue="600">SemiBold</option>
-<optionvalue="700"selected>Bold</option>
-</select>
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ContentSize</label>
-<selectclass="form-input"id="aboutContentSize">
-<optionvalue="14">Small(14px)</option>
-<optionvalue="16"selected>Medium(16px)</option>
-<optionvalue="18">Large(18px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">LineHeight</label>
-<selectclass="form-input"id="aboutLineHeight">
-<optionvalue="1.4">Compact(1.4)</option>
-<optionvalue="1.6"selected>Normal(1.6)</option>
-<optionvalue="1.8">Relaxed(1.8)</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--Spacing&Layout-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Spacing&Layout</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">SectionPadding</label>
-<selectclass="form-input"id="aboutPadding">
-<optionvalue="40">Compact(40px)</option>
-<optionvalue="60"selected>Medium(60px)</option>
-<optionvalue="80">Large(80px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ContentWidth</label>
-<selectclass="form-input"id="aboutContentWidth">
-<optionvalue="800">Narrow(800px)</option>
-<optionvalue="1000"selected>Medium(1000px)</option>
-<optionvalue="1200">Wide(1200px)</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--AccentColor-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Accent&Highlights</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">AccentColor</label>
-<inputtype="color"class="form-input"id="aboutAccentColor"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">BorderStyle</label>
-<selectclass="form-input"id="aboutBorderStyle">
-<optionvalue="none">None</option>
-<optionvalue="top">TopBorder</option>
-<optionvalue="left"selected>LeftBorder</option>
-<optionvalue="bottom">BottomBorder</option>
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--ContactSection-->
-<divclass="section-control">
-<divclass="section-header">
-<labelclass="toggle-switch">
-<inputtype="checkbox"id="contactEnabled">
-<spanclass="toggle-slider"></span>
-</label>
-<divclass="section-info">
-<h3>ContactSection</h3>
-<p>Contactformordetails</p>
-</div>
-</div>
-<divclass="section-options"id="contactOptions"style="display:none;">
-<divclass="form-group">
-<labelclass="form-label">LayoutStyle</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="contactLayout"value="form"checked>Form</label>
-<label><inputtype="radio"name="contactLayout"value="details">Details</label>
-<label><inputtype="radio"name="contactLayout"value="map">WithMap</label>
-</div>
-</div>
-<divclass="form-group">
-<labelclass="form-label">Email</label>
-<inputtype="email"class="form-input"id="contactEmail"placeholder="hello@example.com">
-</div>
-<divclass="form-group">
-<labelclass="form-label">Phone</label>
-<inputtype="tel"class="form-input"id="contactPhone"placeholder="+1(555)123-4567">
-</div>
-<divclass="form-group">
-<labelclass="form-label">Address</label>
-<textareaclass="form-input"id="contactAddress"rows="2"placeholder="123BusinessStreet,City,State12345"></textarea>
-</div>
-<divclass="form-group"id="mapLinkGroup"style="display:none;">
-<labelclass="form-label">GoogleMapsEmbedLink</label>
-<pclass="field-hint"style="font-size:12px;margin-bottom:8px;">
-1.Goto<ahref="https://www.google.com/maps"target="_blank"style="color:#667eea;">GoogleMaps</a><br>
-2.Searchyourlocation→Click"Share"→"Embedamap"<br>
-3.Copytheentire&lt;iframe&gt;codeorjustthesrcURL
-</p>
-<textareaclass="form-input"id="contactMapEmbed"rows="3"placeholder='Paste:<iframesrc="https://www.google.com/maps/embed?pb=..."...></iframe>'></textarea>
-</div>
-
-<!--ContactDesignControls-->
-<divclass="design-controls-section"style="border-top:2pxsolid#e2e8f0;padding-top:20px;margin-top:20px;">
-<h4style="font-size:14px;font-weight:600;margin-bottom:16px;color:#1e293b;">🎨Design&Styling</h4>
-
-<!--Background&Colors-->
-<divclass="form-group">
-<labelclass="form-label">SectionColors</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">Background</label>
-<inputtype="color"class="form-input"id="contactBackgroundColor"value="#f8f9fa"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">TextColor</label>
-<inputtype="color"class="form-input"id="contactTextColor"value="#1e293b"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<!--FormStyling-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">FormStyling</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">InputBackground</label>
-<inputtype="color"class="form-input"id="contactInputBg"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">InputBorder</label>
-<inputtype="color"class="form-input"id="contactInputBorder"value="#e2e8f0"style="height:40px;padding:4px;">
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">FocusBorder</label>
-<inputtype="color"class="form-input"id="contactFocusBorder"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">InputRadius</label>
-<selectclass="form-input"id="contactInputRadius">
-<optionvalue="0">Square</option>
-<optionvalue="4">SlightlyRounded</option>
-<optionvalue="8"selected>Rounded</option>
-<optionvalue="16">VeryRounded</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--ButtonStyling-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">SubmitButton</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;margin-bottom:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonColor</label>
-<inputtype="color"class="form-input"id="contactButtonBg"value="#667eea"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonText</label>
-<inputtype="color"class="form-input"id="contactButtonText"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-</div>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverColor</label>
-<inputtype="color"class="form-input"id="contactButtonHover"value="#5568d3"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonSize</label>
-<selectclass="form-input"id="contactButtonSize">
-<optionvalue="sm">Small</option>
-<optionvalue="md"selected>Medium</option>
-<optionvalue="lg">Large</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--Typography-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Typography</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">LabelSize</label>
-<selectclass="form-input"id="contactLabelSize">
-<optionvalue="12">Small(12px)</option>
-<optionvalue="14"selected>Medium(14px)</option>
-<optionvalue="16">Large(16px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">LabelWeight</label>
-<selectclass="form-input"id="contactLabelWeight">
-<optionvalue="400">Normal</option>
-<optionvalue="500"selected>Medium</option>
-<optionvalue="600">SemiBold</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--Spacing-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">Spacing</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">SectionPadding</label>
-<selectclass="form-input"id="contactPadding">
-<optionvalue="40">Compact(40px)</option>
-<optionvalue="60"selected>Medium(60px)</option>
-<optionvalue="80">Large(80px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">FormWidth</label>
-<selectclass="form-input"id="contactFormWidth">
-<optionvalue="500">Narrow(500px)</option>
-<optionvalue="600"selected>Medium(600px)</option>
-<optionvalue="800">Wide(800px)</option>
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--WhatsAppButton-->
-<divclass="section-control">
-<divclass="section-header">
-<labelclass="toggle-switch">
-<inputtype="checkbox"id="whatsappEnabled">
-<spanclass="toggle-slider"></span>
-</label>
-<divclass="section-info">
-<h3>WhatsAppButton</h3>
-<p>Floatingcontactbutton</p>
-</div>
-</div>
-<divclass="section-options"id="whatsappOptions"style="display:none;">
-<divclass="form-group">
-<labelclass="form-label">WhatsAppNumber</label>
-<inputtype="tel"class="form-input"id="whatsappNumber"placeholder="+60123456789(includecountrycode)">
-<pclass="field-hint"style="font-size:12px;margin-top:4px;">Format:+[countrycode][number](e.g.,+60123456789)</p>
-</div>
-<divclass="form-group">
-<labelclass="form-label">DefaultMessage(Optional)</label>
-<inputtype="text"class="form-input"id="whatsappMessage"placeholder="Hi!I'minterestedinyourproducts">
-</div>
-<divclass="form-group">
-<labelclass="form-label">ButtonPosition</label>
-<divclass="radio-group-inline">
-<label><inputtype="radio"name="whatsappPosition"value="bottom-right"checked>BottomRight</label>
-<label><inputtype="radio"name="whatsappPosition"value="bottom-left">BottomLeft</label>
-</div>
-</div>
-
-<!--WhatsAppDesignControls-->
-<divclass="design-controls-section"style="border-top:2pxsolid#e2e8f0;padding-top:20px;margin-top:20px;">
-<h4style="font-size:14px;font-weight:600;margin-bottom:16px;color:#1e293b;">🎨Design&Styling</h4>
-
-<!--ButtonColors-->
-<divclass="form-group">
-<labelclass="form-label">ButtonColors</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">BackgroundColor</label>
-<inputtype="color"class="form-input"id="whatsappBgColor"value="#25D366"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">IconColor</label>
-<inputtype="color"class="form-input"id="whatsappIconColor"value="#ffffff"style="height:40px;padding:4px;">
-</div>
-</div>
-</div>
-
-<!--ButtonSize&Style-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">ButtonSize&Style</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">ButtonSize</label>
-<selectclass="form-input"id="whatsappSize">
-<optionvalue="50">Small(50px)</option>
-<optionvalue="60"selected>Medium(60px)</option>
-<optionvalue="70">Large(70px)</option>
-<optionvalue="80">XLarge(80px)</option>
-</select>
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">Shadow</label>
-<selectclass="form-input"id="whatsappShadow">
-<optionvalue="sm">Small</option>
-<optionvalue="md"selected>Medium</option>
-<optionvalue="lg">Large</option>
-<optionvalue="xl">ExtraLarge</option>
-</select>
-</div>
-</div>
-</div>
-
-<!--HoverEffects-->
-<divclass="form-group"style="margin-top:16px;">
-<labelclass="form-label">HoverEffects</label>
-<divstyle="display:grid;grid-template-columns:1fr1fr;gap:12px;">
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverColor</label>
-<inputtype="color"class="form-input"id="whatsappHoverBg"value="#20ba5a"style="height:40px;padding:4px;">
-</div>
-<div>
-<labelstyle="font-size:13px;color:#64748b;display:block;margin-bottom:4px;">HoverEffect</label>
-<selectclass="form-input"id="whatsappHoverEffect">
-<optionvalue="none">None</option>
-<optionvalue="scale"selected>Scale</option>
-<optionvalue="pulse">Pulse</option>
-<optionvalue="bounce">Bounce</option>
-</select>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--GenerateButton-->
-<divclass="builder-actions"style="margin-top:32px;padding-top:24px;border-top:2pxsolidvar(--color-border);text-align:center;">
-<buttonclass="btn-primary"id="generatePageBtn"style="padding:16px48px;font-size:16px;font-weight:600;">
-🚀GenerateProductPage
-</button>
-</div>
-</div>
-
-</div>
-</div>
-
-<!--RightPanel:LivePreview-->
-<divclass="preview-panel"id="previewPanel">
-<divclass="preview-header">
-<divclass="preview-title">LivePreview</div>
-<buttonclass="preview-close-btn"id="previewCloseBtn"title="ClosePreview">✕</button>
-<divclass="device-toggle">
-<buttonclass="device-btnactive"data-device="desktop"title="Desktop">
-<svgwidth="16"height="16"viewBox="001616"fill="none">
-<rectx="1"y="3"width="14"height="9"stroke="currentColor"stroke-width="1.5"/>
-<linex1="5"y1="15"x2="11"y2="15"stroke="currentColor"stroke-width="1.5"/>
-</svg>
-</button>
-<buttonclass="device-btn"data-device="tablet"title="Tablet">
-<svgwidth="14"height="16"viewBox="001416"fill="none">
-<rectx="1"y="1"width="12"height="14"rx="1"stroke="currentColor"stroke-width="1.5"/>
-<circlecx="7"cy="13"r="0.5"fill="currentColor"/>
-</svg>
-</button>
-<buttonclass="device-btn"data-device="mobile"title="Mobile">
-<svgwidth="10"height="16"viewBox="001016"fill="none">
-<rectx="1"y="1"width="8"height="14"rx="1"stroke="currentColor"stroke-width="1.5"/>
-<linex1="4"y1="13"x2="6"y2="13"stroke="currentColor"stroke-width="1.5"/>
-</svg>
-</button>
-</div>
-</div>
-
-<divclass="preview-viewport"data-device="desktop">
-<divclass="preview-frame">
-<divid="livePreview"class="preview-content">
-<divclass="preview-placeholder">
-<p>Addproductstoseeyourpagecometolife</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
-
-<!--ProductModal-->
-<divclass="modal"id="productModal">
-<divclass="modal-contentmodal-large">
-<divclass="modal-header">
-<h2id="modalTitle">AddProduct</h2>
-<buttonclass="modal-close"onclick="closeProductModal()">×</button>
-</div>
-
-<divclass="modal-body">
-<!--BasicInfo-->
-<divclass="form-group">
-<label>ProductName*</label>
-<inputtype="text"class="form-input"id="productName"placeholder="PremiumCottonT-Shirt">
-</div>
-
-<divclass="form-group">
-<label>ProductType</label>
-<selectclass="form-select"id="productType">
-<optionvalue="physical">PhysicalProduct</option>
-<optionvalue="digital">DigitalProduct</option>
-<optionvalue="service">Service</option>
-</select>
-</div>
-
-<divclass="form-row">
-<divclass="form-group">
-<label>BasePrice(RM)*</label>
-<inputtype="number"class="form-input"id="productPrice"placeholder="49.00"step="0.01">
-</div>
-<divclass="form-group">
-<label>CompareAtPrice(RM)</label>
-<inputtype="number"class="form-input"id="productComparePrice"placeholder="79.00"step="0.01">
-<smallstyle="color:var(--gray-500);font-size:12px;">Originalprice(showsasstrikethrough)</small>
-</div>
-</div>
-
-<divclass="form-group">
-<label>Description</label>
-<textareaclass="form-textarea"id="productDescription"rows="3"placeholder="High-qualitycottont-shirtwithpremiumfinishing..."></textarea>
-</div>
-
-<!--Images-->
-<divclass="form-group">
-<label>ProductImages</label>
-<inputtype="file"class="form-input"id="productImages"accept="image/*"multiple>
-<smallstyle="color:var(--gray-500);font-size:12px;">Uploadmultipleimages.Firstimagewillbethemainimage.</small>
-<divid="imagePreviewContainer"style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;"></div>
-</div>
-
-<!--Inventory-->
-<divclass="form-group">
-<labelstyle="display:flex;align-items:center;gap:8px;">
-<inputtype="checkbox"id="trackInventory"checked>
-TrackInventory
-</label>
-</div>
-
-<divclass="form-row"id="inventoryFields">
-<divclass="form-group">
-<label>StockQuantity</label>
-<inputtype="number"class="form-input"id="productStock"placeholder="100"min="0">
-</div>
-<divclass="form-group">
-<label>SKU</label>
-<inputtype="text"class="form-input"id="productSKU"placeholder="TS-001">
-</div>
-</div>
-
-<!--Variants-->
-<divclass="form-section"style="margin-top:24px;padding-top:24px;border-top:1pxsolidvar(--color-border);">
-<labelstyle="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
-<inputtype="checkbox"id="hasVariants">
-<strong>Thisproducthasvariants(e.g.,Size,Color)</strong>
-</label>
-
-<divid="variantsSection"style="display:none;">
-<!--VariantTypes-->
-<divclass="form-group">
-<label>VariantOptions</label>
-<divid="variantOptions">
-<!--Variantoptionswillbeaddedhere-->
-</div>
-<buttontype="button"class="btn-ghostbtn-sm"onclick="addVariantOption()"style="margin-top:8px;">+AddOption(e.g.,Size,Color)</button>
-</div>
-
-<!--VariantCombinations-->
-<divid="variantCombinations"style="margin-top:16px;">
-<!--Auto-generatedvariantcombinationswillappearhere-->
-</div>
-</div>
-</div>
-
-<!--Shipping(forphysicalproducts)-->
-<divclass="form-section"id="shippingSection"style="margin-top:24px;padding-top:24px;border-top:1pxsolidvar(--color-border);">
-<labelstyle="margin-bottom:16px;"><strong>ShippingInformation</strong></label>
-<divclass="form-row">
-<divclass="form-group">
-<label>Weight(kg)</label>
-<inputtype="number"class="form-input"id="productWeight"placeholder="0.5"step="0.01">
-</div>
-<divclass="form-group">
-<label>Dimensions(L×W×Hcm)</label>
-<inputtype="text"class="form-input"id="productDimensions"placeholder="30×20×5">
-</div>
-</div>
-</div>
-</div>
-
-<divclass="modal-footer">
-<buttonclass="btn-secondary"onclick="closeProductModal()">Cancel</button>
-<buttonclass="btn-primary"id="saveProductBtn">SaveProduct</button>
-</div>
-</div>
-</div>
-
-<scriptsrc="js/design-engine.js"></script>
-<scriptsrc="js/app-v2.js"></script>
+    <script src="js/design-engine.js"></script>
+    <script src="js/app-v2.js"></script>
 </body>
 </html>

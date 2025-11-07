@@ -1763,42 +1763,42 @@ function generatePreviewHTML() {
     const heroTextColor = hero.textColor || '#ffffff';
     const heroGradientStart = hero.gradientStart || '#6366f1';
     const heroGradientEnd = hero.gradientEnd || '#8b5cf6';
-    const heroGradientAngle = hero.gradientAngle || 135;
+    const heroGradientAngle = hero.gradientAngle || '135';
     const heroBackgroundImage = hero.backgroundImage;
     const heroImageOverlay = hero.imageOverlay || 50;
-    const heroHeadlineSize = hero.headlineSize || 48;
-    const heroFontWeight = hero.fontWeight || 700;
+    const heroHeadlineSize = hero.headlineSize || '48px';
+    const heroFontWeight = hero.fontWeight || '700';
     const heroCtaBackground = hero.ctaBackground || '#ffffff';
     const heroCtaTextColor = hero.ctaTextColor || '#6366f1';
     const heroCtaHoverBg = hero.ctaHoverBg || '#f3f4f6';
-    const heroCtaBorderRadius = hero.ctaBorderRadius || 8;
-    const heroHeight = hero.height || 600;
-    const heroContentWidth = hero.contentWidth || 1200;
+    const heroCtaBorderRadius = hero.ctaBorderRadius || '8px';
+    const heroHeight = hero.height || '600px';
+    const heroContentWidth = hero.contentWidth || '1200px';
     
     // Products Section Styles
     const productsSectionBg = products.sectionBg || '#f7fafc';
     const productsCardBg = products.cardBg || '#ffffff';
     const productsTextColor = products.textColor || '#1a202c';
-    const productsCardRadius = products.cardRadius || 8;
+    const productsCardRadius = products.cardRadius || '8px';
     const productsCardShadow = products.cardShadow || 'md';
     const productsHoverEffect = products.hoverEffect || 'lift';
     const productsHoverBorder = products.hoverBorder || '#6366f1';
-    const productsTitleSize = products.titleSize || 18;
-    const productsTitleWeight = products.titleWeight || 600;
+    const productsTitleSize = products.titleSize || '18px';
+    const productsTitleWeight = products.titleWeight || '600';
     const productsPriceColor = products.priceColor || '#6366f1';
-    const productsPriceSize = products.priceSize || 24;
-    const productsCardPadding = products.cardPadding || 20;
-    const productsGap = products.gap || 24;
+    const productsPriceSize = products.priceSize || '24px';
+    const productsCardPadding = products.cardPadding || '20px';
+    const productsGap = products.gap || '24px';
     
     // About Section Styles
     const aboutBackgroundColor = about.backgroundColor || '#ffffff';
     const aboutTextColor = about.textColor || '#4a5568';
-    const aboutHeadingSize = about.headingSize || 32;
-    const aboutHeadingWeight = about.headingWeight || 700;
-    const aboutContentSize = about.contentSize || 16;
-    const aboutLineHeight = about.lineHeight || 1.6;
-    const aboutPadding = about.padding || 60;
-    const aboutContentWidth = about.contentWidth || 1000;
+    const aboutHeadingSize = about.headingSize || '32px';
+    const aboutHeadingWeight = about.headingWeight || '700';
+    const aboutContentSize = about.contentSize || '16px';
+    const aboutLineHeight = about.lineHeight || '1.6';
+    const aboutPadding = about.padding || '60px';
+    const aboutContentWidth = about.contentWidth || '1000px';
     const aboutAccentColor = about.accentColor || '#6366f1';
     const aboutBorderStyle = about.borderStyle || 'none';
     
@@ -1808,20 +1808,20 @@ function generatePreviewHTML() {
     const contactInputBg = contact.inputBg || '#ffffff';
     const contactInputBorder = contact.inputBorder || '#e2e8f0';
     const contactFocusBorder = contact.focusBorder || '#6366f1';
-    const contactInputRadius = contact.inputRadius || 8;
+    const contactInputRadius = contact.inputRadius || '8px';
     const contactButtonBg = contact.buttonBg || '#6366f1';
     const contactButtonText = contact.buttonText || '#ffffff';
     const contactButtonHover = contact.buttonHover || '#4f46e5';
     const contactButtonSize = contact.buttonSize || 'md';
-    const contactLabelSize = contact.labelSize || 14;
-    const contactLabelWeight = contact.labelWeight || 500;
-    const contactPadding = contact.padding || 60;
-    const contactFormWidth = contact.formWidth || 600;
+    const contactLabelSize = contact.labelSize || '14px';
+    const contactLabelWeight = contact.labelWeight || '500';
+    const contactPadding = contact.padding || '60px';
+    const contactFormWidth = contact.formWidth || '600px';
     
     // WhatsApp Button Styles
     const whatsappBgColor = whatsapp.bgColor || '#25D366';
     const whatsappIconColor = whatsapp.iconColor || '#ffffff';
-    const whatsappSize = whatsapp.size || 60;
+    const whatsappSize = whatsapp.size || '60px';
     const whatsappShadow = whatsapp.shadow || 'lg';
     const whatsappHoverBg = whatsapp.hoverBg || '#128C7E';
     const whatsappHoverEffect = whatsapp.hoverEffect || 'scale';
@@ -1885,7 +1885,7 @@ function generatePreviewHTML() {
             margin: 0 auto;
         }
         .preview-hero-v2 h1 {
-            font-size: clamp(32px, 5vw, ${heroHeadlineSize}px);
+            font-size: clamp(32px, 5vw, ${heroHeadlineSize});
             font-weight: ${heroFontWeight};
             margin-bottom: 24px;
             line-height: 1.2;
@@ -1901,7 +1901,7 @@ function generatePreviewHTML() {
             padding: 16px 40px;
             background: ${heroCtaBackground};
             color: ${heroCtaTextColor};
-            border-radius: ${heroCtaBorderRadius}px;
+            border-radius: ${heroCtaBorderRadius};
             text-decoration: none;
             font-weight: 600;
             box-shadow: ${shadowMap[productsCardShadow]};
@@ -1928,7 +1928,7 @@ function generatePreviewHTML() {
         .preview-products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: ${productsGap}px;
+            gap: ${productsGap};
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -1944,7 +1944,7 @@ function generatePreviewHTML() {
         }
         .preview-product-card {
             background: ${productsCardBg};
-            border-radius: ${productsCardRadius}px;
+            border-radius: ${productsCardRadius};
             overflow: hidden;
             box-shadow: ${shadowMap[productsCardShadow]};
             transition: all 0.3s ease;
@@ -1963,10 +1963,10 @@ function generatePreviewHTML() {
             background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
         }
         .preview-product-info {
-            padding: ${productsCardPadding}px;
+            padding: ${productsCardPadding};
         }
         .preview-product-name {
-            font-size: ${productsTitleSize}px;
+            font-size: ${productsTitleSize};
             font-weight: ${productsTitleWeight};
             color: ${productsTextColor};
             margin-bottom: 12px;
@@ -1979,7 +1979,7 @@ function generatePreviewHTML() {
             line-height: 1.6;
         }
         .preview-product-price {
-            font-size: ${productsPriceSize}px;
+            font-size: ${productsPriceSize};
             font-weight: ${productsTitleWeight};
             color: ${productsPriceColor};
             margin-bottom: 16px;
@@ -1990,7 +1990,7 @@ function generatePreviewHTML() {
             background: ${productsPriceColor};
             color: white;
             border: none;
-            border-radius: ${productsCardRadius}px;
+            border-radius: ${productsCardRadius};
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -2002,7 +2002,7 @@ function generatePreviewHTML() {
         
         /* About Section Styles */
         .preview-about-section {
-            padding: ${aboutPadding}px 20px;
+            padding: ${aboutPadding} 20px;
             background: ${aboutBackgroundColor};
             ${aboutBorderStyle === 'top' ? `border-top: 3px solid ${aboutAccentColor};` : ''}
             ${aboutBorderStyle === 'bottom' ? `border-bottom: 3px solid ${aboutAccentColor};` : ''}
@@ -2012,14 +2012,14 @@ function generatePreviewHTML() {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 48px;
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             align-items: center;
         }
         .preview-about-side-image {
             display: flex;
             gap: 48px;
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             align-items: center;
         }
@@ -2043,19 +2043,19 @@ function generatePreviewHTML() {
             border: 2px dashed ${aboutAccentColor}33;
         }
         .preview-about-centered {
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             text-align: center;
         }
         .preview-about-section h2 {
-            font-size: ${aboutHeadingSize}px;
+            font-size: ${aboutHeadingSize};
             font-weight: ${aboutHeadingWeight};
             margin-bottom: 24px;
             color: ${aboutTextColor};
             opacity: 0.9;
         }
         .preview-about-section p {
-            font-size: ${aboutContentSize}px;
+            font-size: ${aboutContentSize};
             line-height: ${aboutLineHeight};
             color: ${aboutTextColor};
             opacity: 0.8;
@@ -2070,7 +2070,7 @@ function generatePreviewHTML() {
         
         /* Contact Section Styles */
         .preview-contact-section {
-            padding: ${contactPadding}px 20px;
+            padding: ${contactPadding} 20px;
             background: ${contactBackgroundColor};
         }
         .preview-contact-section h2 {
@@ -2081,7 +2081,7 @@ function generatePreviewHTML() {
             text-align: center;
         }
         .preview-contact-form {
-            max-width: ${contactFormWidth}px;
+            max-width: ${contactFormWidth};
             margin: 0 auto;
         }
         .contact-form-field {
@@ -2091,7 +2091,7 @@ function generatePreviewHTML() {
             display: block;
             margin-bottom: 8px;
             font-weight: ${contactLabelWeight};
-            font-size: ${contactLabelSize}px;
+            font-size: ${contactLabelSize};
             color: ${contactTextColor};
         }
         .contact-form-field input,
@@ -2100,7 +2100,7 @@ function generatePreviewHTML() {
             padding: ${contactButtonSize === 'sm' ? '10px' : contactButtonSize === 'lg' ? '16px' : '12px'};
             background: ${contactInputBg};
             border: 2px solid ${contactInputBorder};
-            border-radius: ${contactInputRadius}px;
+            border-radius: ${contactInputRadius};
             font-family: inherit;
             font-size: 14px;
             color: ${contactTextColor};
@@ -2117,7 +2117,7 @@ function generatePreviewHTML() {
             background: ${contactButtonBg};
             color: ${contactButtonText};
             border: none;
-            border-radius: ${contactInputRadius}px;
+            border-radius: ${contactInputRadius};
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
@@ -2133,8 +2133,8 @@ function generatePreviewHTML() {
             position: fixed;
             bottom: 24px;
             z-index: 1000;
-            width: ${whatsappSize}px;
-            height: ${whatsappSize}px;
+            width: ${whatsappSize};
+            height: ${whatsappSize};
             background: ${whatsappBgColor};
             border-radius: 50%;
             display: flex;
@@ -2399,7 +2399,7 @@ function generatePreviewHTML() {
                 <div class="preview-contact-map">
                     ${mapSrc ? 
                         `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` :
-                        `<div class="map-placeholder">Add Google Maps embed link in settings</div>`
+                        `<div class="map-placeholder">📍 Add Google Maps embed link in settings</div>`
                     }
                     <div>
                         <div class="contact-info-item">
@@ -2537,7 +2537,7 @@ function generatePage() {
         console.log('✅ Product page opened in new window');
     } else {
         // If popup blocked, offer download
-        alert('Pop-up blocked! Click OK to download the HTML file instead.');
+        alert('⚠️ Pop-up blocked! Click OK to download the HTML file instead.');
         downloadHTML(fullHTML);
     }
 }
@@ -2615,96 +2615,16 @@ function generateCompleteHTML() {
     const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
     const ctaText = heroSection.ctaText || 'Shop Now';
     
-    // Get hero section styling (match generatePreviewHTML)
-    const heroBackgroundType = heroSection.backgroundType || 'solid';
-    const heroBgColor = heroSection.backgroundColor || '#6366f1';
+    // Get hero section styling
+    const heroBgColor = heroSection.backgroundColor || primaryColor;
     const heroTextColor = heroSection.textColor || '#ffffff';
-    const heroGradientStart = heroSection.gradientStart || '#6366f1';
-    const heroGradientEnd = heroSection.gradientEnd || '#8b5cf6';
-    const heroGradientAngle = heroSection.gradientAngle || 135;
+    const heroUseGradient = heroSection.useGradient !== false;
     const heroBackgroundImage = heroSection.backgroundImage;
     const heroImageOverlay = heroSection.imageOverlay || 50;
-    const heroCtaBackground = heroSection.ctaBackground || '#ffffff';
-    const heroCtaTextColor = heroSection.ctaTextColor || '#6366f1';
-    const heroCtaHoverBg = heroSection.ctaHoverBg || '#f3f4f6';
-    const heroCtaBorderRadius = heroSection.ctaBorderRadius || 8;
-    const heroHeadlineSize = heroSection.headlineSize || 48;
-    const heroFontWeight = heroSection.fontWeight || 700;
     
-    // Get products section styling (match generatePreviewHTML)
-    const productsSectionBg = productsSection.sectionBg || '#f7fafc';
-    const productsCardBg = productsSection.cardBg || '#ffffff';
-    const productsTextColor = productsSection.textColor || '#1a202c';
-    const productsCardRadius = productsSection.cardRadius || 8;
-    const productsCardShadow = productsSection.cardShadow || 'md';
-    const productsHoverEffect = productsSection.hoverEffect || 'lift';
-    const productsHoverBorder = productsSection.hoverBorder || '#6366f1';
-    const productsTitleSize = productsSection.titleSize || 18;
-    const productsTitleWeight = productsSection.titleWeight || 600;
-    const productsPriceColor = productsSection.priceColor || '#6366f1';
-    const productsPriceSize = productsSection.priceSize || 24;
-    const productsCardPadding = productsSection.cardPadding || 20;
-    const productsGap = productsSection.gap || 24;
-    
-    // Get about section styling (match generatePreviewHTML)
-    const aboutSection = appState.sections.about;
-    const aboutBackgroundColor = aboutSection.backgroundColor || '#ffffff';
-    const aboutTextColor = aboutSection.textColor || '#4a5568';
-    const aboutHeadingSize = aboutSection.headingSize || 32;
-    const aboutHeadingWeight = aboutSection.headingWeight || 700;
-    const aboutContentSize = aboutSection.contentSize || 16;
-    const aboutLineHeight = aboutSection.lineHeight || 1.6;
-    const aboutPadding = aboutSection.padding || 60;
-    const aboutContentWidth = aboutSection.contentWidth || 1000;
-    const aboutAccentColor = aboutSection.accentColor || '#6366f1';
-    const aboutBorderStyle = aboutSection.borderStyle || 'none';
-    
-    // Get contact section styling (match generatePreviewHTML)
-    const contactSection = appState.sections.contact;
-    const contactBackgroundColor = contactSection.backgroundColor || '#f7fafc';
-    const contactTextColor = contactSection.textColor || '#1a202c';
-    const contactInputBg = contactSection.inputBg || '#ffffff';
-    const contactInputBorder = contactSection.inputBorder || '#e2e8f0';
-    const contactFocusBorder = contactSection.focusBorder || '#6366f1';
-    const contactInputRadius = contactSection.inputRadius || 8;
-    const contactButtonBg = contactSection.buttonBg || '#6366f1';
-    const contactButtonText = contactSection.buttonText || '#ffffff';
-    const contactButtonHover = contactSection.buttonHover || '#4f46e5';
-    const contactButtonSize = contactSection.buttonSize || 'md';
-    const contactLabelSize = contactSection.labelSize || 14;
-    const contactLabelWeight = contactSection.labelWeight || 500;
-    const contactPadding = contactSection.padding || 60;
-    const contactFormWidth = contactSection.formWidth || 600;
-    
-    // Get WhatsApp section styling (match generatePreviewHTML)
-    const whatsappSection = appState.sections.whatsapp;
-    const whatsappBgColor = whatsappSection.bgColor || '#25D366';
-    const whatsappIconColor = whatsappSection.iconColor || '#ffffff';
-    const whatsappSize = whatsappSection.size || 60;
-    const whatsappShadow = whatsappSection.shadow || 'lg';
-    const whatsappHoverBg = whatsappSection.hoverBg || '#128C7E';
-    const whatsappHoverEffect = whatsappSection.hoverEffect || 'scale';
-    
-    // Shadow mapping (same as generatePreviewHTML)
-    const shadowMap = {
-        'none': 'none',
-        'sm': '0 1px 2px rgba(0,0,0,0.05)',
-        'md': '0 4px 6px rgba(0,0,0,0.1)',
-        'lg': '0 10px 15px rgba(0,0,0,0.1)',
-        'xl': '0 20px 25px rgba(0,0,0,0.15)'
-    };
-    
-    const shadowHoverMap = {
-        'none': 'none',
-        'sm': '0 2px 4px rgba(0,0,0,0.1)',
-        'md': '0 8px 12px rgba(0,0,0,0.15)',
-        'lg': '0 15px 25px rgba(0,0,0,0.15)',
-        'xl': '0 25px 35px rgba(0,0,0,0.2)'
-    };
-    
-    // Generate hero background (match generatePreviewHTML logic)
+    // Generate hero background
     let heroBackgroundStyle;
-    if (heroBackgroundType === 'image' && heroBackgroundImage) {
+    if (heroBackgroundImage) {
         const overlayOpacity = heroImageOverlay / 100;
         heroBackgroundStyle = `
             background-image: linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${heroBackgroundImage}');
@@ -2712,10 +2632,11 @@ function generateCompleteHTML() {
             background-position: center;
             background-repeat: no-repeat;
         `;
-    } else if (heroBackgroundType === 'gradient') {
-        heroBackgroundStyle = `background: linear-gradient(${heroGradientAngle}deg, ${heroGradientStart} 0%, ${heroGradientEnd} 100%);`;
     } else {
-        heroBackgroundStyle = `background: ${heroBgColor};`;
+        const heroBackground = heroUseGradient 
+            ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
+            : heroBgColor;
+        heroBackgroundStyle = `background: ${heroBackground};`;
     }
     
     // Build complete HTML document
@@ -2790,15 +2711,14 @@ function generateCompleteHTML() {
         }
         
         .hero h1 {
-            font-size: clamp(32px, 5vw, ${heroHeadlineSize}px);
-            font-weight: ${heroFontWeight};
+            font-size: ${48 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${16 * styleConfig.spacing}px;
             line-height: 1.2;
         }
         
         .hero-minimal h1 {
-            font-size: ${parseInt(heroHeadlineSize) * 0.7}px;
-            font-weight: ${heroFontWeight};
+            font-size: ${32 * styleConfig.fontSize}px;
             margin-bottom: 8px;
         }
         
@@ -2823,9 +2743,9 @@ function generateCompleteHTML() {
         .cta-button {
             display: inline-block;
             padding: ${16 * styleConfig.spacing}px ${40 * styleConfig.spacing}px;
-            background: ${heroCtaBackground};
-            color: ${heroCtaTextColor};
-            border-radius: ${heroCtaBorderRadius}px;
+            background: ${heroTextColor === '#ffffff' ? 'white' : heroBgColor};
+            color: ${heroTextColor === '#ffffff' ? heroBgColor : '#ffffff'};
+            border-radius: ${styleConfig.borderRadius}px;
             text-decoration: none;
             font-weight: 600;
             font-size: 18px;
@@ -2836,7 +2756,6 @@ function generateCompleteHTML() {
         }
         
         .cta-button:hover {
-            background: ${heroCtaHoverBg};
             box-shadow: ${styleConfig.shadowHover};
             transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-2px)'};
         }
@@ -2844,7 +2763,7 @@ function generateCompleteHTML() {
         /* Products Section */
         .products-section {
             padding: ${sectionPadding}px ${basePadding}px;
-            background: ${productsSectionBg};
+            background: #f7fafc;
         }
         
         .section-title {
@@ -2852,30 +2771,29 @@ function generateCompleteHTML() {
             font-size: ${36 * styleConfig.fontSize}px;
             font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${48 * styleConfig.spacing}px;
-            color: ${productsTextColor};
+            color: #1a202c;
         }
         
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: ${productsGap}px;
+            gap: ${gap}px;
             max-width: 1200px;
             margin: 0 auto;
         }
         
         .product-card {
-            background: ${productsCardBg};
-            border-radius: ${productsCardRadius}px;
+            background: white;
+            border-radius: ${styleConfig.borderRadius}px;
             overflow: hidden;
-            box-shadow: ${shadowMap[productsCardShadow]};
+            box-shadow: ${styleConfig.shadow};
             transition: ${styleConfig.transition};
             cursor: pointer;
         }
         
         .product-card:hover {
-            transform: ${productsHoverEffect === 'lift' ? 'translateY(-8px)' : productsHoverEffect === 'grow' ? 'scale(1.05)' : 'none'};
-            box-shadow: ${shadowHoverMap[productsCardShadow]};
-            ${productsHoverEffect === 'glow' ? `border: 2px solid ${productsHoverBorder};` : ''}
+            transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-8px)'};
+            box-shadow: ${styleConfig.shadowHover};
         }
         
         .product-image {
@@ -2886,13 +2804,13 @@ function generateCompleteHTML() {
         }
         
         .product-info {
-            padding: ${productsCardPadding}px;
+            padding: ${cardPadding}px;
         }
         
         .product-name {
-            font-size: ${productsTitleSize}px;
-            font-weight: ${productsTitleWeight};
-            color: ${productsTextColor};
+            font-size: ${24 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            color: #1a202c;
             margin-bottom: ${8 * styleConfig.spacing}px;
         }
         
@@ -2904,9 +2822,9 @@ function generateCompleteHTML() {
         }
         
         .product-price {
-            font-size: ${productsPriceSize}px;
-            font-weight: ${productsTitleWeight};
-            color: ${productsPriceColor};
+            font-size: ${32 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            color: ${primaryColor};
             margin-bottom: ${16 * styleConfig.spacing}px;
         }
         
@@ -2947,34 +2865,34 @@ function generateCompleteHTML() {
         
         /* About Section */
         .about-section {
-            padding: ${aboutPadding};
-            background: ${aboutBackgroundColor};
+            padding: ${sectionPadding}px ${basePadding}px;
+            background: white;
         }
         
         .about-section h2 {
-            font-size: ${aboutHeadingSize};
-            font-weight: ${aboutHeadingWeight};
+            font-size: ${36 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${24 * styleConfig.spacing}px;
-            color: ${aboutTextColor};
+            color: #1a202c;
         }
         
         .about-section p {
-            font-size: ${aboutContentSize};
-            line-height: ${aboutLineHeight};
-            color: ${aboutTextColor};
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
         }
         
         /* Contact Section */
         .contact-section {
-            padding: ${contactPadding};
-            background: ${contactBackgroundColor};
+            padding: ${sectionPadding}px ${basePadding}px;
+            background: #f7fafc;
         }
         
         .contact-section h2 {
             font-size: ${36 * styleConfig.fontSize}px;
             font-weight: ${styleConfig.fontWeight};
             margin-bottom: ${32 * styleConfig.spacing}px;
-            color: ${contactTextColor};
+            color: #1a202c;
             text-align: center;
         }
         
@@ -3019,28 +2937,22 @@ function generateCompleteHTML() {
         .whatsapp-btn {
             position: fixed;
             bottom: 24px;
-            width: ${whatsappSize}px;
-            height: ${whatsappSize}px;
-            background: ${whatsappBgColor};
+            width: 60px;
+            height: 60px;
+            background: #25D366;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: ${shadowMap[whatsappShadow]};
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             z-index: 1000;
         }
         .whatsapp-btn:hover {
-            background: ${whatsappHoverBg};
-            transform: ${whatsappHoverEffect === 'scale' ? 'scale(1.15)' : whatsappHoverEffect === 'rotate' ? 'rotate(15deg)' : 'none'};
-            box-shadow: ${shadowHoverMap[whatsappShadow]};
-        }
-        .whatsapp-btn svg {
-            width: ${parseInt(whatsappSize) * 0.5}px;
-            height: ${parseInt(whatsappSize) * 0.5}px;
-            fill: ${whatsappIconColor};
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
         }
         .whatsapp-bottom-right {
             right: 24px;
@@ -3166,6 +3078,7 @@ function generateCompleteHTML() {
         <div class="features-grid">
             ${appState.content.features.map(feature => `
                 <div class="feature-card">
+                    <div class="feature-icon">✨</div>
                     <div class="feature-title">${escapeHtml(feature)}</div>
                 </div>
             `).join('')}
@@ -3175,12 +3088,12 @@ function generateCompleteHTML() {
     
     ${appState.sections.about.enabled ? `
     <!-- About Section -->
-    <section class="about-section" style="padding: ${aboutPadding}px; background: ${aboutBackgroundColor};">
-        <div style="max-width: ${aboutContentWidth}px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+    <section class="about-section" style="padding: 80px 20px; background: white;">
+        <div style="max-width: 1200px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
             ${appState.sections.about.layout !== 'centered' ? '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>' : ''}
             <div>
-                <h2 style="font-size: ${aboutHeadingSize}px; font-weight: ${aboutHeadingWeight}; margin-bottom: 24px; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
-                <p style="font-size: ${aboutContentSize}px; line-height: ${aboutLineHeight}; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
+                <h2 style="font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 24px; color: #1a202c;">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568;">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
             </div>
         </div>
     </section>
@@ -3188,23 +3101,23 @@ function generateCompleteHTML() {
     
     ${appState.sections.contact.enabled ? `
     <!-- Contact Section -->
-    <section class="contact-section" style="padding: ${contactPadding}px; background: ${contactBackgroundColor};">
-        <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: ${contactTextColor};">Contact Us</h2>
+    <section class="contact-section" style="padding: 80px 20px; background: #f7fafc;">
+        <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: #1a202c;">Contact Us</h2>
         ${appState.sections.contact.layout === 'form' ? `
-        <div style="max-width: ${contactFormWidth}px; margin: 0 auto;">
+        <div style="max-width: 600px; margin: 0 auto;">
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Name</label>
-                <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Name</label>
+                <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Email</label>
-                <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Email</label>
+                <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Message</label>
-                <textarea rows="5" placeholder="Your message" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;"></textarea>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Message</label>
+                <textarea rows="5" placeholder="Your message" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;"></textarea>
             </div>
-            <button style="width: 100%; padding: 16px; background: ${contactButtonBg}; color: ${contactButtonText}; border: none; border-radius: ${contactInputRadius}px; font-weight: 600; font-size: 16px; cursor: pointer;" onmouseover="this.style.background='${contactButtonHover}'" onmouseout="this.style.background='${contactButtonBg}'">Send Message</button>
+            <button style="width: 100%; padding: 16px; background: ${primaryColor}; color: white; border: none; border-radius: ${styleConfig.borderRadius}px; font-weight: 600; font-size: 16px; cursor: pointer;">Send Message</button>
         </div>
         ` : appState.sections.contact.layout === 'map' ? `
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
@@ -3220,7 +3133,7 @@ function generateCompleteHTML() {
                 }
                 return mapSrc 
                     ? `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: ${styleConfig.borderRadius}px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
-                    : `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">Map Location</div>`;
+                    : `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">📍 Map Location</div>`;
             })()}
             <div>
                 <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
