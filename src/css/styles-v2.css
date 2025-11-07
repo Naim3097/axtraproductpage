@@ -233,6 +233,7 @@ body {
 /* Workspace */
 .workspace {
   display: flex;
+  flex-direction: row; /* Explicit: side-by-side layout */
   flex: 1;
   overflow: hidden;
 }
@@ -259,14 +260,8 @@ body {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Hide preview panel when not active (for desktop toggle functionality) */
-.preview-panel:not(.active) {
-  display: none;
-}
-
-.preview-panel.active {
-  display: flex;
-}
+/* Preview is visible by default on desktop */
+/* Toggle system only applies on mobile via media query */
 
 .preview-header {
   display: flex;

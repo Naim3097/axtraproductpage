@@ -3167,9 +3167,11 @@ function loadFromLocalStorage() {
             if (styleRadio) styleRadio.checked = true;
         }
         
-        // Restore colors
-        document.getElementById('primaryColor').value = appState.design.primaryColor;
-        document.getElementById('secondaryColor').value = appState.design.secondaryColor;
+        // Restore colors (if elements exist - removed in new per-section design)
+        const primaryColorInput = document.getElementById('primaryColor');
+        const secondaryColorInput = document.getElementById('secondaryColor');
+        if (primaryColorInput) primaryColorInput.value = appState.design.primaryColor;
+        if (secondaryColorInput) secondaryColorInput.value = appState.design.secondaryColor;
         
         // Restore layout options
         if (appState.design.layoutOptions) {
