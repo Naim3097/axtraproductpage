@@ -2807,6 +2807,15 @@ function loadFromLocalStorage() {
             
             const contactLayoutRadio = document.querySelector(`input[name="contactLayout"][value="${appState.sections.contact.layout}"]`);
             if (contactLayoutRadio) contactLayoutRadio.checked = true;
+            
+            // WhatsApp
+            const whatsappEnabled = document.getElementById('whatsappEnabled');
+            if (whatsappEnabled && appState.sections.whatsapp) {
+                whatsappEnabled.checked = appState.sections.whatsapp.enabled;
+            }
+            
+            const whatsappPositionRadio = document.querySelector(`input[name="whatsappPosition"][value="${appState.sections.whatsapp?.position || 'bottom-right'}"]`);
+            if (whatsappPositionRadio) whatsappPositionRadio.checked = true;
         }
         
         // Restore content
@@ -2842,6 +2851,18 @@ function loadFromLocalStorage() {
             }
             if (contactAddress && appState.sections.contact.address) {
                 contactAddress.value = appState.sections.contact.address;
+            }
+        }
+        
+        // Restore WhatsApp content
+        if (appState.sections && appState.sections.whatsapp) {
+            const whatsappNumber = document.getElementById('whatsappNumber');
+            const whatsappMessage = document.getElementById('whatsappMessage');
+            if (whatsappNumber && appState.sections.whatsapp.number) {
+                whatsappNumber.value = appState.sections.whatsapp.number;
+            }
+            if (whatsappMessage && appState.sections.whatsapp.message) {
+                whatsappMessage.value = appState.sections.whatsapp.message;
             }
         }
         
