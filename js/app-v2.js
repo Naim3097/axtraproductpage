@@ -247,8 +247,12 @@ function initializeSectionControls() {
     heroShowCTA.addEventListener('change', (e) => {
         appState.sections.hero.showCTA = e.target.checked;
         const ctaTextGroup = document.getElementById('ctaTextGroup');
+        const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
         if (ctaTextGroup) {
             ctaTextGroup.style.display = e.target.checked ? 'block' : 'none';
+        }
+        if (heroCtaDesignGroup) {
+            heroCtaDesignGroup.style.display = e.target.checked ? 'block' : 'none';
         }
         updatePreview();
         saveToLocalStorage();
@@ -284,6 +288,12 @@ function initializeSectionControls() {
     // Initialize CTA text group visibility
     if (ctaTextGroup) {
         ctaTextGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
+    }
+    
+    // Initialize CTA design group visibility
+    const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
+    if (heroCtaDesignGroup) {
+        heroCtaDesignGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
     }
     
     // Hero section styling controls
@@ -707,8 +717,18 @@ function initializeSectionControls() {
             appState.sections.contact.layout = e.target.value;
             // Show/hide map embed field based on layout
             const mapLinkGroup = document.getElementById('mapLinkGroup');
+            const contactFormStyleGroup = document.getElementById('contactFormStyleGroup');
+            const contactButtonGroup = document.getElementById('contactButtonGroup');
+            
             if (mapLinkGroup) {
                 mapLinkGroup.style.display = e.target.value === 'map' ? 'block' : 'none';
+            }
+            // Show form styling and button styling only for 'form' layout
+            if (contactFormStyleGroup) {
+                contactFormStyleGroup.style.display = e.target.value === 'form' ? 'block' : 'none';
+            }
+            if (contactButtonGroup) {
+                contactButtonGroup.style.display = e.target.value === 'form' ? 'block' : 'none';
             }
             updatePreview();
             saveToLocalStorage();
@@ -3651,6 +3671,23 @@ function syncSectionOptionsDisplay() {
     }
     if (whatsappOptions) {
         whatsappOptions.style.display = appState.sections.whatsapp.enabled ? 'block' : 'none';
+    }
+    
+    // Sync conditional design controls
+    // Hero: CTA Button Design only when CTA is enabled
+    const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
+    if (heroCtaDesignGroup) {
+        heroCtaDesignGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
+    }
+    
+    // Contact: Form styling and button only for 'form' layout
+    const contactFormStyleGroup = document.getElementById('contactFormStyleGroup');
+    const contactButtonGroup = document.getElementById('contactButtonGroup');
+    if (contactFormStyleGroup) {
+        contactFormStyleGroup.style.display = appState.sections.contact.layout === 'form' ? 'block' : 'none';
+    }
+    if (contactButtonGroup) {
+        contactButtonGroup.style.display = appState.sections.contact.layout === 'form' ? 'block' : 'none';
     }
 }
 
