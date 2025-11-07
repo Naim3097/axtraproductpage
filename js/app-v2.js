@@ -2393,6 +2393,9 @@ function generatePreviewHTML() {
         const productsHeadline = productsSection.headline || 'Our Products';
         const productsSubheadline = productsSection.subheadline || '';
         
+        console.log('Products section showDescription:', productsSection.showDescription);
+        console.log('First product:', appState.products[0]);
+        
         html += `<section class="preview-products-section">`;
         
         // Section header
