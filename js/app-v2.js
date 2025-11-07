@@ -1876,7 +1876,7 @@ function generatePreviewHTML() {
     
     // WhatsApp Button
     const whatsappSection = appState.sections.whatsapp;
-    if (whatsappSection.enabled && whatsappSection.number) {
+    if (whatsappSection && whatsappSection.enabled && whatsappSection.number) {
         const whatsappNumber = whatsappSection.number.replace(/[^0-9]/g, ''); // Remove non-numeric
         const message = encodeURIComponent(whatsappSection.message || 'Hi!');
         const position = whatsappSection.position === 'bottom-left' ? 'position-left' : 'position-right';
@@ -2646,7 +2646,22 @@ function loadFromLocalStorage() {
     const saved = localStorage.getItem('axtra_builder_v2');
     if (saved) {
         const loadedState = JSON.parse(saved);
-        Object.assign(appState, loadedState);
+        
+        // Deep merge function that preserves defaults
+        function deepMerge(target, source) {
+            for (const key in source) {
+                if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                    if (!target[key]) target[key] = {};
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+            return target;
+        }
+        
+        // Deep merge loaded state while preserving new defaults
+        deepMerge(appState, loadedState);
         
         // Ensure layoutOptions exists (for backward compatibility)
         if (!appState.design.layoutOptions) {
@@ -2656,6 +2671,41 @@ function loadFromLocalStorage() {
                 shadows: 'subtle',
                 animations: 'subtle'
             };
+        }
+        
+        // Ensure whatsapp section exists (for backward compatibility)
+        if (!appState.sections.whatsapp) {
+            appState.sections.whatsapp = {
+                enabled: false,
+                number: '',
+                message: 'Hi! I\'m interested in your products',
+                position: 'bottom-right'
+            };
+        }
+        
+        // Ensure hero section has all new properties (for backward compatibility)
+        if (!appState.sections.hero.hasOwnProperty('showCTA')) {
+            appState.sections.hero.showCTA = true;
+        }
+        if (!appState.sections.hero.hasOwnProperty('useGradient')) {
+            appState.sections.hero.useGradient = true;
+        }
+        if (!appState.sections.hero.hasOwnProperty('backgroundColor')) {
+            appState.sections.hero.backgroundColor = null;
+        }
+        if (!appState.sections.hero.hasOwnProperty('textColor')) {
+            appState.sections.hero.textColor = '#ffffff';
+        }
+        if (!appState.sections.hero.hasOwnProperty('backgroundImage')) {
+            appState.sections.hero.backgroundImage = null;
+        }
+        if (!appState.sections.hero.hasOwnProperty('imageOverlay')) {
+            appState.sections.hero.imageOverlay = 50;
+        }
+        
+        // Ensure contact section has mapEmbed property (for backward compatibility)
+        if (!appState.sections.contact.hasOwnProperty('mapEmbed')) {
+            appState.sections.contact.mapEmbed = '';
         }
         
         // Restore products list
