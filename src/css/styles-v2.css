@@ -1013,11 +1013,38 @@ body {
   
   .preview-panel {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background: white;
   }
   
   .preview-panel.active {
     display: flex;
-    flex: 1;
+    flex-direction: column;
+  }
+  
+  .preview-close-btn {
+    display: none;
+  }
+  
+  .preview-panel.active .preview-close-btn {
+    display: block;
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    background: var(--gray-900);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10001;
   }
   
   .industry-grid {

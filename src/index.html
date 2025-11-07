@@ -12,20 +12,29 @@
         <header class="app-header">
             <div class="header-content">
                 <div class="logo">
-                    <strong>Axtra</strong> Product Page Builder
+                    <img src="assets/logo/LOGO BLACK.png" alt="Axtra" class="logo-img">
                 </div>
                 
                 <div class="header-actions">
-                    <button class="btn-ghost btn-sm" id="clearDataBtn" title="Clear all data and start fresh">
-                        Reset
+                    <button class="btn-primary btn-sm" id="openFullPreviewBtn" title="Open full page in new window">
+                        Preview
                     </button>
-                    <button class="btn-ghost btn-sm" id="saveDraftBtn">Save Draft</button>
-                    <button class="btn-ghost btn-sm" id="openFullPreviewBtn" title="Open full page in new window">
-                        Full Preview
+                    <button class="btn-icon" id="mobileMenuBtn" title="More options">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
                     </button>
-                    <button class="btn-ghost btn-sm" id="previewToggleBtn">
-                        <span class="toggle-text">Show Preview</span>
+                </div>
+                
+                <!-- Mobile Menu Dropdown -->
+                <div class="mobile-menu" id="mobileMenu">
+                    <button class="mobile-menu-item" id="mobilePreviewToggle">
+                        <span class="mobile-toggle-text">Show Preview</span>
                     </button>
+                    <button class="mobile-menu-item" id="mobileSaveDraft">Save Draft</button>
+                    <button class="mobile-menu-item" id="mobileClearData">Reset</button>
                 </div>
             </div>
             
@@ -422,6 +431,7 @@
             <div class="preview-panel" id="previewPanel">
                 <div class="preview-header">
                     <div class="preview-title">Live Preview</div>
+                    <button class="preview-close-btn" id="previewCloseBtn" title="Close Preview">✕</button>
                     <div class="device-toggle">
                         <button class="device-btn active" data-device="desktop" title="Desktop">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

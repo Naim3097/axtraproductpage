@@ -144,12 +144,33 @@ function attachEventListeners() {
     
     // Preview toggle (mobile)
     const previewToggleBtn = document.getElementById('previewToggleBtn');
+    const previewCloseBtn = document.getElementById('previewCloseBtn');
     if (previewToggleBtn) {
         previewToggleBtn.addEventListener('click', () => {
             const previewPanel = document.getElementById('previewPanel');
             previewPanel.classList.toggle('active');
             const isActive = previewPanel.classList.contains('active');
             previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            
+            // Update mobile menu text if exists
+            const mobileToggleText = document.querySelector('.mobile-toggle-text');
+            if (mobileToggleText) {
+                mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            }
+        });
+    }
+    
+    if (previewCloseBtn) {
+        previewCloseBtn.addEventListener('click', () => {
+            const previewPanel = document.getElementById('previewPanel');
+            previewPanel.classList.remove('active');
+            if (previewToggleBtn) {
+                previewToggleBtn.querySelector('.toggle-text').textContent = 'Show Preview';
+            }
+            const mobileToggleText = document.querySelector('.mobile-toggle-text');
+            if (mobileToggleText) {
+                mobileToggleText.textContent = 'Show Preview';
+            }
         });
     }
     
@@ -1066,12 +1087,19 @@ function generatePage() {
     // Generate complete HTML page
     const fullHTML = generateCompleteHTML();
     
-    // Open in new window
-    const newWindow = window.open('', '_blank');
+    // Open in new window with proper viewport
+    const newWindow = window.open('', '_blank', 'width=1200,height=800');
     if (newWindow) {
         newWindow.document.open();
         newWindow.document.write(fullHTML);
         newWindow.document.close();
+        
+        // Force scroll to top and focus
+        setTimeout(() => {
+            newWindow.scrollTo(0, 0);
+            newWindow.focus();
+        }, 100);
+        
         console.log('✅ Product page opened in new window');
     } else {
         // If popup blocked, offer download
