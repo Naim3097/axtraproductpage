@@ -46,38 +46,25 @@
                     <button class="mobile-menu-item" id="mobileClearData">Reset</button>
                 </div>
             </div>
-            
-            <!-- Step Indicator -->
-            <div class="step-indicator">
-                <div class="step active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Sections</div>
-                </div>
-                <div class="step-line"></div>
-                <div class="step" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Design</div>
-                </div>
-            </div>
         </header>
 
         <!-- Workspace -->
         <main class="workspace">
-            <!-- Left Panel: Form Steps -->
+            <!-- Left Panel: Page Builder -->
             <div class="form-panel">
                 <div class="form-container">
                     
-                    <!-- STEP 1: PAGE SECTIONS -->
-                    <div class="step-content active" id="step1">
-                        <div class="step-header">
-                            <h1>Page Sections & Layout</h1>
-                            <p>Choose which sections to include and their layout style</p>
+                    <!-- PAGE BUILDER -->
+                    <div class="builder-content">
+                        <div class="builder-header">
+                            <h1>Product Page Builder</h1>
+                            <p>Customize each section with its own design and content</p>
                         </div>
                         
                         <!-- Section Manager -->
                         <div class="form-section">
                             <label class="form-label">Page Sections</label>
-                            <p class="field-hint">Toggle sections on/off and choose layouts</p>
+                            <p class="field-hint">Toggle sections on/off and customize each independently</p>
                             
                             <!-- Hero Section -->
                             <div class="section-control">
@@ -129,39 +116,155 @@
                                         <input type="text" class="form-input" id="ctaTextCustom" placeholder="Enter custom button text" style="display: none;">
                                     </div>
                                     
-                                    <!-- Hero Section Styling -->
-                                    <div class="form-group" style="border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 16px;">
-                                        <label class="form-label">Section Styling</label>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <!-- Hero Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background Settings -->
+                                        <div class="form-group">
+                                            <label class="form-label">Background Type</label>
+                                            <div class="radio-group-inline">
+                                                <label><input type="radio" name="heroBackgroundType" value="solid" checked> Solid</label>
+                                                <label><input type="radio" name="heroBackgroundType" value="gradient"> Gradient</label>
+                                                <label><input type="radio" name="heroBackgroundType" value="image"> Image</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="heroSolidBg" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                                             <div>
-                                                <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background</label>
-                                                <input type="color" class="form-input" id="heroBackgroundColor" style="height: 40px; padding: 4px;">
+                                                <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background Color</label>
+                                                <input type="color" class="form-input" id="heroBackgroundColor" value="#667eea" style="height: 40px; padding: 4px;">
                                             </div>
                                             <div>
                                                 <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
                                                 <input type="color" class="form-input" id="heroTextColor" value="#ffffff" style="height: 40px; padding: 4px;">
                                             </div>
                                         </div>
-                                        <label class="checkbox-label" style="margin-top: 8px;">
-                                            <input type="checkbox" id="heroUseGradient" checked>
-                                            Use Gradient Background
-                                        </label>
-                                        <div style="margin-top: 12px;">
-                                            <label class="form-label">Background Image (Optional)</label>
+                                        
+                                        <div id="heroGradientBg" style="display: none;">
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient Start</label>
+                                                    <input type="color" class="form-input" id="heroGradientStart" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient End</label>
+                                                    <input type="color" class="form-input" id="heroGradientEnd" value="#764ba2" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gradient Angle</label>
+                                                    <input type="range" id="heroGradientAngle" min="0" max="360" value="135" class="form-range">
+                                                    <span id="heroGradientAngleValue" style="font-size: 12px; color: #64748b;">135°</span>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="heroTextColorGradient" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="heroImageBg" style="display: none;">
+                                            <label class="form-label">Background Image</label>
                                             <input type="file" class="form-input" id="heroBackgroundImage" accept="image/*" style="padding: 8px;">
-                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Upload an image for hero background. Recommended: 1920x1080px</p>
+                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Recommended: 1920x1080px</p>
                                             <div id="heroImagePreview" style="display: none; margin-top: 8px;">
                                                 <img id="heroImagePreviewImg" style="max-width: 100%; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
                                                 <button type="button" id="heroImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
                                             </div>
+                                            <div style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label class="form-label">Overlay Opacity</label>
+                                                    <input type="range" id="heroImageOverlay" min="0" max="100" value="50" class="form-range">
+                                                    <span id="heroOverlayValue" style="font-size: 12px; color: #64748b;">50%</span>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="heroTextColorImage" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div id="heroImageOverlayGroup" style="display: none; margin-top: 12px;">
-                                            <label class="form-label">Image Overlay Opacity</label>
-                                            <input type="range" id="heroImageOverlay" min="0" max="100" value="50" class="form-range" style="width: 100%;">
-                                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-top: 4px;">
-                                                <span>Transparent</span>
-                                                <span id="heroOverlayValue">50%</span>
-                                                <span>Dark</span>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Headline Size</label>
+                                                    <select class="form-input" id="heroHeadlineSize">
+                                                        <option value="32">Small (32px)</option>
+                                                        <option value="48" selected>Medium (48px)</option>
+                                                        <option value="64">Large (64px)</option>
+                                                        <option value="80">XLarge (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Font Weight</label>
+                                                    <select class="form-input" id="heroFontWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                        <option value="700" selected>Bold</option>
+                                                        <option value="800">Extra Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- CTA Button Design -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">CTA Button Design</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Color</label>
+                                                    <input type="color" class="form-input" id="heroCtaBackground" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Text</label>
+                                                    <input type="color" class="form-input" id="heroCtaTextColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="heroCtaHoverBg" value="#f0f0f0" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Radius</label>
+                                                    <select class="form-input" id="heroCtaBorderRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="4">Slightly Rounded</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="24">Pill</option>
+                                                        <option value="50">Circle</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing & Layout -->
+                                        <div class="form-group" style="margin-top: 20px;">
+                                            <label class="form-label">Spacing & Padding</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Height</label>
+                                                    <select class="form-input" id="heroHeight">
+                                                        <option value="400">Compact (400px)</option>
+                                                        <option value="500">Medium (500px)</option>
+                                                        <option value="600" selected>Tall (600px)</option>
+                                                        <option value="100vh">Full Screen</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Width</label>
+                                                    <select class="form-input" id="heroContentWidth">
+                                                        <option value="800">Narrow (800px)</option>
+                                                        <option value="1000" selected>Medium (1000px)</option>
+                                                        <option value="1200">Wide (1200px)</option>
+                                                        <option value="100%">Full Width</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -224,6 +327,152 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Products Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Section Background -->
+                                        <div class="form-group">
+                                            <label class="form-label">Section Background</label>
+                                            <input type="color" class="form-input" id="productsSectionBg" value="#f8f9fa" style="height: 40px; padding: 4px;">
+                                        </div>
+                                        
+                                        <!-- Product Card Design -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Product Card Design</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Card Background</label>
+                                                    <input type="color" class="form-input" id="productsCardBg" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="productsTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Radius</label>
+                                                    <select class="form-input" id="productsCardRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="16">Very Rounded</option>
+                                                        <option value="24">Pill-like</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Shadow</label>
+                                                    <select class="form-input" id="productsCardShadow">
+                                                        <option value="none">None</option>
+                                                        <option value="sm" selected>Small</option>
+                                                        <option value="md">Medium</option>
+                                                        <option value="lg">Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hover Effects -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Hover Effects</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Transform</label>
+                                                    <select class="form-input" id="productsHoverEffect">
+                                                        <option value="none">None</option>
+                                                        <option value="lift" selected>Lift Up</option>
+                                                        <option value="scale">Scale</option>
+                                                        <option value="shadow">Shadow Grow</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Border</label>
+                                                    <input type="color" class="form-input" id="productsHoverBorder" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Title Size</label>
+                                                    <select class="form-input" id="productsTitleSize">
+                                                        <option value="14">Small (14px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="18">Large (18px)</option>
+                                                        <option value="20">XLarge (20px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Title Weight</label>
+                                                    <select class="form-input" id="productsTitleWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600" selected>Semi Bold</option>
+                                                        <option value="700">Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Price Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Price Styling</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Price Color</label>
+                                                    <input type="color" class="form-input" id="productsPriceColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Price Size</label>
+                                                    <select class="form-input" id="productsPriceSize">
+                                                        <option value="18">Small (18px)</option>
+                                                        <option value="20" selected>Medium (20px)</option>
+                                                        <option value="24">Large (24px)</option>
+                                                        <option value="28">XLarge (28px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Card Padding</label>
+                                                    <select class="form-input" id="productsCardPadding">
+                                                        <option value="12">Compact (12px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="20">Comfortable (20px)</option>
+                                                        <option value="24">Spacious (24px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Gap Between Cards</label>
+                                                    <select class="form-input" id="productsGap">
+                                                        <option value="16">Tight (16px)</option>
+                                                        <option value="24" selected>Medium (24px)</option>
+                                                        <option value="32">Wide (32px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                        </div>
+                                        
+                                        <div id="productsList" class="products-list">
+                                            <!-- Product cards will be added here -->
+                                            <div class="empty-state" id="emptyProducts">
+                                                <p style="font-size: 14px; color: var(--gray-500);">No products yet. Click "Add Product" to get started.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -255,6 +504,112 @@
                                     <div class="form-group">
                                         <label class="form-label">Content</label>
                                         <textarea class="form-input" id="aboutContent" rows="4" placeholder="Tell your brand story..."></textarea>
+                                    </div>
+                                    
+                                    <!-- About Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background & Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background</label>
+                                                    <input type="color" class="form-input" id="aboutBackgroundColor" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="aboutTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Heading Size</label>
+                                                    <select class="form-input" id="aboutHeadingSize">
+                                                        <option value="24">Small (24px)</option>
+                                                        <option value="32" selected>Medium (32px)</option>
+                                                        <option value="40">Large (40px)</option>
+                                                        <option value="48">XLarge (48px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Heading Weight</label>
+                                                    <select class="form-input" id="aboutHeadingWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500">Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                        <option value="700" selected>Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Size</label>
+                                                    <select class="form-input" id="aboutContentSize">
+                                                        <option value="14">Small (14px)</option>
+                                                        <option value="16" selected>Medium (16px)</option>
+                                                        <option value="18">Large (18px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Line Height</label>
+                                                    <select class="form-input" id="aboutLineHeight">
+                                                        <option value="1.4">Compact (1.4)</option>
+                                                        <option value="1.6" selected>Normal (1.6)</option>
+                                                        <option value="1.8">Relaxed (1.8)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing & Layout -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing & Layout</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Padding</label>
+                                                    <select class="form-input" id="aboutPadding">
+                                                        <option value="40">Compact (40px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="80">Large (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Content Width</label>
+                                                    <select class="form-input" id="aboutContentWidth">
+                                                        <option value="800">Narrow (800px)</option>
+                                                        <option value="1000" selected>Medium (1000px)</option>
+                                                        <option value="1200">Wide (1200px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Accent Color -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Accent & Highlights</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Accent Color</label>
+                                                    <input type="color" class="form-input" id="aboutAccentColor" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Border Style</label>
+                                                    <select class="form-input" id="aboutBorderStyle">
+                                                        <option value="none">None</option>
+                                                        <option value="top">Top Border</option>
+                                                        <option value="left" selected>Left Border</option>
+                                                        <option value="bottom">Bottom Border</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -301,6 +656,131 @@
                                         </p>
                                         <textarea class="form-input" id="contactMapEmbed" rows="3" placeholder='Paste: <iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>'></textarea>
                                     </div>
+                                    
+                                    <!-- Contact Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Background & Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Section Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background</label>
+                                                    <input type="color" class="form-input" id="contactBackgroundColor" value="#f8f9fa" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Text Color</label>
+                                                    <input type="color" class="form-input" id="contactTextColor" value="#1e293b" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Form Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Form Styling</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Background</label>
+                                                    <input type="color" class="form-input" id="contactInputBg" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Border</label>
+                                                    <input type="color" class="form-input" id="contactInputBorder" value="#e2e8f0" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Focus Border</label>
+                                                    <input type="color" class="form-input" id="contactFocusBorder" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Input Radius</label>
+                                                    <select class="form-input" id="contactInputRadius">
+                                                        <option value="0">Square</option>
+                                                        <option value="4">Slightly Rounded</option>
+                                                        <option value="8" selected>Rounded</option>
+                                                        <option value="16">Very Rounded</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Button Styling -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Submit Button</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Color</label>
+                                                    <input type="color" class="form-input" id="contactButtonBg" value="#667eea" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Text</label>
+                                                    <input type="color" class="form-input" id="contactButtonText" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="contactButtonHover" value="#5568d3" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Size</label>
+                                                    <select class="form-input" id="contactButtonSize">
+                                                        <option value="sm">Small</option>
+                                                        <option value="md" selected>Medium</option>
+                                                        <option value="lg">Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Typography -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Typography</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Label Size</label>
+                                                    <select class="form-input" id="contactLabelSize">
+                                                        <option value="12">Small (12px)</option>
+                                                        <option value="14" selected>Medium (14px)</option>
+                                                        <option value="16">Large (16px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Label Weight</label>
+                                                    <select class="form-input" id="contactLabelWeight">
+                                                        <option value="400">Normal</option>
+                                                        <option value="500" selected>Medium</option>
+                                                        <option value="600">Semi Bold</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Spacing -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Spacing</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Section Padding</label>
+                                                    <select class="form-input" id="contactPadding">
+                                                        <option value="40">Compact (40px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="80">Large (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Form Width</label>
+                                                    <select class="form-input" id="contactFormWidth">
+                                                        <option value="500">Narrow (500px)</option>
+                                                        <option value="600" selected>Medium (600px)</option>
+                                                        <option value="800">Wide (800px)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -333,242 +813,80 @@
                                             <label><input type="radio" name="whatsappPosition" value="bottom-left"> Bottom Left</label>
                                         </div>
                                     </div>
+                                    
+                                    <!-- WhatsApp Design Controls -->
+                                    <div class="design-controls-section" style="border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e293b;">🎨 Design & Styling</h4>
+                                        
+                                        <!-- Button Colors -->
+                                        <div class="form-group">
+                                            <label class="form-label">Button Colors</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Background Color</label>
+                                                    <input type="color" class="form-input" id="whatsappBgColor" value="#25D366" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Icon Color</label>
+                                                    <input type="color" class="form-input" id="whatsappIconColor" value="#ffffff" style="height: 40px; padding: 4px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Button Size & Style -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Button Size & Style</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Button Size</label>
+                                                    <select class="form-input" id="whatsappSize">
+                                                        <option value="50">Small (50px)</option>
+                                                        <option value="60" selected>Medium (60px)</option>
+                                                        <option value="70">Large (70px)</option>
+                                                        <option value="80">XLarge (80px)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Shadow</label>
+                                                    <select class="form-input" id="whatsappShadow">
+                                                        <option value="sm">Small</option>
+                                                        <option value="md" selected>Medium</option>
+                                                        <option value="lg">Large</option>
+                                                        <option value="xl">Extra Large</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hover Effects -->
+                                        <div class="form-group" style="margin-top: 16px;">
+                                            <label class="form-label">Hover Effects</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Color</label>
+                                                    <input type="color" class="form-input" id="whatsappHoverBg" value="#20ba5a" style="height: 40px; padding: 4px;">
+                                                </div>
+                                                <div>
+                                                    <label style="font-size: 13px; color: #64748b; display: block; margin-bottom: 4px;">Hover Effect</label>
+                                                    <select class="form-input" id="whatsappHoverEffect">
+                                                        <option value="none">None</option>
+                                                        <option value="scale" selected>Scale</option>
+                                                        <option value="pulse">Pulse</option>
+                                                        <option value="bounce">Bounce</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="step-actions">
-                            <button class="btn-primary" data-next="2">Continue to Design →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 2: DESIGN & BRANDING -->
-                    <div class="step-content" id="step2">
-                        <div class="step-header">
-                            <h1>Design & Branding</h1>
-                            <p>Choose your industry and design style</p>
-                        </div>
-                        
-                        <!-- Industry Selection -->
-                        <div class="form-section">
-                            <label class="form-label">Industry *</label>
-                            <p class="field-hint">We'll apply industry-specific templates and best practices</p>
-                            
-                            <div class="industry-grid">
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="saas">
-                                    <div class="industry-content">
-                                        <div class="industry-name">SaaS</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="ecommerce">
-                                    <div class="industry-content">
-                                        <div class="industry-name">E-commerce</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="education">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Education</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="finance">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Finance</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="healthcare">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Healthcare</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="marketing">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Marketing</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="realestate">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Real Estate</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="nonprofit">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Non-Profit</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="tech">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Technology</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="food">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Food & Beverage</div>
-                                    </div>
-                                </label>
-                                
-                                <label class="industry-card">
-                                    <input type="radio" name="industry" value="other">
-                                    <div class="industry-content">
-                                        <div class="industry-name">Other</div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!-- Design Style -->
-                        <div class="form-section">
-                            <label class="form-label">Design Style *</label>
-                            <p class="field-hint">Choose the visual approach for your page</p>
-                            <div class="style-grid">
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="minimal">
-                                    <div class="style-preview minimal-preview"></div>
-                                    <div class="style-name">Minimal</div>
-                                    <div class="style-desc">Clean & spacious</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="bold">
-                                    <div class="style-preview bold-preview"></div>
-                                    <div class="style-name">Bold</div>
-                                    <div class="style-desc">Strong & vibrant</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="professional">
-                                    <div class="style-preview professional-preview"></div>
-                                    <div class="style-name">Professional</div>
-                                    <div class="style-desc">Corporate & trustworthy</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="creative">
-                                    <div class="style-preview creative-preview"></div>
-                                    <div class="style-name">Creative</div>
-                                    <div class="style-desc">Artistic & unique</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="elegant">
-                                    <div class="style-preview elegant-preview"></div>
-                                    <div class="style-name">Elegant</div>
-                                    <div class="style-desc">Luxurious & refined</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="modern">
-                                    <div class="style-preview modern-preview"></div>
-                                    <div class="style-name">Modern</div>
-                                    <div class="style-desc">Trendy & contemporary</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="playful">
-                                    <div class="style-preview playful-preview"></div>
-                                    <div class="style-name">Playful</div>
-                                    <div class="style-desc">Fun & friendly</div>
-                                </label>
-                                
-                                <label class="style-card">
-                                    <input type="radio" name="designStyle" value="technical">
-                                    <div class="style-preview technical-preview"></div>
-                                    <div class="style-name">Technical</div>
-                                    <div class="style-desc">Data-driven & precise</div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <!-- Brand Colors -->
-                        <div class="form-section">
-                            <label class="form-label">Brand Colors</label>
-                            <p class="field-hint">Customize your color palette or use our smart defaults</p>
-                            <div class="color-inputs">
-                                <div class="form-group">
-                                    <label>Primary Color</label>
-                                    <input type="color" id="primaryColor" value="#667eea">
-                                </div>
-                                <div class="form-group">
-                                    <label>Secondary Color</label>
-                                    <input type="color" id="secondaryColor" value="#764ba2">
-                                </div>
-                                <div class="form-group">
-                                    <label>Accent Color</label>
-                                    <input type="color" id="accentColor" value="#48bb78">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Advanced Customization (Progressive Disclosure) -->
-                        <div class="form-section">
-                            <button class="btn-ghost btn-sm" id="toggleAdvancedDesign" type="button">
-                                Customize Layout & Effects
+                        <!-- Generate Button -->
+                        <div class="builder-actions" style="margin-top: 32px; padding-top: 24px; border-top: 2px solid var(--color-border); text-align: center;">
+                            <button class="btn-primary" id="generatePageBtn" style="padding: 16px 48px; font-size: 16px; font-weight: 600;">
+                                🚀 Generate Product Page
                             </button>
-                            
-                            <div id="advancedDesignOptions" style="display: none; margin-top: 16px;">
-                                <!-- Spacing -->
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                    <label class="form-label">Spacing</label>
-                                    <div class="radio-group-inline">
-                                        <label><input type="radio" name="spacing" value="compact"> Compact</label>
-                                        <label><input type="radio" name="spacing" value="comfortable" checked> Comfortable</label>
-                                        <label><input type="radio" name="spacing" value="spacious"> Spacious</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Border Radius -->
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                    <label class="form-label">Corners</label>
-                                    <div class="radio-group-inline">
-                                        <label><input type="radio" name="borderRadius" value="sharp"> Sharp</label>
-                                        <label><input type="radio" name="borderRadius" value="rounded" checked> Rounded</label>
-                                        <label><input type="radio" name="borderRadius" value="pill"> Pill</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Shadows -->
-                                <div class="form-group" style="margin-bottom: 16px;">
-                                    <label class="form-label">Shadows</label>
-                                    <div class="radio-group-inline">
-                                        <label><input type="radio" name="shadows" value="none"> None</label>
-                                        <label><input type="radio" name="shadows" value="subtle" checked> Subtle</label>
-                                        <label><input type="radio" name="shadows" value="dramatic"> Dramatic</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Animations -->
-                                <div class="form-group">
-                                    <label class="form-label">Animations</label>
-                                    <div class="radio-group-inline">
-                                        <label><input type="radio" name="animations" value="none"> None</label>
-                                        <label><input type="radio" name="animations" value="subtle" checked> Subtle</label>
-                                        <label><input type="radio" name="animations" value="playful"> Playful</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step-actions">
-                            <button class="btn-secondary" data-prev="1">← Back</button>
-                            <button class="btn-primary" id="generatePageBtn">Generate Product Page</button>
                         </div>
                     </div>
 
