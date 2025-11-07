@@ -880,6 +880,7 @@ function attachEventListeners() {
     // About section content
     const aboutHeadline = document.getElementById('aboutHeadline');
     const aboutContent = document.getElementById('aboutContent');
+    const aboutImage = document.getElementById('aboutImage');
     if (aboutHeadline) {
         aboutHeadline.addEventListener('input', debounce(() => {
             appState.sections.about.headline = aboutHeadline.value;
@@ -890,6 +891,13 @@ function attachEventListeners() {
     if (aboutContent) {
         aboutContent.addEventListener('input', debounce(() => {
             appState.sections.about.content = aboutContent.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    if (aboutImage) {
+        aboutImage.addEventListener('input', debounce(() => {
+            appState.sections.about.image = aboutImage.value;
             updatePreview();
             saveToLocalStorage();
         }, 500));
@@ -2000,6 +2008,40 @@ function generatePreviewHTML() {
             ${aboutBorderStyle === 'bottom' ? `border-bottom: 3px solid ${aboutAccentColor};` : ''}
             ${aboutBorderStyle === 'left' ? `border-left: 3px solid ${aboutAccentColor};` : ''}
         }
+        .preview-about-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: ${aboutContentWidth};
+            margin: 0 auto;
+            align-items: center;
+        }
+        .preview-about-side-image {
+            display: flex;
+            gap: 48px;
+            max-width: ${aboutContentWidth};
+            margin: 0 auto;
+            align-items: center;
+        }
+        .preview-about-side-image > div:first-child {
+            flex: 0 0 300px;
+        }
+        .preview-about-side-image > div:last-child {
+            flex: 1;
+        }
+        .about-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: ${aboutTextColor};
+            opacity: 0.5;
+            font-size: 14px;
+            border: 2px dashed ${aboutAccentColor}33;
+        }
         .preview-about-centered {
             max-width: ${aboutContentWidth};
             margin: 0 auto;
@@ -2017,6 +2059,13 @@ function generatePreviewHTML() {
             line-height: ${aboutLineHeight};
             color: ${aboutTextColor};
             opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .preview-about-two-column,
+            .preview-about-side-image {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
         }
         
         /* Contact Section Styles */
@@ -2263,13 +2312,17 @@ function generatePreviewHTML() {
     if (aboutSection.enabled) {
         const aboutHeadline = aboutSection.headline || 'About Us';
         const aboutContent = aboutSection.content || 'We are passionate about delivering exceptional products and services. Our mission is to make a positive impact on our customers\' lives through innovation and quality.';
+        const aboutImage = aboutSection.image || '';
         
         html += `<section class="preview-about-section">`;
         
         if (aboutSection.layout === 'two-column') {
             html += `
                 <div class="preview-about-two-column">
-                    <div class="about-image-placeholder">About Image</div>
+                    ${aboutImage ? 
+                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px;">` :
+                        `<div class="about-image-placeholder">About Image</div>`
+                    }
                     <div>
                         <h2>${escapeHtml(aboutHeadline)}</h2>
                         <p>${escapeHtml(aboutContent)}</p>
@@ -2279,7 +2332,10 @@ function generatePreviewHTML() {
         } else if (aboutSection.layout === 'side-image') {
             html += `
                 <div class="preview-about-side-image">
-                    <div class="about-image-placeholder">About Image</div>
+                    ${aboutImage ? 
+                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 300px; height: 300px; object-fit: cover; border-radius: 12px;">` :
+                        `<div class="about-image-placeholder">About Image</div>`
+                    }
                     <div>
                         <h2>${escapeHtml(aboutHeadline)}</h2>
                         <p>${escapeHtml(aboutContent)}</p>
@@ -3345,11 +3401,15 @@ function loadFromLocalStorage() {
         if (appState.sections && appState.sections.about) {
             const aboutHeadline = document.getElementById('aboutHeadline');
             const aboutContent = document.getElementById('aboutContent');
+            const aboutImage = document.getElementById('aboutImage');
             if (aboutHeadline && appState.sections.about.headline) {
                 aboutHeadline.value = appState.sections.about.headline;
             }
             if (aboutContent && appState.sections.about.content) {
                 aboutContent.value = appState.sections.about.content;
+            }
+            if (aboutImage && appState.sections.about.image) {
+                aboutImage.value = appState.sections.about.image;
             }
         }
         
