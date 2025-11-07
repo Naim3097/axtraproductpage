@@ -30,7 +30,10 @@ const appState = {
             headline: '',
             subheadline: '',
             ctaText: 'Shop Now',
-            showCTA: true
+            showCTA: true,
+            backgroundColor: null, // null = use primary color from design
+            textColor: '#ffffff',
+            useGradient: true
         },
         products: {
             enabled: true,
@@ -172,9 +175,74 @@ function initializeSectionControls() {
     
     heroShowCTA.addEventListener('change', (e) => {
         appState.sections.hero.showCTA = e.target.checked;
+        const ctaTextGroup = document.getElementById('ctaTextGroup');
+        if (ctaTextGroup) {
+            ctaTextGroup.style.display = e.target.checked ? 'block' : 'none';
+        }
         updatePreview();
         saveToLocalStorage();
     });
+    
+    // CTA Text customization
+    const ctaTextPreset = document.getElementById('ctaTextPreset');
+    const ctaTextCustom = document.getElementById('ctaTextCustom');
+    const ctaTextGroup = document.getElementById('ctaTextGroup');
+    
+    if (ctaTextPreset) {
+        ctaTextPreset.addEventListener('change', (e) => {
+            if (e.target.value === 'custom') {
+                ctaTextCustom.style.display = 'block';
+                ctaTextCustom.focus();
+            } else {
+                ctaTextCustom.style.display = 'none';
+                appState.sections.hero.ctaText = e.target.value;
+                updatePreview();
+                saveToLocalStorage();
+            }
+        });
+    }
+    
+    if (ctaTextCustom) {
+        ctaTextCustom.addEventListener('input', debounce((e) => {
+            appState.sections.hero.ctaText = e.target.value || 'Shop Now';
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
+    // Initialize CTA text group visibility
+    if (ctaTextGroup) {
+        ctaTextGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
+    }
+    
+    // Hero section styling controls
+    const heroBackgroundColor = document.getElementById('heroBackgroundColor');
+    const heroTextColor = document.getElementById('heroTextColor');
+    const heroUseGradient = document.getElementById('heroUseGradient');
+    
+    if (heroBackgroundColor) {
+        heroBackgroundColor.addEventListener('input', debounce((e) => {
+            appState.sections.hero.backgroundColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroTextColor) {
+        heroTextColor.addEventListener('input', debounce((e) => {
+            appState.sections.hero.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (heroUseGradient) {
+        heroUseGradient.addEventListener('change', (e) => {
+            appState.sections.hero.useGradient = e.target.checked;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
     
     // Products Section
     const productsEnabled = document.getElementById('productsEnabled');
@@ -977,15 +1045,7 @@ function updatePreview() {
     
     if (!previewContainer) return;
     
-    if (appState.products.length === 0) {
-        previewContainer.innerHTML = `
-            <div class="preview-placeholder">
-                <p>Add products to see your page come to life</p>
-            </div>
-        `;
-        return;
-    }
-    
+    // Generate preview regardless of products - sections can exist independently
     const html = generatePreviewHTML();
     previewContainer.innerHTML = html;
 }
@@ -1074,6 +1134,17 @@ function generatePreviewHTML() {
     const heroFontSize = 48 * styleConfig.fontSize;
     const cardTitleSize = 20 * styleConfig.fontSize;
     
+    // Get hero section styling (reference early for CSS generation)
+    const heroSectionStyle = appState.sections.hero;
+    const heroBgColor = heroSectionStyle.backgroundColor || primaryColor;
+    const heroTextColor = heroSectionStyle.textColor || '#ffffff';
+    const heroUseGradient = heroSectionStyle.useGradient !== false;
+    
+    // Generate hero background based on settings
+    const heroBackground = heroUseGradient 
+        ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
+        : heroBgColor;
+    
     let html = `<style>
         .preview-content {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -1083,8 +1154,8 @@ function generatePreviewHTML() {
         .preview-hero-v2 {
             padding: ${basePadding * 2}px ${basePadding}px;
             text-align: center;
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
-            color: white;
+            background: ${heroBackground};
+            color: ${heroTextColor};
         }
         .preview-hero-split {
             display: grid;
@@ -1092,15 +1163,15 @@ function generatePreviewHTML() {
             gap: 48px;
             align-items: center;
             padding: ${basePadding * 2}px ${basePadding}px;
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
-            color: white;
+            background: ${heroBackground};
+            color: ${heroTextColor};
             text-align: left;
         }
         .preview-hero-minimal {
             padding: ${basePadding}px ${basePadding}px;
             text-align: left;
-            background: ${primaryColor};
-            color: white;
+            background: ${heroBgColor};
+            color: ${heroTextColor};
             border-bottom: 4px solid ${secondaryColor};
         }
         .preview-hero-minimal h1 {
@@ -1141,8 +1212,8 @@ function generatePreviewHTML() {
         .preview-cta-btn {
             display: inline-block;
             padding: ${16 * styleConfig.spacing}px ${40 * styleConfig.spacing}px;
-            background: white;
-            color: ${primaryColor};
+            background: ${heroTextColor === '#ffffff' ? 'white' : heroBgColor};
+            color: ${heroTextColor === '#ffffff' ? heroBgColor : '#ffffff'};
             border-radius: ${styleConfig.borderRadius}px;
             text-decoration: none;
             font-weight: 600;
@@ -1636,13 +1707,7 @@ window.removeInput = removeInput;
 function generatePage() {
     console.log('🚀 Generating complete product page...');
     
-    // Validate that we have minimum required data
-    if (appState.products.length === 0) {
-        alert('⚠️ Please add at least one product before generating the page.');
-        return;
-    }
-    
-    // Generate complete HTML page
+    // Generate complete HTML page - products are optional, sections can exist independently
     const fullHTML = generateCompleteHTML();
     
     // Open in new window with proper viewport
@@ -1739,6 +1804,14 @@ function generateCompleteHTML() {
     const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
     const ctaText = heroSection.ctaText || 'Shop Now';
     
+    // Get hero section styling
+    const heroBgColor = heroSection.backgroundColor || primaryColor;
+    const heroTextColor = heroSection.textColor || '#ffffff';
+    const heroUseGradient = heroSection.useGradient !== false;
+    const heroBackground = heroUseGradient 
+        ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
+        : heroBgColor;
+    
     // Build complete HTML document
     return `<!DOCTYPE html>
 <html lang="en">
@@ -1764,8 +1837,8 @@ function generateCompleteHTML() {
         .hero {
             padding: ${sectionPadding}px ${basePadding}px;
             text-align: center;
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
-            color: white;
+            background: ${heroBackground};
+            color: ${heroTextColor};
             position: relative;
         }
         
@@ -1775,8 +1848,8 @@ function generateCompleteHTML() {
             gap: 48px;
             align-items: center;
             padding: ${sectionPadding}px ${basePadding}px;
-            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
-            color: white;
+            background: ${heroBackground};
+            color: ${heroTextColor};
             text-align: left;
         }
         
@@ -1843,8 +1916,8 @@ function generateCompleteHTML() {
         .cta-button {
             display: inline-block;
             padding: ${16 * styleConfig.spacing}px ${40 * styleConfig.spacing}px;
-            background: white;
-            color: ${primaryColor};
+            background: ${heroTextColor === '#ffffff' ? 'white' : heroBgColor};
+            color: ${heroTextColor === '#ffffff' ? heroBgColor : '#ffffff'};
             border-radius: ${styleConfig.borderRadius}px;
             text-decoration: none;
             font-weight: 600;
@@ -2315,6 +2388,36 @@ function loadFromLocalStorage() {
             
             const heroLayoutRadio = document.querySelector(`input[name="heroLayout"][value="${appState.sections.hero.layout}"]`);
             if (heroLayoutRadio) heroLayoutRadio.checked = true;
+            
+            // Hero styling
+            const heroBackgroundColor = document.getElementById('heroBackgroundColor');
+            const heroTextColor = document.getElementById('heroTextColor');
+            const heroUseGradient = document.getElementById('heroUseGradient');
+            const ctaTextPreset = document.getElementById('ctaTextPreset');
+            const ctaTextCustom = document.getElementById('ctaTextCustom');
+            
+            if (heroBackgroundColor && appState.sections.hero.backgroundColor) {
+                heroBackgroundColor.value = appState.sections.hero.backgroundColor;
+            }
+            if (heroTextColor && appState.sections.hero.textColor) {
+                heroTextColor.value = appState.sections.hero.textColor;
+            }
+            if (heroUseGradient) {
+                heroUseGradient.checked = appState.sections.hero.useGradient !== false;
+            }
+            if (ctaTextPreset && appState.sections.hero.ctaText) {
+                const ctaText = appState.sections.hero.ctaText;
+                const presetExists = Array.from(ctaTextPreset.options).some(opt => opt.value === ctaText);
+                if (presetExists) {
+                    ctaTextPreset.value = ctaText;
+                } else {
+                    ctaTextPreset.value = 'custom';
+                    if (ctaTextCustom) {
+                        ctaTextCustom.style.display = 'block';
+                        ctaTextCustom.value = ctaText;
+                    }
+                }
+            }
             
             // Products
             const productsEnabled = document.getElementById('productsEnabled');
