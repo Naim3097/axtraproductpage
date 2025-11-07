@@ -250,6 +250,45 @@ function attachEventListeners() {
         });
     }
     
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+        
+        // Mobile menu actions
+        document.getElementById('mobilePreviewToggle')?.addEventListener('click', () => {
+            document.getElementById('previewToggleBtn')?.click();
+            mobileMenu.classList.remove('active');
+            // Update mobile menu text
+            const isVisible = document.getElementById('livePreview')?.parentElement?.classList.contains('active');
+            document.querySelector('.mobile-toggle-text').textContent = isVisible ? 'Show Preview' : 'Hide Preview';
+        });
+        
+        document.getElementById('mobileSaveDraft')?.addEventListener('click', () => {
+            document.getElementById('saveDraftBtn')?.click();
+            mobileMenu.classList.remove('active');
+        });
+        
+        document.getElementById('mobileClearData')?.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            if (confirm('Are you sure you want to clear all data and start fresh? This cannot be undone.')) {
+                localStorage.removeItem('axtra_builder_v2');
+                location.reload();
+            }
+        });
+    }
+    
     // Variant toggles
     const hasVariantsCheckbox = document.getElementById('hasVariants');
     if (hasVariantsCheckbox) {
