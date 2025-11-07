@@ -2161,60 +2161,15 @@ function generatePreviewHTML() {
     const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
     const ctaText = heroSection.ctaText || 'Shop Now';
     
-    // Get style name for display
-    const styleName = appState.designEngine && appState.designEngine.designStyles[style] 
-        ? appState.designEngine.designStyles[style].name 
-        : style.charAt(0).toUpperCase() + style.slice(1);
-    
-    const industryName = appState.designEngine && appState.designEngine.industries[industry]
-        ? appState.designEngine.industries[industry].name
-        : industry.charAt(0).toUpperCase() + industry.slice(1);
-    
     // Only render hero if enabled
     if (heroSection.enabled) {
-        const heroClass = heroSection.layout === 'split' ? 'preview-hero-split' : 
-                         heroSection.layout === 'minimal' ? 'preview-hero-minimal' : 
-                         'preview-hero-v2';
-        
-        html += `<section class="${heroClass}">`;
-        
-        if (heroSection.layout === 'split') {
-            // Split layout - text on left, image on right
-            html += `
-                <div>
-                    <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
-                        ${industryName} • ${styleName}
-                    </div>
-                    <h1 style="font-size: clamp(28px, 5vw, ${heroFontSize}px); font-weight: ${styleConfig.fontWeight}; margin-bottom: ${16 * styleConfig.spacing}px; line-height: 1.2;">${escapeHtml(headline)}</h1>
-                    <p style="font-size: clamp(16px, 3vw, 20px); opacity: 0.95; margin-bottom: ${32 * styleConfig.spacing}px;">${escapeHtml(subheadline)}</p>
-                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
-                </div>
-                <div class="hero-image-placeholder">Hero Image</div>
-            `;
-        } else if (heroSection.layout === 'minimal') {
-            // Minimal layout - compact header style
-            html += `
-                <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                    <div>
-                        <h1>${escapeHtml(headline)}</h1>
-                        <p>${escapeHtml(subheadline)}</p>
-                    </div>
-                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn" style="padding: 12px 24px; font-size: 14px;">${escapeHtml(ctaText)}</a>` : ''}
-                </div>
-            `;
-        } else {
-            // Centered layout (default)
-            html += `
-                <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
-                    ${industryName} • ${styleName}
-                </div>
+        html += `<section class="preview-hero-v2">
+            <div class="hero-content">
                 <h1>${escapeHtml(headline)}</h1>
                 <p>${escapeHtml(subheadline)}</p>
                 ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
-            `;
-        }
-        
-        html += `</section>`;
+            </div>
+        </section>`;
     }
     
     // Products Section - Use sections state
