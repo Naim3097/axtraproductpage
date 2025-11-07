@@ -839,19 +839,7 @@ function attachEventListeners() {
         });
     });
     
-    // Color inputs
-    document.getElementById('primaryColor').addEventListener('change', (e) => {
-        appState.design.primaryColor = e.target.value;
-        updatePreview();
-        saveToLocalStorage();
-    });
-    
-    document.getElementById('secondaryColor').addEventListener('change', (e) => {
-        appState.design.secondaryColor = e.target.value;
-        updatePreview();
-        saveToLocalStorage();
-    });
-    
+    // Accent color input (if it exists from old design system)
     const accentColorInput = document.getElementById('accentColor');
     if (accentColorInput) {
         accentColorInput.addEventListener('change', (e) => {

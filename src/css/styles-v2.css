@@ -1011,14 +1011,8 @@ body {
    ============================================ */
 
 @media (max-width: 1024px) {
-  .workspace {
-    flex-direction: column;
-  }
-  
   .form-panel {
     flex: 1;
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
   }
   
   .preview-panel {
