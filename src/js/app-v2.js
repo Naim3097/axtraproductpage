@@ -148,6 +148,120 @@ function initializeApp() {
     updatePreview();
 }
 
+// Section Controls Management
+function initializeSectionControls() {
+    // Hero Section
+    const heroEnabled = document.getElementById('heroEnabled');
+    const heroOptions = document.getElementById('heroOptions');
+    const heroShowCTA = document.getElementById('heroShowCTA');
+    
+    heroEnabled.addEventListener('change', (e) => {
+        appState.sections.hero.enabled = e.target.checked;
+        heroOptions.style.display = e.target.checked ? 'block' : 'none';
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    document.querySelectorAll('input[name="heroLayout"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.hero.layout = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    heroShowCTA.addEventListener('change', (e) => {
+        appState.sections.hero.showCTA = e.target.checked;
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    // Products Section
+    const productsEnabled = document.getElementById('productsEnabled');
+    const productsOptions = document.getElementById('productsOptions');
+    const productsShowDescription = document.getElementById('productsShowDescription');
+    const productsShowPricing = document.getElementById('productsShowPricing');
+    
+    productsEnabled.addEventListener('change', (e) => {
+        appState.sections.products.enabled = e.target.checked;
+        productsOptions.style.display = e.target.checked ? 'block' : 'none';
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    document.querySelectorAll('input[name="productsLayout"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.products.layout = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    document.querySelectorAll('input[name="productsColumns"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.products.columns = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    productsShowDescription.addEventListener('change', (e) => {
+        appState.sections.products.showDescription = e.target.checked;
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    productsShowPricing.addEventListener('change', (e) => {
+        appState.sections.products.showPricing = e.target.checked;
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    // About Section
+    const aboutEnabled = document.getElementById('aboutEnabled');
+    const aboutOptions = document.getElementById('aboutOptions');
+    
+    aboutEnabled.addEventListener('change', (e) => {
+        appState.sections.about.enabled = e.target.checked;
+        aboutOptions.style.display = e.target.checked ? 'block' : 'none';
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    document.querySelectorAll('input[name="aboutLayout"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.about.layout = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    // Contact Section
+    const contactEnabled = document.getElementById('contactEnabled');
+    const contactOptions = document.getElementById('contactOptions');
+    
+    contactEnabled.addEventListener('change', (e) => {
+        appState.sections.contact.enabled = e.target.checked;
+        contactOptions.style.display = e.target.checked ? 'block' : 'none';
+        updatePreview();
+        saveToLocalStorage();
+    });
+    
+    document.querySelectorAll('input[name="contactLayout"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.contact.layout = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    // Initialize visibility based on enabled state
+    heroOptions.style.display = appState.sections.hero.enabled ? 'block' : 'none';
+    productsOptions.style.display = appState.sections.products.enabled ? 'block' : 'none';
+    aboutOptions.style.display = appState.sections.about.enabled ? 'block' : 'none';
+    contactOptions.style.display = appState.sections.contact.enabled ? 'block' : 'none';
+}
+
 // ============================================
 // EVENT LISTENERS
 // ============================================
@@ -171,6 +285,9 @@ function attachEventListeners() {
     // Product modal
     document.getElementById('addProductBtn').addEventListener('click', openProductModal);
     document.getElementById('saveProductBtn').addEventListener('click', saveProduct);
+    
+    // Section Controls
+    initializeSectionControls();
     
     // Device toggle
     document.querySelectorAll('.device-btn').forEach(btn => {
@@ -1625,6 +1742,46 @@ function loadFromLocalStorage() {
                     if (radio) radio.checked = true;
                 }
             });
+        }
+        
+        // Restore section controls
+        if (appState.sections) {
+            // Hero
+            const heroEnabled = document.getElementById('heroEnabled');
+            const heroShowCTA = document.getElementById('heroShowCTA');
+            if (heroEnabled) heroEnabled.checked = appState.sections.hero.enabled;
+            if (heroShowCTA) heroShowCTA.checked = appState.sections.hero.showCTA;
+            
+            const heroLayoutRadio = document.querySelector(`input[name="heroLayout"][value="${appState.sections.hero.layout}"]`);
+            if (heroLayoutRadio) heroLayoutRadio.checked = true;
+            
+            // Products
+            const productsEnabled = document.getElementById('productsEnabled');
+            const productsShowDescription = document.getElementById('productsShowDescription');
+            const productsShowPricing = document.getElementById('productsShowPricing');
+            if (productsEnabled) productsEnabled.checked = appState.sections.products.enabled;
+            if (productsShowDescription) productsShowDescription.checked = appState.sections.products.showDescription;
+            if (productsShowPricing) productsShowPricing.checked = appState.sections.products.showPricing;
+            
+            const productsLayoutRadio = document.querySelector(`input[name="productsLayout"][value="${appState.sections.products.layout}"]`);
+            if (productsLayoutRadio) productsLayoutRadio.checked = true;
+            
+            const productsColumnsRadio = document.querySelector(`input[name="productsColumns"][value="${appState.sections.products.columns}"]`);
+            if (productsColumnsRadio) productsColumnsRadio.checked = true;
+            
+            // About
+            const aboutEnabled = document.getElementById('aboutEnabled');
+            if (aboutEnabled) aboutEnabled.checked = appState.sections.about.enabled;
+            
+            const aboutLayoutRadio = document.querySelector(`input[name="aboutLayout"][value="${appState.sections.about.layout}"]`);
+            if (aboutLayoutRadio) aboutLayoutRadio.checked = true;
+            
+            // Contact
+            const contactEnabled = document.getElementById('contactEnabled');
+            if (contactEnabled) contactEnabled.checked = appState.sections.contact.enabled;
+            
+            const contactLayoutRadio = document.querySelector(`input[name="contactLayout"][value="${appState.sections.contact.layout}"]`);
+            if (contactLayoutRadio) contactLayoutRadio.checked = true;
         }
         
         // Restore content
