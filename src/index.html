@@ -51,7 +51,7 @@
             <div class="step-indicator">
                 <div class="step active" data-step="1">
                     <div class="step-number">1</div>
-                    <div class="step-label">Products</div>
+                    <div class="step-label">Sections</div>
                 </div>
                 <div class="step-line"></div>
                 <div class="step" data-step="2">
@@ -61,12 +61,12 @@
                 <div class="step-line"></div>
                 <div class="step" data-step="3">
                     <div class="step-number">3</div>
-                    <div class="step-label">Content</div>
+                    <div class="step-label">Products</div>
                 </div>
                 <div class="step-line"></div>
                 <div class="step" data-step="4">
                     <div class="step-number">4</div>
-                    <div class="step-label">Integrations</div>
+                    <div class="step-label">Content</div>
                 </div>
             </div>
         </header>
@@ -77,24 +77,137 @@
             <div class="form-panel">
                 <div class="form-container">
                     
-                    <!-- STEP 1: PRODUCT SETUP -->
+                    <!-- STEP 1: PAGE SECTIONS -->
                     <div class="step-content active" id="step1">
                         <div class="step-header">
-                            <h1>Product Setup</h1>
-                            <p>Add your products with pricing, images, and details</p>
+                            <h1>Page Sections & Layout</h1>
+                            <p>Choose which sections to include and their layout style</p>
                         </div>
                         
-                        <!-- Products List -->
-                        <div class="products-section">
-                            <div class="section-title-row">
-                                <h3>Your Products</h3>
-                                <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
+                        <!-- Section Manager -->
+                        <div class="form-section">
+                            <label class="form-label">Page Sections</label>
+                            <p class="field-hint">Toggle sections on/off and choose layouts</p>
+                            
+                            <!-- Hero Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="heroEnabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Hero Section</h3>
+                                        <p>Main headline and call-to-action</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="heroOptions">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="heroLayout" value="centered" checked> Centered</label>
+                                            <label><input type="radio" name="heroLayout" value="split"> Split</label>
+                                            <label><input type="radio" name="heroLayout" value="minimal"> Minimal</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="heroShowCTA" checked>
+                                            Show Call-to-Action Button
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div id="productsList" class="products-list">
-                                <!-- Product cards will be added here -->
-                                <div class="empty-state" id="emptyProducts">
-                                    <p>No products yet. Click "Add Product" to get started.</p>
+                            <!-- Products Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="productsEnabled" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Products Section</h3>
+                                        <p>Display your product catalog</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="productsOptions">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="productsLayout" value="grid" checked> Grid</label>
+                                            <label><input type="radio" name="productsLayout" value="list"> List</label>
+                                            <label><input type="radio" name="productsLayout" value="masonry"> Masonry</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Grid Columns</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="productsColumns" value="2"> 2 Columns</label>
+                                            <label><input type="radio" name="productsColumns" value="3" checked> 3 Columns</label>
+                                            <label><input type="radio" name="productsColumns" value="4"> 4 Columns</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productsShowDescription" checked>
+                                            Show Product Descriptions
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productsShowPricing" checked>
+                                            Show Pricing
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- About Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="aboutEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>About Section</h3>
+                                        <p>Tell your brand story</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="aboutOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="aboutLayout" value="two-column" checked> Two Column</label>
+                                            <label><input type="radio" name="aboutLayout" value="centered"> Centered</label>
+                                            <label><input type="radio" name="aboutLayout" value="side-image"> Side Image</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Section -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="contactEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>Contact Section</h3>
+                                        <p>Contact form or details</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="contactOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Layout Style</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="contactLayout" value="form" checked> Form</label>
+                                            <label><input type="radio" name="contactLayout" value="details"> Details</label>
+                                            <label><input type="radio" name="contactLayout" value="map"> With Map</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -330,151 +443,43 @@
                         
                         <div class="step-actions">
                             <button class="btn-secondary" data-prev="1">← Back</button>
-                            <button class="btn-primary" data-next="3">Continue to Content →</button>
+                            <button class="btn-primary" data-next="3">Continue to Products →</button>
                         </div>
                     </div>
 
-                    <!-- STEP 3: CONTENT & COPY -->
+                    <!-- STEP 3: PRODUCT SETUP -->
                     <div class="step-content" id="step3">
                         <div class="step-header">
-                            <h1>Page Sections & Content</h1>
-                            <p>Choose which sections to include and customize their layout</p>
+                            <h1>Product Setup</h1>
+                            <p>Add your products with pricing, images, and details</p>
                         </div>
                         
-                        <!-- Section Manager -->
-                        <div class="form-section">
-                            <label class="form-label">Page Sections</label>
-                            <p class="field-hint">Toggle sections on/off and choose layouts</p>
-                            
-                            <!-- Hero Section -->
-                            <div class="section-control">
-                                <div class="section-header">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="heroEnabled" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="section-info">
-                                        <h3>Hero Section</h3>
-                                        <p>Main headline and call-to-action</p>
-                                    </div>
-                                </div>
-                                <div class="section-options" id="heroOptions">
-                                    <div class="form-group">
-                                        <label class="form-label">Layout Style</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="heroLayout" value="centered" checked> Centered</label>
-                                            <label><input type="radio" name="heroLayout" value="split"> Split</label>
-                                            <label><input type="radio" name="heroLayout" value="minimal"> Minimal</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" id="heroShowCTA" checked>
-                                            Show Call-to-Action Button
-                                        </label>
-                                    </div>
-                                </div>
+                        <!-- Products List -->
+                        <div class="products-section">
+                            <div class="section-title-row">
+                                <h3>Your Products</h3>
+                                <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
                             </div>
                             
-                            <!-- Products Section -->
-                            <div class="section-control">
-                                <div class="section-header">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="productsEnabled" checked>
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="section-info">
-                                        <h3>Products Section</h3>
-                                        <p>Display your product catalog</p>
-                                    </div>
-                                </div>
-                                <div class="section-options" id="productsOptions">
-                                    <div class="form-group">
-                                        <label class="form-label">Layout Style</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="productsLayout" value="grid" checked> Grid</label>
-                                            <label><input type="radio" name="productsLayout" value="list"> List</label>
-                                            <label><input type="radio" name="productsLayout" value="masonry"> Masonry</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Grid Columns</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="productsColumns" value="2"> 2 Columns</label>
-                                            <label><input type="radio" name="productsColumns" value="3" checked> 3 Columns</label>
-                                            <label><input type="radio" name="productsColumns" value="4"> 4 Columns</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" id="productsShowDescription" checked>
-                                            Show Product Descriptions
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox" id="productsShowPricing" checked>
-                                            Show Pricing
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- About Section -->
-                            <div class="section-control">
-                                <div class="section-header">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="aboutEnabled">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="section-info">
-                                        <h3>About Section</h3>
-                                        <p>Tell your brand story</p>
-                                    </div>
-                                </div>
-                                <div class="section-options" id="aboutOptions" style="display: none;">
-                                    <div class="form-group">
-                                        <label class="form-label">Layout Style</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="aboutLayout" value="two-column" checked> Two Column</label>
-                                            <label><input type="radio" name="aboutLayout" value="centered"> Centered</label>
-                                            <label><input type="radio" name="aboutLayout" value="side-image"> Side Image</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Contact Section -->
-                            <div class="section-control">
-                                <div class="section-header">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="contactEnabled">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <div class="section-info">
-                                        <h3>Contact Section</h3>
-                                        <p>Contact form or details</p>
-                                    </div>
-                                </div>
-                                <div class="section-options" id="contactOptions" style="display: none;">
-                                    <div class="form-group">
-                                        <label class="form-label">Layout Style</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="contactLayout" value="form" checked> Form</label>
-                                            <label><input type="radio" name="contactLayout" value="details"> Details</label>
-                                            <label><input type="radio" name="contactLayout" value="map"> With Map</label>
-                                        </div>
-                                    </div>
+                            <div id="productsList" class="products-list">
+                                <!-- Product cards will be added here -->
+                                <div class="empty-state" id="emptyProducts">
+                                    <p>No products yet. Click "Add Product" to get started.</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <hr style="margin: 32px 0; border: none; border-top: 1px solid var(--color-border);">
-                        
-                        <!-- Content Inputs -->
-                        <div class="form-section">
-                            <label class="form-label">Content Details</label>
-                            <p class="field-hint">Customize text for enabled sections</p>
+                        <div class="step-actions">
+                            <button class="btn-secondary" data-prev="2">← Back</button>
+                            <button class="btn-primary" data-next="4">Continue to Content →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: CONTENT & COPY -->
+                    <div class="step-content" id="step4">
+                        <div class="step-header">
+                            <h1>Content & Copy</h1>
+                            <p>Customize text for your enabled sections</p>
                         </div>
                         
                         <!-- Hero Section -->
@@ -486,6 +491,33 @@
                         <div class="form-section">
                             <label class="form-label">Hero Subheadline</label>
                             <textarea class="form-textarea" id="heroSubheadline" rows="2" placeholder="The ultimate solution for..."></textarea>
+                        </div>
+                        
+                        <!-- About Section Content -->
+                        <div class="form-section">
+                            <label class="form-label">About Headline</label>
+                            <input type="text" class="form-input" id="aboutHeadline" placeholder="About Us">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label class="form-label">About Content</label>
+                            <textarea class="form-input" id="aboutContent" rows="4" placeholder="Tell your brand story..."></textarea>
+                        </div>
+                        
+                        <!-- Contact Section Content -->
+                        <div class="form-section">
+                            <label class="form-label">Contact Email</label>
+                            <input type="email" class="form-input" id="contactEmail" placeholder="hello@example.com">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-input" id="contactPhone" placeholder="+1 (555) 123-4567">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label class="form-label">Contact Address</label>
+                            <textarea class="form-input" id="contactAddress" rows="2" placeholder="123 Business Street, City, State 12345"></textarea>
                         </div>
                         
                         <!-- Features -->
@@ -526,46 +558,8 @@
                         </div>
                         
                         <div class="step-actions">
-                            <button class="btn-secondary" data-prev="2">← Back</button>
-                            <button class="btn-primary" data-next="4">Continue to Integrations →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 4: INTEGRATIONS & MARKETING -->
-                    <div class="step-content" id="step4">
-                        <div class="step-header">
-                            <h1>Integrations & Marketing</h1>
-                            <p>Connect your tools and analytics</p>
-                        </div>
-                        
-                        <!-- Lean X Payment -->
-                        <div class="form-section">
-                            <label class="form-label">Lean X Payment Gateway *</label>
-                            <input type="text" class="form-input" id="leanxApiKey" placeholder="Your Lean X API Key">
-                        </div>
-                        
-                        <!-- Email Marketing -->
-                        <div class="form-section">
-                            <label class="form-label">Email Marketing</label>
-                            <select class="form-select" id="emailProvider">
-                                <option value="">Select provider (optional)</option>
-                                <option value="mailchimp">Mailchimp</option>
-                                <option value="convertkit">ConvertKit</option>
-                                <option value="klaviyo">Klaviyo</option>
-                            </select>
-                            <input type="text" class="form-input" id="emailApiKey" placeholder="API Key" style="margin-top: 8px; display: none;">
-                        </div>
-                        
-                        <!-- Analytics -->
-                        <div class="form-section">
-                            <label class="form-label">Analytics & Tracking</label>
-                            <input type="text" class="form-input" id="googleAnalytics" placeholder="Google Analytics ID (optional)">
-                            <input type="text" class="form-input" id="facebookPixel" placeholder="Facebook Pixel ID (optional)" style="margin-top: 8px;">
-                        </div>
-                        
-                        <div class="step-actions">
                             <button class="btn-secondary" data-prev="3">← Back</button>
-                            <button class="btn-success" id="generatePageBtn">Generate Product Page →</button>
+                            <button class="btn-primary" id="generatePageBtn">Generate Product Page</button>
                         </div>
                     </div>
 

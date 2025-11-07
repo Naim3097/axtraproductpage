@@ -408,11 +408,58 @@ function attachEventListeners() {
         if (element) {
             element.addEventListener('input', debounce(() => {
                 appState.content[id] = element.value;
+                // Also update sections state
+                if (id === 'heroHeadline') appState.sections.hero.headline = element.value;
+                if (id === 'heroSubheadline') appState.sections.hero.subheadline = element.value;
                 updatePreview();
                 saveToLocalStorage();
             }, 500));
         }
     });
+    
+    // About section content
+    const aboutHeadline = document.getElementById('aboutHeadline');
+    const aboutContent = document.getElementById('aboutContent');
+    if (aboutHeadline) {
+        aboutHeadline.addEventListener('input', debounce(() => {
+            appState.sections.about.headline = aboutHeadline.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    if (aboutContent) {
+        aboutContent.addEventListener('input', debounce(() => {
+            appState.sections.about.content = aboutContent.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
+    // Contact section content
+    const contactEmail = document.getElementById('contactEmail');
+    const contactPhone = document.getElementById('contactPhone');
+    const contactAddress = document.getElementById('contactAddress');
+    if (contactEmail) {
+        contactEmail.addEventListener('input', debounce(() => {
+            appState.sections.contact.email = contactEmail.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    if (contactPhone) {
+        contactPhone.addEventListener('input', debounce(() => {
+            appState.sections.contact.phone = contactPhone.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    if (contactAddress) {
+        contactAddress.addEventListener('input', debounce(() => {
+            appState.sections.contact.address = contactAddress.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
     
     // Generate button
     document.getElementById('generatePageBtn').addEventListener('click', generatePage);
@@ -1039,6 +1086,47 @@ function generatePreviewHTML() {
             background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
             color: white;
         }
+        .preview-hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            padding: ${basePadding * 2}px ${basePadding}px;
+            background: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
+            color: white;
+            text-align: left;
+        }
+        .preview-hero-minimal {
+            padding: ${basePadding}px ${basePadding}px;
+            text-align: left;
+            background: ${primaryColor};
+            color: white;
+            border-bottom: 4px solid ${secondaryColor};
+        }
+        .preview-hero-minimal h1 {
+            font-size: clamp(24px, 4vw, 32px) !important;
+            margin-bottom: 8px !important;
+        }
+        .preview-hero-minimal p {
+            font-size: clamp(14px, 2vw, 16px) !important;
+            margin-bottom: 16px !important;
+        }
+        .hero-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: rgba(255,255,255,0.2);
+            border-radius: ${styleConfig.borderRadius}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        @media (max-width: 768px) {
+            .preview-hero-split {
+                grid-template-columns: 1fr;
+            }
+        }
         .preview-hero-v2 h1 {
             font-size: clamp(28px, 5vw, ${heroFontSize}px);
             font-weight: ${styleConfig.fontWeight};
@@ -1141,6 +1229,151 @@ function generatePreviewHTML() {
         .preview-buy-btn:hover {
             background: ${secondaryColor};
         }
+        
+        /* About Section Styles */
+        .preview-about-section {
+            padding: ${basePadding * 2}px ${basePadding}px;
+            background: white;
+        }
+        .preview-about-centered {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .preview-about-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .preview-about-side-image {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .preview-about-section h2 {
+            font-size: ${32 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            margin-bottom: ${24 * styleConfig.spacing}px;
+            color: #1a202c;
+        }
+        .preview-about-section p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+        }
+        .about-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
+            border-radius: ${styleConfig.borderRadius}px;
+            display: flex;
+            align-items: center;
+            justify-center: center;
+            color: #6b7280;
+        }
+        @media (max-width: 768px) {
+            .preview-about-two-column,
+            .preview-about-side-image {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Contact Section Styles */
+        .preview-contact-section {
+            padding: ${basePadding * 2}px ${basePadding}px;
+            background: #f7fafc;
+        }
+        .preview-contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .preview-contact-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .preview-contact-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .preview-contact-section h2 {
+            font-size: ${32 * styleConfig.fontSize}px;
+            font-weight: ${styleConfig.fontWeight};
+            margin-bottom: ${32 * styleConfig.spacing}px;
+            color: #1a202c;
+            text-align: center;
+        }
+        .contact-info-item {
+            margin-bottom: ${24 * styleConfig.spacing}px;
+            padding: ${20 * styleConfig.spacing}px;
+            background: white;
+            border-radius: ${styleConfig.borderRadius}px;
+            box-shadow: ${styleConfig.shadow};
+        }
+        .contact-info-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: ${primaryColor};
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
+            border-radius: ${styleConfig.borderRadius}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+        .contact-form-field {
+            margin-bottom: ${16 * styleConfig.spacing}px;
+        }
+        .contact-form-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .contact-form-field input,
+        .contact-form-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: ${styleConfig.borderRadius}px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .contact-submit-btn {
+            width: 100%;
+            padding: ${16 * styleConfig.spacing}px;
+            background: ${primaryColor};
+            color: white;
+            border: none;
+            border-radius: ${styleConfig.borderRadius}px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: ${styleConfig.transition};
+        }
+        .contact-submit-btn:hover {
+            background: ${secondaryColor};
+        }
+        @media (max-width: 768px) {
+            .preview-contact-map {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>`;
     
     // Hero Section - Use sections state
@@ -1160,16 +1393,49 @@ function generatePreviewHTML() {
     
     // Only render hero if enabled
     if (heroSection.enabled) {
-        html += `
-        <section class="preview-hero-v2">
-            <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
-                ${industryName} • ${styleName}
-            </div>
-            <h1>${escapeHtml(headline)}</h1>
-            <p>${escapeHtml(subheadline)}</p>
-            ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
-        </section>
-        `;
+        const heroClass = heroSection.layout === 'split' ? 'preview-hero-split' : 
+                         heroSection.layout === 'minimal' ? 'preview-hero-minimal' : 
+                         'preview-hero-v2';
+        
+        html += `<section class="${heroClass}">`;
+        
+        if (heroSection.layout === 'split') {
+            // Split layout - text on left, image on right
+            html += `
+                <div>
+                    <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
+                        ${industryName} • ${styleName}
+                    </div>
+                    <h1 style="font-size: clamp(28px, 5vw, ${heroFontSize}px); font-weight: ${styleConfig.fontWeight}; margin-bottom: ${16 * styleConfig.spacing}px; line-height: 1.2;">${escapeHtml(headline)}</h1>
+                    <p style="font-size: clamp(16px, 3vw, 20px); opacity: 0.95; margin-bottom: ${32 * styleConfig.spacing}px;">${escapeHtml(subheadline)}</p>
+                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
+                </div>
+                <div class="hero-image-placeholder">Hero Image</div>
+            `;
+        } else if (heroSection.layout === 'minimal') {
+            // Minimal layout - compact header style
+            html += `
+                <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <h1>${escapeHtml(headline)}</h1>
+                        <p>${escapeHtml(subheadline)}</p>
+                    </div>
+                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn" style="padding: 12px 24px; font-size: 14px;">${escapeHtml(ctaText)}</a>` : ''}
+                </div>
+            `;
+        } else {
+            // Centered layout (default)
+            html += `
+                <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
+                    ${industryName} • ${styleName}
+                </div>
+                <h1>${escapeHtml(headline)}</h1>
+                <p>${escapeHtml(subheadline)}</p>
+                ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
+            `;
+        }
+        
+        html += `</section>`;
     }
     
     // Products Section - Use sections state
@@ -1198,6 +1464,118 @@ function generatePreviewHTML() {
         });
         
         html += `</div></section>`;
+    }
+    
+    // About Section
+    const aboutSection = appState.sections.about;
+    if (aboutSection.enabled) {
+        const aboutHeadline = aboutSection.headline || 'About Us';
+        const aboutContent = aboutSection.content || 'We are passionate about delivering exceptional products and services. Our mission is to make a positive impact on our customers\' lives through innovation and quality.';
+        
+        html += `<section class="preview-about-section">`;
+        
+        if (aboutSection.layout === 'two-column') {
+            html += `
+                <div class="preview-about-two-column">
+                    <div class="about-image-placeholder">About Image</div>
+                    <div>
+                        <h2>${escapeHtml(aboutHeadline)}</h2>
+                        <p>${escapeHtml(aboutContent)}</p>
+                    </div>
+                </div>
+            `;
+        } else if (aboutSection.layout === 'side-image') {
+            html += `
+                <div class="preview-about-side-image">
+                    <div class="about-image-placeholder">About Image</div>
+                    <div>
+                        <h2>${escapeHtml(aboutHeadline)}</h2>
+                        <p>${escapeHtml(aboutContent)}</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Centered layout
+            html += `
+                <div class="preview-about-centered">
+                    <h2>${escapeHtml(aboutHeadline)}</h2>
+                    <p>${escapeHtml(aboutContent)}</p>
+                </div>
+            `;
+        }
+        
+        html += `</section>`;
+    }
+    
+    // Contact Section
+    const contactSection = appState.sections.contact;
+    if (contactSection.enabled) {
+        const email = contactSection.email || 'hello@example.com';
+        const phone = contactSection.phone || '+1 (555) 123-4567';
+        const address = contactSection.address || '123 Business Street, City, State 12345';
+        
+        html += `<section class="preview-contact-section">`;
+        html += `<h2>Contact Us</h2>`;
+        
+        if (contactSection.layout === 'form') {
+            html += `
+                <div class="preview-contact-form">
+                    <div class="contact-form-field">
+                        <label>Name</label>
+                        <input type="text" placeholder="Your name">
+                    </div>
+                    <div class="contact-form-field">
+                        <label>Email</label>
+                        <input type="email" placeholder="your@email.com">
+                    </div>
+                    <div class="contact-form-field">
+                        <label>Message</label>
+                        <textarea rows="5" placeholder="Your message"></textarea>
+                    </div>
+                    <button class="contact-submit-btn">Send Message</button>
+                </div>
+            `;
+        } else if (contactSection.layout === 'map') {
+            html += `
+                <div class="preview-contact-map">
+                    <div class="map-placeholder">Map Location</div>
+                    <div>
+                        <div class="contact-info-item">
+                            <strong>Email</strong>
+                            ${escapeHtml(email)}
+                        </div>
+                        <div class="contact-info-item">
+                            <strong>Phone</strong>
+                            ${escapeHtml(phone)}
+                        </div>
+                        <div class="contact-info-item">
+                            <strong>Address</strong>
+                            ${escapeHtml(address)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Details layout
+            html += `
+                <div class="preview-contact-details">
+                    <div class="contact-info-item">
+                        <strong>Email</strong>
+                        ${escapeHtml(email)}
+                    </div>
+                    <div class="contact-info-item">
+                        <strong>Phone</strong>
+                        ${escapeHtml(phone)}
+                    </div>
+                    <div class="contact-info-item">
+                        <strong>Address</strong>
+                        ${escapeHtml(address)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</section>`;
     }
     
     return html;
@@ -1790,6 +2168,34 @@ function loadFromLocalStorage() {
         }
         if (appState.content.heroSubheadline) {
             document.getElementById('heroSubheadline').value = appState.content.heroSubheadline;
+        }
+        
+        // Restore about section content
+        if (appState.sections && appState.sections.about) {
+            const aboutHeadline = document.getElementById('aboutHeadline');
+            const aboutContent = document.getElementById('aboutContent');
+            if (aboutHeadline && appState.sections.about.headline) {
+                aboutHeadline.value = appState.sections.about.headline;
+            }
+            if (aboutContent && appState.sections.about.content) {
+                aboutContent.value = appState.sections.about.content;
+            }
+        }
+        
+        // Restore contact section content
+        if (appState.sections && appState.sections.contact) {
+            const contactEmail = document.getElementById('contactEmail');
+            const contactPhone = document.getElementById('contactPhone');
+            const contactAddress = document.getElementById('contactAddress');
+            if (contactEmail && appState.sections.contact.email) {
+                contactEmail.value = appState.sections.contact.email;
+            }
+            if (contactPhone && appState.sections.contact.phone) {
+                contactPhone.value = appState.sections.contact.phone;
+            }
+            if (contactAddress && appState.sections.contact.address) {
+                contactAddress.value = appState.sections.contact.address;
+            }
         }
         
         updatePreview();
