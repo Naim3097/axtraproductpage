@@ -901,6 +901,10 @@ function attachEventListeners() {
     const aboutHeadline = document.getElementById('aboutHeadline');
     const aboutContent = document.getElementById('aboutContent');
     const aboutImage = document.getElementById('aboutImage');
+    const aboutImagePreview = document.getElementById('aboutImagePreview');
+    const aboutImagePreviewImg = document.getElementById('aboutImagePreviewImg');
+    const aboutImageRemove = document.getElementById('aboutImageRemove');
+    
     if (aboutHeadline) {
         aboutHeadline.addEventListener('input', debounce(() => {
             appState.sections.about.headline = aboutHeadline.value;
@@ -916,11 +920,30 @@ function attachEventListeners() {
         }, 500));
     }
     if (aboutImage) {
-        aboutImage.addEventListener('input', debounce(() => {
-            appState.sections.about.image = aboutImage.value;
+        aboutImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    appState.sections.about.image = event.target.result;
+                    if (aboutImagePreviewImg) aboutImagePreviewImg.src = event.target.result;
+                    if (aboutImagePreview) aboutImagePreview.style.display = 'block';
+                    updatePreview();
+                    saveToLocalStorage();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    if (aboutImageRemove) {
+        aboutImageRemove.addEventListener('click', () => {
+            appState.sections.about.image = null;
+            if (aboutImage) aboutImage.value = '';
+            if (aboutImagePreview) aboutImagePreview.style.display = 'none';
             updatePreview();
             saveToLocalStorage();
-        }, 500));
+        });
     }
     
     // About Design Controls
@@ -2147,6 +2170,44 @@ function generatePreviewHTML() {
             background: ${contactButtonHover};
             transform: translateY(-2px);
         }
+        .preview-contact-map {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+        .preview-contact-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .contact-info-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: white;
+            border-radius: ${contactInputRadius}px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .contact-info-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: ${contactTextColor};
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
+            border-radius: ${contactInputRadius}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-weight: 500;
+        }
         
         /* WhatsApp Button */
         .whatsapp-button {
@@ -3197,7 +3258,9 @@ function generateCompleteHTML() {
     <!-- About Section -->
     <section class="about-section" style="padding: ${aboutPadding}px; background: ${aboutBackgroundColor};">
         <div style="max-width: ${aboutContentWidth}px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
-            ${appState.sections.about.layout !== 'centered' ? '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>' : ''}
+            ${appState.sections.about.layout !== 'centered' ? (appState.sections.about.image ? 
+                `<img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px;">` : 
+                '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
             <div>
                 <h2 style="font-size: ${aboutHeadingSize}px; font-weight: ${aboutHeadingWeight}; margin-bottom: 24px; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
                 <p style="font-size: ${aboutContentSize}px; line-height: ${aboutLineHeight}; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
@@ -3516,15 +3579,18 @@ function loadFromLocalStorage() {
         if (appState.sections && appState.sections.about) {
             const aboutHeadline = document.getElementById('aboutHeadline');
             const aboutContent = document.getElementById('aboutContent');
-            const aboutImage = document.getElementById('aboutImage');
+            const aboutImagePreview = document.getElementById('aboutImagePreview');
+            const aboutImagePreviewImg = document.getElementById('aboutImagePreviewImg');
+            
             if (aboutHeadline && appState.sections.about.headline) {
                 aboutHeadline.value = appState.sections.about.headline;
             }
             if (aboutContent && appState.sections.about.content) {
                 aboutContent.value = appState.sections.about.content;
             }
-            if (aboutImage && appState.sections.about.image) {
-                aboutImage.value = appState.sections.about.image;
+            if (appState.sections.about.image) {
+                if (aboutImagePreviewImg) aboutImagePreviewImg.src = appState.sections.about.image;
+                if (aboutImagePreview) aboutImagePreview.style.display = 'block';
             }
         }
         

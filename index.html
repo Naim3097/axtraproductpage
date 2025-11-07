@@ -169,7 +169,7 @@
                                             <label class="form-label">Background Image</label>
                                             <input type="file" class="form-input" id="heroBackgroundImage" accept="image/*" style="padding: 8px;">
                                             <p class="field-hint" style="font-size: 12px; margin-top: 4px; color: #64748b;">
-                                                📷 Recommended: 1920x1080px (Full HD landscape)<br>
+                                                Recommended: 1920x1080px (Full HD landscape)<br>
                                                 • Supports JPG, PNG, WebP formats<br>
                                                 • Image auto-scales to fit all screen sizes
                                             </p>
@@ -324,7 +324,7 @@
                                             <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
                                         </div>
                                         <p style="font-size: 13px; color: #64748b; margin: 12px 0;">
-                                            💡 <strong>Tip:</strong> Add products with images, prices, and descriptions. Each product supports multiple images, variants (sizes/colors), and inventory tracking.
+                                            <strong>Tip:</strong> Add products with images, prices, and descriptions. Each product supports multiple images, variants (sizes/colors), and inventory tracking.
                                         </p>
                                         
                                         <div id="productsList" class="products-list">
@@ -503,12 +503,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">About Image (for Two Column & Side Image layouts)</label>
-                                        <input type="url" class="form-input" id="aboutImage" placeholder="https://example.com/about-image.jpg">
+                                        <input type="file" class="form-input" id="aboutImage" accept="image/*" style="padding: 8px;">
                                         <small style="display: block; margin-top: 4px; color: #64748b; font-size: 12px;">
-                                            🖼️ Enter image URL or leave empty for placeholder<br>
-                                            • Use image hosting services (Imgur, Cloudinary, etc.)<br>
-                                            • Recommended: 800x600px or larger
+                                            Recommended: 800x600px or larger<br>
+                                            • Supports JPG, PNG, WebP formats<br>
+                                            • Image auto-scales to fit layout
                                         </small>
+                                        <div id="aboutImagePreview" style="display: none; margin-top: 8px;">
+                                            <img id="aboutImagePreviewImg" style="max-width: 100%; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                            <button type="button" id="aboutImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
+                                        </div>
                                     </div>
                                     
                                     <!-- About Design Controls -->
@@ -985,7 +989,7 @@
                     <label>Product Images *</label>
                     <input type="file" class="form-input" id="productImages" accept="image/*" multiple>
                     <small style="color: var(--gray-500); font-size: 12px; display: block; margin-top: 4px;">
-                        📸 Upload multiple images (JPG, PNG, WebP)<br>
+                        Upload multiple images (JPG, PNG, WebP)<br>
                         • First image = Main product image<br>
                         • Recommended: Square images (800x800px or larger)<br>
                         • Images auto-resize to fit product cards
