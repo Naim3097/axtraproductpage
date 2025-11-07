@@ -1026,9 +1026,11 @@ function generatePreviewHTML() {
         }
     </style>`;
     
-    // Hero Section
-    const headline = appState.content.heroHeadline || 'Welcome to Our Store';
-    const subheadline = appState.content.heroSubheadline || 'Discover amazing products that transform your life';
+    // Hero Section - Use sections state
+    const heroSection = appState.sections.hero;
+    const headline = heroSection.headline || appState.content.heroHeadline || 'Welcome to Our Store';
+    const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
+    const ctaText = heroSection.ctaText || 'Shop Now';
     
     // Get style name for display
     const styleName = appState.designEngine && appState.designEngine.designStyles[style] 
@@ -1039,41 +1041,47 @@ function generatePreviewHTML() {
         ? appState.designEngine.industries[industry].name
         : industry.charAt(0).toUpperCase() + industry.slice(1);
     
-    html += `
+    // Only render hero if enabled
+    if (heroSection.enabled) {
+        html += `
         <section class="preview-hero-v2">
             <div style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: ${styleConfig.borderRadius}px; font-size: 12px; backdrop-filter: blur(10px);">
                 ${industryName} • ${styleName}
             </div>
             <h1>${escapeHtml(headline)}</h1>
             <p>${escapeHtml(subheadline)}</p>
-            <a href="#" class="preview-cta-btn">Shop Now</a>
+            ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
         </section>
-    `;
-    
-    // Products Section
-    html += `<section class="preview-products-section">`;
-    html += `<div class="preview-products-grid">`;
-    
-    appState.products.forEach(product => {
-        const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
-        const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
-            ? `${currencySymbol}${product.price}` 
-            : `${product.price} ${product.currency}`;
-        
-        html += `
-            <div class="preview-product-card">
-                ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
-                <div class="preview-product-info">
-                    <div class="preview-product-name">${escapeHtml(product.name)}</div>
-                    ${product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
-                    <div class="preview-product-price">${priceDisplay}</div>
-                    <button class="preview-buy-btn">Add to Cart</button>
-                </div>
-            </div>
         `;
-    });
+    }
     
-    html += `</div></section>`;
+    // Products Section - Use sections state
+    const productsSection = appState.sections.products;
+    if (productsSection.enabled && appState.products.length > 0) {
+        html += `<section class="preview-products-section">`;
+        html += `<div class="preview-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">`;
+        
+        appState.products.forEach(product => {
+            const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
+            const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
+                ? `${currencySymbol}${product.price}` 
+                : `${product.price} ${product.currency}`;
+            
+            html += `
+                <div class="preview-product-card">
+                    ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
+                    <div class="preview-product-info">
+                        <div class="preview-product-name">${escapeHtml(product.name)}</div>
+                        ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
+                        ${productsSection.showPricing ? `<div class="preview-product-price">${priceDisplay}</div>` : ''}
+                        <button class="preview-buy-btn">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `</div></section>`;
+    }
     
     return html;
 }
@@ -1230,8 +1238,11 @@ function generateCompleteHTML() {
     const cardPadding = 24 * styleConfig.spacing;
     const gap = 32 * styleConfig.spacing;
     
-    const headline = appState.content.heroHeadline || 'Welcome to Our Store';
-    const subheadline = appState.content.heroSubheadline || 'Discover amazing products that transform your life';
+    const heroSection = appState.sections.hero;
+    const productsSection = appState.sections.products;
+    const headline = heroSection.headline || appState.content.heroHeadline || 'Welcome to Our Store';
+    const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
+    const ctaText = heroSection.ctaText || 'Shop Now';
     
     // Build complete HTML document
     return `<!DOCTYPE html>
@@ -1468,19 +1479,24 @@ function generateCompleteHTML() {
     </style>
 </head>
 <body>
+    ${heroSection.enabled ? `
     <!-- Hero Section -->
     <section class="hero">
         <h1>${escapeHtml(headline)}</h1>
         <p>${escapeHtml(subheadline)}</p>
+        ${heroSection.showCTA ? `
         <button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">
-            Shop Now
+            ${escapeHtml(ctaText)}
         </button>
+        ` : ''}
     </section>
+    ` : ''}
     
+    ${productsSection.enabled && appState.products.length > 0 ? `
     <!-- Products Section -->
     <section class="products-section">
         <h2 class="section-title">Our Products</h2>
-        <div class="products-grid">
+        <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">
             ${appState.products.map(product => {
                 const imageHtml = product.images && product.images.length > 0 
                     ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="product-image">`
@@ -1500,11 +1516,13 @@ function generateCompleteHTML() {
                         ${imageHtml}
                         <div class="product-info">
                             <div class="product-name">${escapeHtml(product.name)}</div>
-                            ${product.description ? `<div class="product-description">${escapeHtml(product.description)}</div>` : ''}
+                            ${productsSection.showDescription && product.description ? `<div class="product-description">${escapeHtml(product.description)}</div>` : ''}
+                            ${productsSection.showPricing ? `
                             <div class="product-price">
                                 ${comparePriceHtml}
                                 ${priceDisplay}
                             </div>
+                            ` : ''}
                             ${variantInfo}
                             <button class="buy-button" onclick="alert('Add to cart functionality coming soon!')">
                                 Add to Cart
@@ -1515,6 +1533,7 @@ function generateCompleteHTML() {
             }).join('')}
         </div>
     </section>
+    ` : ''}
     
     ${appState.content.features && appState.content.features.length > 0 ? `
     <!-- Features Section -->
