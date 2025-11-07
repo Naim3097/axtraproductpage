@@ -1065,10 +1065,8 @@ body {
     display: flex;
   }
   
-  #clearDataBtn,
-  #saveDraftBtn,
-  #previewToggleBtn {
-    display: none;
+  .desktop-only {
+    display: none !important;
   }
   
   #openFullPreviewBtn {
