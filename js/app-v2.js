@@ -2259,7 +2259,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-list-item">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-list-image">` : '<div class="preview-product-list-image"></div>'}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-list-image" style="object-fit: cover;">` : '<div class="preview-product-list-image"></div>'}
                         <div class="preview-product-list-content">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
@@ -2287,7 +2287,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-card" style="height: ${cardHeight};">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="height: 60%;">` : `<div class="preview-product-image" style="height: 60%;"></div>`}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="height: 60%; object-fit: cover;">` : `<div class="preview-product-image" style="height: 60%;"></div>`}
                         <div class="preview-product-info" style="padding: 16px;">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc" style="font-size: 13px; margin: 8px 0;">${escapeHtml(product.description)}</div>` : ''}
@@ -2310,7 +2310,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-card">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="object-fit: cover;">` : '<div class="preview-product-image"></div>'}
                         <div class="preview-product-info">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}

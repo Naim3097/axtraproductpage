@@ -168,7 +168,11 @@
                                         <div id="heroImageBg" style="display: none;">
                                             <label class="form-label">Background Image</label>
                                             <input type="file" class="form-input" id="heroBackgroundImage" accept="image/*" style="padding: 8px;">
-                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Recommended: 1920x1080px</p>
+                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px; color: #64748b;">
+                                                📷 Recommended: 1920x1080px (Full HD landscape)<br>
+                                                • Supports JPG, PNG, WebP formats<br>
+                                                • Image auto-scales to fit all screen sizes
+                                            </p>
                                             <div id="heroImagePreview" style="display: none; margin-top: 8px;">
                                                 <img id="heroImagePreviewImg" style="max-width: 100%; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
                                                 <button type="button" id="heroImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
@@ -319,6 +323,9 @@
                                             <h3 style="font-size: 16px; font-weight: 600;">Manage Products</h3>
                                             <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
                                         </div>
+                                        <p style="font-size: 13px; color: #64748b; margin: 12px 0;">
+                                            💡 <strong>Tip:</strong> Add products with images, prices, and descriptions. Each product supports multiple images, variants (sizes/colors), and inventory tracking.
+                                        </p>
                                         
                                         <div id="productsList" class="products-list">
                                             <!-- Product cards will be added here -->
@@ -497,7 +504,11 @@
                                     <div class="form-group">
                                         <label class="form-label">About Image (for Two Column & Side Image layouts)</label>
                                         <input type="url" class="form-input" id="aboutImage" placeholder="https://example.com/about-image.jpg">
-                                        <small style="display: block; margin-top: 4px; color: #64748b; font-size: 12px;">Enter image URL or leave empty for placeholder</small>
+                                        <small style="display: block; margin-top: 4px; color: #64748b; font-size: 12px;">
+                                            🖼️ Enter image URL or leave empty for placeholder<br>
+                                            • Use image hosting services (Imgur, Cloudinary, etc.)<br>
+                                            • Recommended: 800x600px or larger
+                                        </small>
                                     </div>
                                     
                                     <!-- About Design Controls -->
@@ -955,11 +966,12 @@
                     <div class="form-group">
                         <label>Base Price (RM) *</label>
                         <input type="number" class="form-input" id="productPrice" placeholder="49.00" step="0.01">
+                        <small style="color: var(--gray-500); font-size: 12px;">Selling price in Malaysian Ringgit</small>
                     </div>
                     <div class="form-group">
                         <label>Compare At Price (RM)</label>
                         <input type="number" class="form-input" id="productComparePrice" placeholder="79.00" step="0.01">
-                        <small style="color: var(--gray-500); font-size: 12px;">Original price (shows as strikethrough)</small>
+                        <small style="color: var(--gray-500); font-size: 12px;">Original price (shows as strikethrough for discounts)</small>
                     </div>
                 </div>
                 
@@ -970,9 +982,14 @@
                 
                 <!-- Images -->
                 <div class="form-group">
-                    <label>Product Images</label>
+                    <label>Product Images *</label>
                     <input type="file" class="form-input" id="productImages" accept="image/*" multiple>
-                    <small style="color: var(--gray-500); font-size: 12px;">Upload multiple images. First image will be the main image.</small>
+                    <small style="color: var(--gray-500); font-size: 12px; display: block; margin-top: 4px;">
+                        📸 Upload multiple images (JPG, PNG, WebP)<br>
+                        • First image = Main product image<br>
+                        • Recommended: Square images (800x800px or larger)<br>
+                        • Images auto-resize to fit product cards
+                    </small>
                     <div id="imagePreviewContainer" style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;"></div>
                 </div>
                 
@@ -988,10 +1005,12 @@
                     <div class="form-group">
                         <label>Stock Quantity</label>
                         <input type="number" class="form-input" id="productStock" placeholder="100" min="0">
+                        <small style="color: var(--gray-500); font-size: 12px;">Available units for sale</small>
                     </div>
                     <div class="form-group">
                         <label>SKU</label>
                         <input type="text" class="form-input" id="productSKU" placeholder="TS-001">
+                        <small style="color: var(--gray-500); font-size: 12px;">Stock Keeping Unit (unique ID)</small>
                     </div>
                 </div>
                 
