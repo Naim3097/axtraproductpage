@@ -58,11 +58,6 @@
                     <div class="step-number">2</div>
                     <div class="step-label">Design</div>
                 </div>
-                <div class="step-line"></div>
-                <div class="step" data-step="3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Products</div>
-                </div>
             </div>
         </header>
 
@@ -213,6 +208,21 @@
                                             <input type="checkbox" id="productsShowPricing" checked>
                                             Show Pricing
                                         </label>
+                                    </div>
+                                    
+                                    <!-- Product Management -->
+                                    <div class="products-section" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--color-border);">
+                                        <div class="section-title-row">
+                                            <h3 style="font-size: 16px; font-weight: 600;">Manage Products</h3>
+                                            <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
+                                        </div>
+                                        
+                                        <div id="productsList" class="products-list">
+                                            <!-- Product cards will be added here -->
+                                            <div class="empty-state" id="emptyProducts">
+                                                <p style="font-size: 14px; color: var(--gray-500);">No products yet. Click "Add Product" to get started.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -558,34 +568,6 @@
                         
                         <div class="step-actions">
                             <button class="btn-secondary" data-prev="1">← Back</button>
-                            <button class="btn-primary" data-next="3">Continue to Products →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 3: PRODUCT SETUP -->
-                    <div class="step-content" id="step3">
-                        <div class="step-header">
-                            <h1>Product Setup</h1>
-                            <p>Add your products with pricing, images, and details</p>
-                        </div>
-                        
-                        <!-- Products List -->
-                        <div class="products-section">
-                            <div class="section-title-row">
-                                <h3>Your Products</h3>
-                                <button class="btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
-                            </div>
-                            
-                            <div id="productsList" class="products-list">
-                                <!-- Product cards will be added here -->
-                                <div class="empty-state" id="emptyProducts">
-                                    <p>No products yet. Click "Add Product" to get started.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step-actions">
-                            <button class="btn-secondary" data-prev="2">← Back</button>
                             <button class="btn-primary" id="generatePageBtn">Generate Product Page</button>
                         </div>
                     </div>

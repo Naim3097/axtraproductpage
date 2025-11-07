@@ -1523,7 +1523,7 @@ function generatePreviewHTML() {
             border-radius: ${styleConfig.borderRadius}px;
             display: flex;
             align-items: center;
-            justify-center: center;
+            justify-content: center;
             color: #6b7280;
         }
         @media (max-width: 768px) {
@@ -1876,14 +1876,17 @@ function generatePreviewHTML() {
     
     // WhatsApp Button
     const whatsappSection = appState.sections.whatsapp;
-    if (whatsappSection && whatsappSection.enabled && whatsappSection.number) {
-        const whatsappNumber = whatsappSection.number.replace(/[^0-9]/g, ''); // Remove non-numeric
+    if (whatsappSection && whatsappSection.enabled) {
+        const whatsappNumber = whatsappSection.number ? whatsappSection.number.replace(/[^0-9]/g, '') : ''; // Remove non-numeric
         const message = encodeURIComponent(whatsappSection.message || 'Hi!');
         const position = whatsappSection.position === 'bottom-left' ? 'position-left' : 'position-right';
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+        const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${message}` : '#';
+        const opacity = whatsappNumber ? '1' : '0.5';
+        const pointerEvents = whatsappNumber ? 'auto' : 'none';
+        const title = whatsappNumber ? 'Chat on WhatsApp' : 'Add WhatsApp number in settings';
         
         html += `
-            <a href="${whatsappUrl}" class="whatsapp-button ${position}" target="_blank" title="Chat on WhatsApp">
+            <a href="${whatsappUrl}" class="whatsapp-button ${position}" target="_blank" title="${title}" style="opacity: ${opacity}; pointer-events: ${pointerEvents};">
                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16 0C7.164 0 0 7.164 0 16c0 2.82.736 5.464 2.024 7.76L0 32l8.416-2.208A15.932 15.932 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.344c-2.4 0-4.672-.632-6.624-1.736l-.48-.28-4.848 1.272 1.296-4.728-.312-.496A13.232 13.232 0 012.656 16C2.656 8.636 8.636 2.656 16 2.656S29.344 8.636 29.344 16 23.364 29.344 16 29.344zm7.312-10.016c-.4-.2-2.368-1.168-2.736-1.304-.368-.128-.632-.2-.904.2-.264.4-1.04 1.304-1.272 1.568-.232.272-.472.304-.872.104-.4-.2-1.688-.624-3.216-1.984-1.184-1.056-1.992-2.368-2.224-2.768-.232-.4-.024-.616.176-.816.176-.184.4-.472.6-.712.2-.232.264-.4.4-.664.136-.272.072-.504-.032-.712-.104-.2-.904-2.176-1.24-2.976-.328-.784-.664-.68-.904-.688-.232-.008-.496-.008-.76-.008s-.696.096-1.064.496c-.368.4-1.4 1.36-1.4 3.328s1.432 3.864 1.632 4.128c.2.272 2.816 4.296 6.824 6.024.952.416 1.696.664 2.272.848.952.304 1.824.264 2.512.16.768-.112 2.368-.968 2.704-1.904.336-.936.336-1.736.232-1.904-.096-.176-.36-.272-.76-.472z"/>
                 </svg>
