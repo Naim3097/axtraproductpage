@@ -216,16 +216,8 @@ function initializeApp() {
         console.warn('⚠️ DesignEngine not loaded. Include design-engine.js before app-v2.js');
     }
     
-    // Show preview panel by default on desktop (above 768px)
-    const previewPanel = document.getElementById('previewPanel');
-    if (previewPanel && window.innerWidth > 768) {
-        previewPanel.classList.add('active');
-        const previewToggleBtn = document.getElementById('previewToggleBtn');
-        if (previewToggleBtn) {
-            const toggleText = previewToggleBtn.querySelector('.toggle-text');
-            if (toggleText) toggleText.textContent = 'Hide Preview';
-        }
-    }
+    // Desktop: preview always visible, no need for active class
+    // Mobile: preview hidden by default, toggle with active class
     
     updatePreview();
 }
@@ -774,34 +766,32 @@ function attachEventListeners() {
     // Preview toggle (mobile)
     const previewToggleBtn = document.getElementById('previewToggleBtn');
     const previewCloseBtn = document.getElementById('previewCloseBtn');
+    
+    // Toggle button behavior - only for mobile
     if (previewToggleBtn) {
         previewToggleBtn.addEventListener('click', () => {
-            const previewPanel = document.getElementById('previewPanel');
-            previewPanel.classList.toggle('active');
-            const isActive = previewPanel.classList.contains('active');
-            
-            // Set flag to remember user's preference
-            if (isActive) {
-                previewPanel.removeAttribute('data-user-hidden');
-            } else {
-                previewPanel.setAttribute('data-user-hidden', 'true');
-            }
-            
-            previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
-            
-            // Update mobile menu text if exists
-            const mobileToggleText = document.querySelector('.mobile-toggle-text');
-            if (mobileToggleText) {
-                mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            // Only allow toggling on mobile (< 768px)
+            if (window.innerWidth <= 768) {
+                const previewPanel = document.getElementById('previewPanel');
+                previewPanel.classList.toggle('active');
+                const isActive = previewPanel.classList.contains('active');
+                
+                previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
+                
+                // Update mobile menu text if exists
+                const mobileToggleText = document.querySelector('.mobile-toggle-text');
+                if (mobileToggleText) {
+                    mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
+                }
             }
         });
     }
     
+    // Close button - only for mobile overlay
     if (previewCloseBtn) {
         previewCloseBtn.addEventListener('click', () => {
             const previewPanel = document.getElementById('previewPanel');
             previewPanel.classList.remove('active');
-            previewPanel.setAttribute('data-user-hidden', 'true');
             
             if (previewToggleBtn) {
                 previewToggleBtn.querySelector('.toggle-text').textContent = 'Show Preview';
@@ -1270,24 +1260,15 @@ function attachEventListeners() {
         });
     }
     
-    // Handle window resize for preview panel visibility
+    // Handle window resize - desktop preview always visible, mobile is overlay
     window.addEventListener('resize', debounce(() => {
         const previewPanel = document.getElementById('previewPanel');
-        if (previewPanel && window.innerWidth > 768) {
-            // On desktop, show preview by default if not explicitly hidden
-            if (!previewPanel.hasAttribute('data-user-hidden')) {
-                previewPanel.classList.add('active');
-                const previewToggleBtn = document.getElementById('previewToggleBtn');
-                if (previewToggleBtn) {
-                    const toggleText = previewToggleBtn.querySelector('.toggle-text');
-                    if (toggleText) toggleText.textContent = 'Hide Preview';
-                }
-            }
-        } else if (window.innerWidth <= 1024) {
-            // On mobile/tablet, hide by default
+        if (previewPanel && window.innerWidth <= 768) {
+            // On mobile, remove active class to hide overlay
             previewPanel.classList.remove('active');
-            previewPanel.removeAttribute('data-user-hidden');
         }
+        // On desktop (> 768px), preview is always visible via CSS flex layout
+        // No need to add/remove active class
     }, 300));
     
     // Variant toggles

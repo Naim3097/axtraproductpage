@@ -260,8 +260,24 @@ body {
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Preview is visible by default on desktop */
-/* Toggle system only applies on mobile via media query */
+/* Desktop: preview always visible in side-by-side layout */
+/* Mobile: preview is overlay that can be toggled */
+
+.preview-close-btn {
+  display: none; /* Hidden on desktop, shown on mobile when active */
+}
+
+/* Hide preview toggle button on desktop - preview always visible */
+#previewToggleBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Show toggle button on mobile */
+  #previewToggleBtn {
+    display: inline-flex;
+  }
+}
 
 .preview-header {
   display: flex;

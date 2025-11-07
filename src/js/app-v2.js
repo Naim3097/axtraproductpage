@@ -216,16 +216,8 @@ function initializeApp() {
         console.warn('⚠️ DesignEngine not loaded. Include design-engine.js before app-v2.js');
     }
     
-    // Show preview panel by default on desktop (above 768px)
-    const previewPanel = document.getElementById('previewPanel');
-    if (previewPanel && window.innerWidth > 768) {
-        previewPanel.classList.add('active');
-        const previewToggleBtn = document.getElementById('previewToggleBtn');
-        if (previewToggleBtn) {
-            const toggleText = previewToggleBtn.querySelector('.toggle-text');
-            if (toggleText) toggleText.textContent = 'Hide Preview';
-        }
-    }
+    // Desktop: preview always visible, no need for active class
+    // Mobile: preview hidden by default, toggle with active class
     
     updatePreview();
 }
@@ -774,34 +766,32 @@ function attachEventListeners() {
     // Preview toggle (mobile)
     const previewToggleBtn = document.getElementById('previewToggleBtn');
     const previewCloseBtn = document.getElementById('previewCloseBtn');
+    
+    // Toggle button behavior - only for mobile
     if (previewToggleBtn) {
         previewToggleBtn.addEventListener('click', () => {
-            const previewPanel = document.getElementById('previewPanel');
-            previewPanel.classList.toggle('active');
-            const isActive = previewPanel.classList.contains('active');
-            
-            // Set flag to remember user's preference
-            if (isActive) {
-                previewPanel.removeAttribute('data-user-hidden');
-            } else {
-                previewPanel.setAttribute('data-user-hidden', 'true');
-            }
-            
-            previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
-            
-            // Update mobile menu text if exists
-            const mobileToggleText = document.querySelector('.mobile-toggle-text');
-            if (mobileToggleText) {
-                mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            // Only allow toggling on mobile (< 768px)
+            if (window.innerWidth <= 768) {
+                const previewPanel = document.getElementById('previewPanel');
+                previewPanel.classList.toggle('active');
+                const isActive = previewPanel.classList.contains('active');
+                
+                previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
+                
+                // Update mobile menu text if exists
+                const mobileToggleText = document.querySelector('.mobile-toggle-text');
+                if (mobileToggleText) {
+                    mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
+                }
             }
         });
     }
     
+    // Close button - only for mobile overlay
     if (previewCloseBtn) {
         previewCloseBtn.addEventListener('click', () => {
             const previewPanel = document.getElementById('previewPanel');
             previewPanel.classList.remove('active');
-            previewPanel.setAttribute('data-user-hidden', 'true');
             
             if (previewToggleBtn) {
                 previewToggleBtn.querySelector('.toggle-text').textContent = 'Show Preview';
@@ -1270,24 +1260,15 @@ function attachEventListeners() {
         });
     }
     
-    // Handle window resize for preview panel visibility
+    // Handle window resize - desktop preview always visible, mobile is overlay
     window.addEventListener('resize', debounce(() => {
         const previewPanel = document.getElementById('previewPanel');
-        if (previewPanel && window.innerWidth > 768) {
-            // On desktop, show preview by default if not explicitly hidden
-            if (!previewPanel.hasAttribute('data-user-hidden')) {
-                previewPanel.classList.add('active');
-                const previewToggleBtn = document.getElementById('previewToggleBtn');
-                if (previewToggleBtn) {
-                    const toggleText = previewToggleBtn.querySelector('.toggle-text');
-                    if (toggleText) toggleText.textContent = 'Hide Preview';
-                }
-            }
-        } else if (window.innerWidth <= 1024) {
-            // On mobile/tablet, hide by default
+        if (previewPanel && window.innerWidth <= 768) {
+            // On mobile, remove active class to hide overlay
             previewPanel.classList.remove('active');
-            previewPanel.removeAttribute('data-user-hidden');
         }
+        // On desktop (> 768px), preview is always visible via CSS flex layout
+        // No need to add/remove active class
     }, 300));
     
     // Variant toggles
@@ -2151,41 +2132,129 @@ function generatePreviewHTML() {
     
     // Only render hero if enabled
     if (heroSection.enabled) {
-        html += `<section class="preview-hero-v2">
-            <div class="hero-content">
-                <h1>${escapeHtml(headline)}</h1>
-                <p>${escapeHtml(subheadline)}</p>
-                ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
-            </div>
-        </section>`;
+        const heroLayout = heroSection.layout || 'centered';
+        
+        if (heroLayout === 'split') {
+            // Split layout: text left, image right
+            html += `<section class="preview-hero-v2" style="text-align: left;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: ${heroContentWidth}; margin: 0 auto;">
+                    <div>
+                        <h1>${escapeHtml(headline)}</h1>
+                        <p>${escapeHtml(subheadline)}</p>
+                        ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
+                    </div>
+                    <div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border-radius: ${heroCtaBorderRadius}; display: flex; align-items: center; justify-content: center; font-size: 14px; backdrop-filter: blur(10px);">
+                        Hero Image
+                    </div>
+                </div>
+            </section>`;
+        } else if (heroLayout === 'minimal') {
+            // Minimal layout: compact header style
+            html += `<section class="preview-hero-v2" style="min-height: auto; padding: 40px 20px;">
+                <div style="max-width: ${heroContentWidth}; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h1 style="font-size: ${parseInt(heroHeadlineSize) * 0.7}px !important; margin-bottom: 8px;">${escapeHtml(headline)}</h1>
+                        <p style="font-size: 16px; margin-bottom: 0;">${escapeHtml(subheadline)}</p>
+                    </div>
+                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn" style="padding: 12px 32px; font-size: 14px;">${escapeHtml(ctaText)}</a>` : ''}
+                </div>
+            </section>`;
+        } else {
+            // Centered layout (default)
+            html += `<section class="preview-hero-v2">
+                <div class="hero-content">
+                    <h1>${escapeHtml(headline)}</h1>
+                    <p>${escapeHtml(subheadline)}</p>
+                    ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
+                </div>
+            </section>`;
+        }
     }
     
     // Products Section - Use sections state
     const productsSection = appState.sections.products;
     if (productsSection.enabled && appState.products.length > 0) {
+        const productsLayout = productsSection.layout || 'grid';
+        
         html += `<section class="preview-products-section">`;
-        html += `<div class="preview-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">`;
         
-        appState.products.forEach(product => {
-            const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
-            const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
-                ? `${currencySymbol}${product.price}` 
-                : `${product.price} ${product.currency}`;
-            
-            html += `
-                <div class="preview-product-card">
-                    ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
-                    <div class="preview-product-info">
-                        <div class="preview-product-name">${escapeHtml(product.name)}</div>
-                        ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
-                        ${productsSection.showPricing ? `<div class="preview-product-price">${priceDisplay}</div>` : ''}
-                        <button class="preview-buy-btn">Add to Cart</button>
+        if (productsLayout === 'list') {
+            // List layout: full width cards with horizontal layout
+            html += `<div class="preview-products-list">`;
+            appState.products.forEach(product => {
+                const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
+                const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
+                    ? `${currencySymbol}${product.price}` 
+                    : `${product.price} ${product.currency}`;
+                
+                html += `
+                    <div class="preview-product-list-item">
+                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-list-image">` : '<div class="preview-product-list-image"></div>'}
+                        <div class="preview-product-list-content">
+                            <div class="preview-product-name">${escapeHtml(product.name)}</div>
+                            ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+                                ${productsSection.showPricing ? `<div class="preview-product-price">${priceDisplay}</div>` : '<div></div>'}
+                                <button class="preview-buy-btn">Add to Cart</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            `;
-        });
+                `;
+            });
+            html += `</div>`;
+        } else if (productsLayout === 'masonry') {
+            // Masonry layout: pinterest-style variable heights
+            html += `<div class="preview-products-masonry">`;
+            appState.products.forEach((product, index) => {
+                const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
+                const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
+                    ? `${currencySymbol}${product.price}` 
+                    : `${product.price} ${product.currency}`;
+                
+                // Vary card heights for masonry effect
+                const heights = ['300px', '350px', '280px', '320px'];
+                const cardHeight = heights[index % heights.length];
+                
+                html += `
+                    <div class="preview-product-card" style="height: ${cardHeight};">
+                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="height: 60%;">` : `<div class="preview-product-image" style="height: 60%;"></div>`}
+                        <div class="preview-product-info" style="padding: 16px;">
+                            <div class="preview-product-name">${escapeHtml(product.name)}</div>
+                            ${productsSection.showDescription && product.description ? `<div class="preview-product-desc" style="font-size: 13px; margin: 8px 0;">${escapeHtml(product.description)}</div>` : ''}
+                            ${productsSection.showPricing ? `<div class="preview-product-price">${priceDisplay}</div>` : ''}
+                            <button class="preview-buy-btn" style="padding: 8px 16px; font-size: 13px; margin-top: 8px;">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        } else {
+            // Grid layout (default)
+            html += `<div class="preview-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">`;
+            
+            appState.products.forEach(product => {
+                const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
+                const priceDisplay = ['USD', 'EUR', 'GBP'].includes(product.currency) 
+                    ? `${currencySymbol}${product.price}` 
+                    : `${product.price} ${product.currency}`;
+                
+                html += `
+                    <div class="preview-product-card">
+                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
+                        <div class="preview-product-info">
+                            <div class="preview-product-name">${escapeHtml(product.name)}</div>
+                            ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
+                            ${productsSection.showPricing ? `<div class="preview-product-price">${priceDisplay}</div>` : ''}
+                            <button class="preview-buy-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+        }
         
-        html += `</div></section>`;
+        html += `</section>`;
     }
     
     // About Section
