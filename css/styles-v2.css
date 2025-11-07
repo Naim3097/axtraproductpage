@@ -1010,9 +1010,16 @@ body {
    RESPONSIVE
    ============================================ */
 
-@media (max-width: 1024px) {
+/* Only change layout on tablet/mobile, not on desktop */
+@media (max-width: 768px) {
+  .workspace {
+    flex-direction: column;
+  }
+  
   .form-panel {
     flex: 1;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
   }
   
   .preview-panel {

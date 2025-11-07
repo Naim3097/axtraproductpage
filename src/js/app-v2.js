@@ -216,9 +216,9 @@ function initializeApp() {
         console.warn('⚠️ DesignEngine not loaded. Include design-engine.js before app-v2.js');
     }
     
-    // Show preview panel by default on desktop
+    // Show preview panel by default on desktop (above 768px)
     const previewPanel = document.getElementById('previewPanel');
-    if (previewPanel && window.innerWidth > 1024) {
+    if (previewPanel && window.innerWidth > 768) {
         previewPanel.classList.add('active');
         const previewToggleBtn = document.getElementById('previewToggleBtn');
         if (previewToggleBtn) {
@@ -1273,7 +1273,7 @@ function attachEventListeners() {
     // Handle window resize for preview panel visibility
     window.addEventListener('resize', debounce(() => {
         const previewPanel = document.getElementById('previewPanel');
-        if (previewPanel && window.innerWidth > 1024) {
+        if (previewPanel && window.innerWidth > 768) {
             // On desktop, show preview by default if not explicitly hidden
             if (!previewPanel.hasAttribute('data-user-hidden')) {
                 previewPanel.classList.add('active');
