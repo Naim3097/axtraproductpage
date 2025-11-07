@@ -33,7 +33,9 @@ const appState = {
             showCTA: true,
             backgroundColor: null, // null = use primary color from design
             textColor: '#ffffff',
-            useGradient: true
+            useGradient: true,
+            backgroundImage: null, // base64 image data
+            imageOverlay: 50 // 0-100 opacity
         },
         products: {
             enabled: true,
@@ -63,7 +65,14 @@ const appState = {
             layout: 'form', // form, details, map
             email: '',
             phone: '',
-            address: ''
+            address: '',
+            mapEmbed: '' // Google Maps iframe embed code
+        },
+        whatsapp: {
+            enabled: false,
+            number: '',
+            message: 'Hi! I\'m interested in your products',
+            position: 'bottom-right' // bottom-right, bottom-left
         }
     },
     content: {
@@ -146,6 +155,17 @@ function initializeApp() {
         console.log('✅ DesignEngine initialized with 11 industries, 8 styles, 14 components');
     } else {
         console.warn('⚠️ DesignEngine not loaded. Include design-engine.js before app-v2.js');
+    }
+    
+    // Show preview panel by default on desktop
+    const previewPanel = document.getElementById('previewPanel');
+    if (previewPanel && window.innerWidth > 1024) {
+        previewPanel.classList.add('active');
+        const previewToggleBtn = document.getElementById('previewToggleBtn');
+        if (previewToggleBtn) {
+            const toggleText = previewToggleBtn.querySelector('.toggle-text');
+            if (toggleText) toggleText.textContent = 'Hide Preview';
+        }
     }
     
     updatePreview();
@@ -244,6 +264,56 @@ function initializeSectionControls() {
         });
     }
     
+    // Hero background image upload
+    const heroBackgroundImage = document.getElementById('heroBackgroundImage');
+    const heroImagePreview = document.getElementById('heroImagePreview');
+    const heroImagePreviewImg = document.getElementById('heroImagePreviewImg');
+    const heroImageRemove = document.getElementById('heroImageRemove');
+    const heroImageOverlayGroup = document.getElementById('heroImageOverlayGroup');
+    const heroImageOverlay = document.getElementById('heroImageOverlay');
+    const heroOverlayValue = document.getElementById('heroOverlayValue');
+    
+    if (heroBackgroundImage) {
+        heroBackgroundImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    appState.sections.hero.backgroundImage = event.target.result;
+                    if (heroImagePreviewImg) heroImagePreviewImg.src = event.target.result;
+                    if (heroImagePreview) heroImagePreview.style.display = 'block';
+                    if (heroImageOverlayGroup) heroImageOverlayGroup.style.display = 'block';
+                    updatePreview();
+                    saveToLocalStorage();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    if (heroImageRemove) {
+        heroImageRemove.addEventListener('click', () => {
+            appState.sections.hero.backgroundImage = null;
+            if (heroBackgroundImage) heroBackgroundImage.value = '';
+            if (heroImagePreview) heroImagePreview.style.display = 'none';
+            if (heroImageOverlayGroup) heroImageOverlayGroup.style.display = 'none';
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (heroImageOverlay) {
+        heroImageOverlay.addEventListener('input', (e) => {
+            appState.sections.hero.imageOverlay = parseInt(e.target.value);
+            if (heroOverlayValue) heroOverlayValue.textContent = e.target.value + '%';
+            updatePreview();
+        });
+        
+        heroImageOverlay.addEventListener('change', () => {
+            saveToLocalStorage();
+        });
+    }
+    
     // Products Section
     const productsEnabled = document.getElementById('productsEnabled');
     const productsOptions = document.getElementById('productsOptions');
@@ -318,6 +388,32 @@ function initializeSectionControls() {
     document.querySelectorAll('input[name="contactLayout"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
             appState.sections.contact.layout = e.target.value;
+            // Show/hide map embed field based on layout
+            const mapLinkGroup = document.getElementById('mapLinkGroup');
+            if (mapLinkGroup) {
+                mapLinkGroup.style.display = e.target.value === 'map' ? 'block' : 'none';
+            }
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
+    // WhatsApp Section
+    const whatsappEnabled = document.getElementById('whatsappEnabled');
+    const whatsappOptions = document.getElementById('whatsappOptions');
+    
+    if (whatsappEnabled) {
+        whatsappEnabled.addEventListener('change', (e) => {
+            appState.sections.whatsapp.enabled = e.target.checked;
+            whatsappOptions.style.display = e.target.checked ? 'block' : 'none';
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    document.querySelectorAll('input[name="whatsappPosition"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.whatsapp.position = e.target.value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -328,6 +424,9 @@ function initializeSectionControls() {
     productsOptions.style.display = appState.sections.products.enabled ? 'block' : 'none';
     aboutOptions.style.display = appState.sections.about.enabled ? 'block' : 'none';
     contactOptions.style.display = appState.sections.contact.enabled ? 'block' : 'none';
+    if (whatsappOptions) {
+        whatsappOptions.style.display = appState.sections.whatsapp.enabled ? 'block' : 'none';
+    }
 }
 
 // ============================================
@@ -375,6 +474,14 @@ function attachEventListeners() {
             const previewPanel = document.getElementById('previewPanel');
             previewPanel.classList.toggle('active');
             const isActive = previewPanel.classList.contains('active');
+            
+            // Set flag to remember user's preference
+            if (isActive) {
+                previewPanel.removeAttribute('data-user-hidden');
+            } else {
+                previewPanel.setAttribute('data-user-hidden', 'true');
+            }
+            
             previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
             
             // Update mobile menu text if exists
@@ -389,6 +496,8 @@ function attachEventListeners() {
         previewCloseBtn.addEventListener('click', () => {
             const previewPanel = document.getElementById('previewPanel');
             previewPanel.classList.remove('active');
+            previewPanel.setAttribute('data-user-hidden', 'true');
+            
             if (previewToggleBtn) {
                 previewToggleBtn.querySelector('.toggle-text').textContent = 'Show Preview';
             }
@@ -529,6 +638,34 @@ function attachEventListeners() {
         }, 500));
     }
     
+    // Contact map embed
+    const contactMapEmbed = document.getElementById('contactMapEmbed');
+    if (contactMapEmbed) {
+        contactMapEmbed.addEventListener('input', debounce(() => {
+            appState.sections.contact.mapEmbed = contactMapEmbed.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
+    // WhatsApp inputs
+    const whatsappNumber = document.getElementById('whatsappNumber');
+    const whatsappMessage = document.getElementById('whatsappMessage');
+    if (whatsappNumber) {
+        whatsappNumber.addEventListener('input', debounce(() => {
+            appState.sections.whatsapp.number = whatsappNumber.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    if (whatsappMessage) {
+        whatsappMessage.addEventListener('input', debounce(() => {
+            appState.sections.whatsapp.message = whatsappMessage.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
     // Generate button
     document.getElementById('generatePageBtn').addEventListener('click', generatePage);
     
@@ -581,6 +718,26 @@ function attachEventListeners() {
             }
         });
     }
+    
+    // Handle window resize for preview panel visibility
+    window.addEventListener('resize', debounce(() => {
+        const previewPanel = document.getElementById('previewPanel');
+        if (previewPanel && window.innerWidth > 1024) {
+            // On desktop, show preview by default if not explicitly hidden
+            if (!previewPanel.hasAttribute('data-user-hidden')) {
+                previewPanel.classList.add('active');
+                const previewToggleBtn = document.getElementById('previewToggleBtn');
+                if (previewToggleBtn) {
+                    const toggleText = previewToggleBtn.querySelector('.toggle-text');
+                    if (toggleText) toggleText.textContent = 'Hide Preview';
+                }
+            }
+        } else if (window.innerWidth <= 1024) {
+            // On mobile/tablet, hide by default
+            previewPanel.classList.remove('active');
+            previewPanel.removeAttribute('data-user-hidden');
+        }
+    }, 300));
     
     // Variant toggles
     const hasVariantsCheckbox = document.getElementById('hasVariants');
@@ -1139,11 +1296,30 @@ function generatePreviewHTML() {
     const heroBgColor = heroSectionStyle.backgroundColor || primaryColor;
     const heroTextColor = heroSectionStyle.textColor || '#ffffff';
     const heroUseGradient = heroSectionStyle.useGradient !== false;
+    const heroBackgroundImage = heroSectionStyle.backgroundImage;
+    const heroImageOverlay = heroSectionStyle.imageOverlay || 50;
     
     // Generate hero background based on settings
-    const heroBackground = heroUseGradient 
-        ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
-        : heroBgColor;
+    let heroBackground;
+    let heroBackgroundStyle;
+    
+    if (heroBackgroundImage) {
+        // If image is uploaded, use it with overlay
+        const overlayOpacity = heroImageOverlay / 100;
+        heroBackgroundStyle = `
+            background-image: linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${heroBackgroundImage}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        `;
+        heroBackground = ''; // Not used when we have custom style
+    } else {
+        // Use gradient or solid color
+        heroBackground = heroUseGradient 
+            ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
+            : heroBgColor;
+        heroBackgroundStyle = `background: ${heroBackground};`;
+    }
     
     let html = `<style>
         .preview-content {
@@ -1154,8 +1330,9 @@ function generatePreviewHTML() {
         .preview-hero-v2 {
             padding: ${basePadding * 2}px ${basePadding}px;
             text-align: center;
-            background: ${heroBackground};
+            ${heroBackgroundStyle}
             color: ${heroTextColor};
+            position: relative;
         }
         .preview-hero-split {
             display: grid;
@@ -1163,14 +1340,15 @@ function generatePreviewHTML() {
             gap: 48px;
             align-items: center;
             padding: ${basePadding * 2}px ${basePadding}px;
-            background: ${heroBackground};
+            ${heroBackgroundStyle}
             color: ${heroTextColor};
             text-align: left;
+            position: relative;
         }
         .preview-hero-minimal {
             padding: ${basePadding}px ${basePadding}px;
             text-align: left;
-            background: ${heroBgColor};
+            ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
             color: ${heroTextColor};
             border-bottom: 4px solid ${secondaryColor};
         }
@@ -1445,6 +1623,39 @@ function generatePreviewHTML() {
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* WhatsApp Button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 24px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-button.position-right {
+            right: 24px;
+        }
+        .whatsapp-button.position-left {
+            left: 24px;
+        }
+        .whatsapp-button svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
     </style>`;
     
     // Hero Section - Use sections state
@@ -1607,9 +1818,23 @@ function generatePreviewHTML() {
                 </div>
             `;
         } else if (contactSection.layout === 'map') {
+            // Extract iframe src from embed code
+            let mapSrc = '';
+            if (contactSection.mapEmbed) {
+                const srcMatch = contactSection.mapEmbed.match(/src="([^"]+)"/);
+                if (srcMatch) {
+                    mapSrc = srcMatch[1];
+                } else if (contactSection.mapEmbed.includes('google.com/maps')) {
+                    mapSrc = contactSection.mapEmbed;
+                }
+            }
+            
             html += `
                 <div class="preview-contact-map">
-                    <div class="map-placeholder">Map Location</div>
+                    ${mapSrc ? 
+                        `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` :
+                        `<div class="map-placeholder">📍 Add Google Maps embed link in settings</div>`
+                    }
                     <div>
                         <div class="contact-info-item">
                             <strong>Email</strong>
@@ -1647,6 +1872,23 @@ function generatePreviewHTML() {
         }
         
         html += `</section>`;
+    }
+    
+    // WhatsApp Button
+    const whatsappSection = appState.sections.whatsapp;
+    if (whatsappSection.enabled && whatsappSection.number) {
+        const whatsappNumber = whatsappSection.number.replace(/[^0-9]/g, ''); // Remove non-numeric
+        const message = encodeURIComponent(whatsappSection.message || 'Hi!');
+        const position = whatsappSection.position === 'bottom-left' ? 'position-left' : 'position-right';
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+        
+        html += `
+            <a href="${whatsappUrl}" class="whatsapp-button ${position}" target="_blank" title="Chat on WhatsApp">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 0C7.164 0 0 7.164 0 16c0 2.82.736 5.464 2.024 7.76L0 32l8.416-2.208A15.932 15.932 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.344c-2.4 0-4.672-.632-6.624-1.736l-.48-.28-4.848 1.272 1.296-4.728-.312-.496A13.232 13.232 0 012.656 16C2.656 8.636 8.636 2.656 16 2.656S29.344 8.636 29.344 16 23.364 29.344 16 29.344zm7.312-10.016c-.4-.2-2.368-1.168-2.736-1.304-.368-.128-.632-.2-.904.2-.264.4-1.04 1.304-1.272 1.568-.232.272-.472.304-.872.104-.4-.2-1.688-.624-3.216-1.984-1.184-1.056-1.992-2.368-2.224-2.768-.232-.4-.024-.616.176-.816.176-.184.4-.472.6-.712.2-.232.264-.4.4-.664.136-.272.072-.504-.032-.712-.104-.2-.904-2.176-1.24-2.976-.328-.784-.664-.68-.904-.688-.232-.008-.496-.008-.76-.008s-.696.096-1.064.496c-.368.4-1.4 1.36-1.4 3.328s1.432 3.864 1.632 4.128c.2.272 2.816 4.296 6.824 6.024.952.416 1.696.664 2.272.848.952.304 1.824.264 2.512.16.768-.112 2.368-.968 2.704-1.904.336-.936.336-1.736.232-1.904-.096-.176-.36-.272-.76-.472z"/>
+                </svg>
+            </a>
+        `;
     }
     
     return html;
@@ -1808,9 +2050,25 @@ function generateCompleteHTML() {
     const heroBgColor = heroSection.backgroundColor || primaryColor;
     const heroTextColor = heroSection.textColor || '#ffffff';
     const heroUseGradient = heroSection.useGradient !== false;
-    const heroBackground = heroUseGradient 
-        ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
-        : heroBgColor;
+    const heroBackgroundImage = heroSection.backgroundImage;
+    const heroImageOverlay = heroSection.imageOverlay || 50;
+    
+    // Generate hero background
+    let heroBackgroundStyle;
+    if (heroBackgroundImage) {
+        const overlayOpacity = heroImageOverlay / 100;
+        heroBackgroundStyle = `
+            background-image: linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${heroBackgroundImage}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        `;
+    } else {
+        const heroBackground = heroUseGradient 
+            ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
+            : heroBgColor;
+        heroBackgroundStyle = `background: ${heroBackground};`;
+    }
     
     // Build complete HTML document
     return `<!DOCTYPE html>
@@ -1837,7 +2095,7 @@ function generateCompleteHTML() {
         .hero {
             padding: ${sectionPadding}px ${basePadding}px;
             text-align: center;
-            background: ${heroBackground};
+            ${heroBackgroundStyle}
             color: ${heroTextColor};
             position: relative;
         }
@@ -1848,7 +2106,7 @@ function generateCompleteHTML() {
             gap: 48px;
             align-items: center;
             padding: ${sectionPadding}px ${basePadding}px;
-            background: ${heroBackground};
+            ${heroBackgroundStyle}
             color: ${heroTextColor};
             text-align: left;
         }
@@ -1856,8 +2114,8 @@ function generateCompleteHTML() {
         .hero-minimal {
             padding: ${basePadding}px;
             text-align: left;
-            background: ${primaryColor};
-            color: white;
+            ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
+            color: ${heroTextColor};
             border-bottom: 4px solid ${secondaryColor};
         }
         
@@ -2106,6 +2364,34 @@ function generateCompleteHTML() {
             line-height: 1.6;
         }
         
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 24px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-bottom-right {
+            right: 24px;
+        }
+        .whatsapp-bottom-left {
+            left: 24px;
+        }
+        
         /* Footer */
         .footer {
             padding: ${basePadding}px;
@@ -2266,7 +2552,20 @@ function generateCompleteHTML() {
         </div>
         ` : appState.sections.contact.layout === 'map' ? `
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
-            <div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">Map Location</div>
+            ${(() => {
+                let mapSrc = '';
+                if (appState.sections.contact.mapEmbed) {
+                    const srcMatch = appState.sections.contact.mapEmbed.match(/src="([^"]+)"/);
+                    if (srcMatch) {
+                        mapSrc = srcMatch[1];
+                    } else if (appState.sections.contact.mapEmbed.includes('google.com/maps')) {
+                        mapSrc = appState.sections.contact.mapEmbed;
+                    }
+                }
+                return mapSrc 
+                    ? `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: ${styleConfig.borderRadius}px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+                    : `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">📍 Map Location</div>`;
+            })()}
             <div>
                 <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
                     <strong style="display: block; margin-bottom: 8px; color: ${primaryColor}; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">EMAIL</strong>
@@ -2299,6 +2598,18 @@ function generateCompleteHTML() {
         </div>
         `}
     </section>
+    ` : ''}
+    
+    ${appState.sections.whatsapp && appState.sections.whatsapp.enabled && appState.sections.whatsapp.number ? `
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/${appState.sections.whatsapp.number.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(appState.sections.whatsapp.message || 'Hi!')}" 
+       class="whatsapp-btn whatsapp-${appState.sections.whatsapp.position}" 
+       target="_blank" 
+       title="Chat on WhatsApp">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+            <path fill="white" d="M16 0C7.164 0 0 7.164 0 16c0 2.82.736 5.464 2.024 7.76L0 32l8.416-2.208A15.932 15.932 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.344c-2.4 0-4.672-.632-6.624-1.736l-.48-.28-4.848 1.272 1.296-4.728-.312-.496A13.232 13.232 0 012.656 16C2.656 8.636 8.636 2.656 16 2.656S29.344 8.636 29.344 16 23.364 29.344 16 29.344zm7.312-10.016c-.4-.2-2.368-1.168-2.736-1.304-.368-.128-.632-.2-.904.2-.264.4-1.04 1.304-1.272 1.568-.232.272-.472.304-.872.104-.4-.2-1.688-.624-3.216-1.984-1.184-1.056-1.992-2.368-2.224-2.768-.232-.4-.024-.616.176-.816.176-.184.4-.472.6-.712.2-.232.264-.4.4-.664.136-.272.072-.504-.032-.712-.104-.2-.904-2.176-1.24-2.976-.328-.784-.664-.68-.904-.688-.232-.008-.496-.008-.76-.008s-.696.096-1.064.496c-.368.4-1.4 1.36-1.4 3.328s1.432 3.864 1.632 4.128c.2.272 2.816 4.296 6.824 6.024.952.416 1.696.664 2.272.848.952.304 1.824.264 2.512.16.768-.112 2.368-.968 2.704-1.904.336-.936.336-1.736.232-1.904-.096-.176-.36-.272-.76-.472z"/>
+        </svg>
+    </a>
     ` : ''}
     
     <!-- Footer -->

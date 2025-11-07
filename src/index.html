@@ -151,6 +151,24 @@
                                             <input type="checkbox" id="heroUseGradient" checked>
                                             Use Gradient Background
                                         </label>
+                                        <div style="margin-top: 12px;">
+                                            <label class="form-label">Background Image (Optional)</label>
+                                            <input type="file" class="form-input" id="heroBackgroundImage" accept="image/*" style="padding: 8px;">
+                                            <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Upload an image for hero background. Recommended: 1920x1080px</p>
+                                            <div id="heroImagePreview" style="display: none; margin-top: 8px;">
+                                                <img id="heroImagePreviewImg" style="max-width: 100%; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                                <button type="button" id="heroImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
+                                            </div>
+                                        </div>
+                                        <div id="heroImageOverlayGroup" style="display: none; margin-top: 12px;">
+                                            <label class="form-label">Image Overlay Opacity</label>
+                                            <input type="range" id="heroImageOverlay" min="0" max="100" value="50" class="form-range" style="width: 100%;">
+                                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-top: 4px;">
+                                                <span>Transparent</span>
+                                                <span id="heroOverlayValue">50%</span>
+                                                <span>Dark</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -263,6 +281,47 @@
                                     <div class="form-group">
                                         <label class="form-label">Address</label>
                                         <textarea class="form-input" id="contactAddress" rows="2" placeholder="123 Business Street, City, State 12345"></textarea>
+                                    </div>
+                                    <div class="form-group" id="mapLinkGroup" style="display: none;">
+                                        <label class="form-label">Google Maps Embed Link</label>
+                                        <p class="field-hint" style="font-size: 12px; margin-bottom: 8px;">
+                                            1. Go to <a href="https://www.google.com/maps" target="_blank" style="color: #667eea;">Google Maps</a><br>
+                                            2. Search your location → Click "Share" → "Embed a map"<br>
+                                            3. Copy the entire &lt;iframe&gt; code or just the src URL
+                                        </p>
+                                        <textarea class="form-input" id="contactMapEmbed" rows="3" placeholder='Paste: <iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>'></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- WhatsApp Button -->
+                            <div class="section-control">
+                                <div class="section-header">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="whatsappEnabled">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <div class="section-info">
+                                        <h3>WhatsApp Button</h3>
+                                        <p>Floating contact button</p>
+                                    </div>
+                                </div>
+                                <div class="section-options" id="whatsappOptions" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">WhatsApp Number</label>
+                                        <input type="tel" class="form-input" id="whatsappNumber" placeholder="+60123456789 (include country code)">
+                                        <p class="field-hint" style="font-size: 12px; margin-top: 4px;">Format: +[country code][number] (e.g., +60123456789)</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Default Message (Optional)</label>
+                                        <input type="text" class="form-input" id="whatsappMessage" placeholder="Hi! I'm interested in your products">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Button Position</label>
+                                        <div class="radio-group-inline">
+                                            <label><input type="radio" name="whatsappPosition" value="bottom-right" checked> Bottom Right</label>
+                                            <label><input type="radio" name="whatsappPosition" value="bottom-left"> Bottom Left</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

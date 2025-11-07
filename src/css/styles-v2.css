@@ -256,6 +256,16 @@ body {
   flex-direction: column;
   background: var(--gray-50);
   overflow: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hide preview panel when not active (for desktop toggle functionality) */
+.preview-panel:not(.active) {
+  display: none;
+}
+
+.preview-panel.active {
+  display: flex;
 }
 
 .preview-header {
