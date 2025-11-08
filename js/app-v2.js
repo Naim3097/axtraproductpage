@@ -525,7 +525,9 @@ function initializeSectionControls() {
     
     if (heroHeight) {
         heroHeight.addEventListener('change', (e) => {
-            appState.sections.hero.height = parseInt(e.target.value);
+            const value = e.target.value;
+            // Store as-is: either a number string like "600" or "100vh"
+            appState.sections.hero.height = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1936,7 +1938,8 @@ function generatePreviewHTML() {
     const heroCtaTextColor = hero.ctaTextColor || '#6366f1';
     const heroCtaHoverBg = hero.ctaHoverBg || '#f3f4f6';
     const heroCtaBorderRadius = hero.ctaBorderRadius || 8;
-    const heroHeight = hero.height || 600;
+    const heroHeightValue = hero.height || 600;
+    const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
     const heroContentWidth = hero.contentWidth || 1200;
     const heroPadding = hero.padding || 60;
     
@@ -2886,6 +2889,8 @@ function generateCompleteHTML() {
     const heroHeadlineSize = heroSection.headlineSize || 48;
     const heroFontWeight = heroSection.fontWeight || 700;
     const heroPadding = heroSection.padding || 60;
+    const heroHeightValue = heroSection.height || 600;
+    const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
     
     // Get products section styling (match generatePreviewHTML)
     const productsSectionBg = productsSection.sectionBg || '#f7fafc';
@@ -2999,14 +3004,24 @@ function generateCompleteHTML() {
         
         /* Hero Section */
         .hero {
+            min-height: ${heroHeight};
             padding: ${heroPadding}px ${basePadding}px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero > div {
+            width: 100%;
+            max-width: 1200px;
         }
         
         .hero-split {
+            min-height: ${heroHeight};
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 48px;
@@ -3018,6 +3033,7 @@ function generateCompleteHTML() {
         }
         
         .hero-minimal {
+            min-height: ${heroHeight === '100vh' ? 'auto' : heroHeight};
             padding: ${heroPadding}px ${basePadding}px;
             text-align: left;
             ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
