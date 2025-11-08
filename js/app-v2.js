@@ -48,7 +48,8 @@ const appState = {
             ctaHoverBg: '#f0f0f0',
             ctaBorderRadius: 8,
             height: 600,
-            contentWidth: 1000
+            contentWidth: 1000,
+            padding: 60
         },
         products: {
             enabled: true,
@@ -507,8 +508,20 @@ function initializeSectionControls() {
     }
     
     // Hero Spacing Controls
+    const heroPadding = document.getElementById('heroPadding');
     const heroHeight = document.getElementById('heroHeight');
     const heroContentWidth = document.getElementById('heroContentWidth');
+    
+    if (heroPadding) {
+        heroPadding.addEventListener('input', (e) => {
+            appState.sections.hero.padding = parseInt(e.target.value);
+            updatePreview();
+        });
+        
+        heroPadding.addEventListener('change', () => {
+            saveToLocalStorage();
+        });
+    }
     
     if (heroHeight) {
         heroHeight.addEventListener('change', (e) => {
@@ -1925,6 +1938,7 @@ function generatePreviewHTML() {
     const heroCtaBorderRadius = hero.ctaBorderRadius || 8;
     const heroHeight = hero.height || 600;
     const heroContentWidth = hero.contentWidth || 1200;
+    const heroPadding = hero.padding || 60;
     
     // Products Section Styles
     const productsSectionBg = products.sectionBg || '#f7fafc';
@@ -2023,7 +2037,7 @@ function generatePreviewHTML() {
         /* Hero Section Styles */
         .preview-hero-v2 {
             min-height: ${heroHeight};
-            padding: 60px 20px;
+            padding: ${heroPadding}px 20px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
@@ -2407,7 +2421,7 @@ function generatePreviewHTML() {
         
         if (heroLayout === 'split') {
             // Split layout: text left, image right - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: 0 !important; text-align: left; padding: 60px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; text-align: left; padding: ${heroPadding}px 40px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
@@ -2424,7 +2438,7 @@ function generatePreviewHTML() {
             </section>`;
         } else if (heroLayout === 'minimal') {
             // Minimal layout: compact header style - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: 0 !important; padding: 40px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; padding: ${heroPadding}px 40px;">
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
                     <div style="flex: 1; min-width: 250px;">
                         <h1 style="font-size: ${parseInt(heroHeadlineSize) * 0.7}px !important; margin-bottom: 8px;">${escapeHtml(headline)}</h1>
@@ -2871,6 +2885,7 @@ function generateCompleteHTML() {
     const heroCtaBorderRadius = heroSection.ctaBorderRadius || 8;
     const heroHeadlineSize = heroSection.headlineSize || 48;
     const heroFontWeight = heroSection.fontWeight || 700;
+    const heroPadding = heroSection.padding || 60;
     
     // Get products section styling (match generatePreviewHTML)
     const productsSectionBg = productsSection.sectionBg || '#f7fafc';
@@ -2984,7 +2999,7 @@ function generateCompleteHTML() {
         
         /* Hero Section */
         .hero {
-            padding: ${sectionPadding}px ${basePadding}px;
+            padding: ${heroPadding}px ${basePadding}px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
@@ -2996,14 +3011,14 @@ function generateCompleteHTML() {
             grid-template-columns: 1fr 1fr;
             gap: 48px;
             align-items: center;
-            padding: ${sectionPadding}px ${basePadding}px;
+            padding: ${heroPadding}px ${basePadding}px;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
             text-align: left;
         }
         
         .hero-minimal {
-            padding: ${basePadding}px;
+            padding: ${heroPadding}px ${basePadding}px;
             text-align: left;
             ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
             color: ${heroTextColor};
