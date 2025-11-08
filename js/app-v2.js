@@ -2208,23 +2208,25 @@ function generatePreviewHTML() {
         }
         .preview-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(${productsColumns >= 4 ? '200px' : productsColumns === 3 ? '250px' : productsColumns === 2 ? '300px' : '100%'}, 1fr));
-            gap: ${productsGap}px;
-            max-width: 1200px;
+            grid-template-columns: repeat(${products.columns || 3}, 1fr);
+            gap: ${Math.max(productsGap * 0.5, 12)}px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 12px;
         }
         .preview-products-section {
             overflow-x: hidden;
+            transform: scale(0.8);
+            transform-origin: top center;
         }
         @media (max-width: 1024px) {
             .preview-products-grid {
-                grid-template-columns: repeat(auto-fit, minmax(${productsColumns >= 3 ? '200px' : '250px'}, 1fr));
+                grid-template-columns: repeat(${productsColumns >= 4 ? 3 : productsColumns >= 3 ? 2 : productsColumns}, 1fr);
             }
         }
         @media (max-width: 768px) {
             .preview-products-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
             }
             .preview-about-two-column,
             .preview-about-side-image {

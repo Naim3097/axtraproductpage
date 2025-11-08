@@ -912,8 +912,9 @@ body {
 
 .design-control-body {
   padding: 16px;
-  max-height: 1000px;
-  overflow: hidden;
+  max-height: 2000px;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: max-height 0.3s ease, padding 0.3s ease;
 }
 
@@ -921,6 +922,7 @@ body {
   max-height: 0;
   padding-top: 0;
   padding-bottom: 0;
+  overflow: hidden;
 }
 
 /* ============================================
