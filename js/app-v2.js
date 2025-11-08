@@ -3760,6 +3760,26 @@ function loadFromLocalStorage() {
                 }
             }
             
+            // Hero background type
+            if (appState.sections.hero.backgroundType) {
+                const heroBackgroundTypeRadio = document.querySelector(`input[name="heroBackgroundType"][value="${appState.sections.hero.backgroundType}"]`);
+                if (heroBackgroundTypeRadio) heroBackgroundTypeRadio.checked = true;
+            }
+            
+            // Hero gradient colors
+            const heroGradientStart = document.getElementById('heroGradientStart');
+            const heroGradientEnd = document.getElementById('heroGradientEnd');
+            const heroGradientAngle = document.getElementById('heroGradientAngle');
+            if (heroGradientStart && appState.sections.hero.gradientStart) {
+                heroGradientStart.value = appState.sections.hero.gradientStart;
+            }
+            if (heroGradientEnd && appState.sections.hero.gradientEnd) {
+                heroGradientEnd.value = appState.sections.hero.gradientEnd;
+            }
+            if (heroGradientAngle && appState.sections.hero.gradientAngle !== undefined) {
+                heroGradientAngle.value = appState.sections.hero.gradientAngle;
+            }
+            
             // Products
             const productsEnabled = document.getElementById('productsEnabled');
             const productsHeadline = document.getElementById('productsHeadline');
