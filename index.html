@@ -329,11 +329,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Grid Columns</label>
-                                        <div class="radio-group-inline">
-                                            <label><input type="radio" name="productsColumns" value="2"> 2 Columns</label>
-                                            <label><input type="radio" name="productsColumns" value="3" checked> 3 Columns</label>
-                                            <label><input type="radio" name="productsColumns" value="4"> 4 Columns</label>
+                                        <label class="form-label">Grid Columns (1-6)</label>
+                                        <input type="number" class="form-input" id="productsColumns" value="3" min="1" max="6" step="1">
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">
+                                            Choose how many columns in your product grid
                                         </div>
                                     </div>
                                     <div class="form-group">

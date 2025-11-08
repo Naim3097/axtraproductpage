@@ -637,13 +637,21 @@ function initializeSectionControls() {
         });
     });
     
-    document.querySelectorAll('input[name="productsColumns"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            appState.sections.products.columns = parseInt(e.target.value);
+    const productsColumns = document.getElementById('productsColumns');
+    if (productsColumns) {
+        productsColumns.addEventListener('input', (e) => {
+            let value = parseInt(e.target.value);
+            // Clamp between 1-6
+            if (value < 1) value = 1;
+            if (value > 6) value = 6;
+            appState.sections.products.columns = value;
             updatePreview();
+        });
+        
+        productsColumns.addEventListener('change', () => {
             saveToLocalStorage();
         });
-    });
+    }
     
     productsShowDescription.addEventListener('change', (e) => {
         appState.sections.products.showDescription = e.target.checked;
@@ -3767,8 +3775,8 @@ function loadFromLocalStorage() {
             const productsLayoutRadio = document.querySelector(`input[name="productsLayout"][value="${appState.sections.products.layout}"]`);
             if (productsLayoutRadio) productsLayoutRadio.checked = true;
             
-            const productsColumnsRadio = document.querySelector(`input[name="productsColumns"][value="${appState.sections.products.columns}"]`);
-            if (productsColumnsRadio) productsColumnsRadio.checked = true;
+            const productsColumnsInput = document.getElementById('productsColumns');
+            if (productsColumnsInput) productsColumnsInput.value = appState.sections.products.columns || 3;
             
             // About
             const aboutEnabled = document.getElementById('aboutEnabled');
