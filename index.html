@@ -84,6 +84,22 @@
                                             <label><input type="radio" name="heroLayout" value="minimal"> Minimal</label>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Hero Split Layout Image Upload -->
+                                    <div class="form-group" id="heroSplitImageGroup" style="display: none;">
+                                        <label class="form-label">Hero Image (for Split Layout)</label>
+                                        <input type="file" class="form-input" id="heroSplitImage" accept="image/*" style="padding: 8px;">
+                                        <p class="field-hint" style="font-size: 12px; margin-top: 4px; color: #64748b;">
+                                            Upload an image to display alongside your hero content<br>
+                                            • Recommended: 800x600px or larger<br>
+                                            • Supports JPG, PNG, WebP formats
+                                        </p>
+                                        <div id="heroSplitImagePreview" style="display: none; margin-top: 8px;">
+                                            <img id="heroSplitImagePreviewImg" style="max-width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                            <button type="button" id="heroSplitImageRemove" class="btn-ghost btn-sm" style="margin-top: 4px; font-size: 12px;">Remove Image</button>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label class="form-label">Headline</label>
                                         <input type="text" class="form-input" id="heroHeadline" placeholder="Transform Your Life Today">

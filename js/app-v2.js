@@ -31,6 +31,7 @@ const appState = {
             subheadline: '',
             ctaText: 'Shop Now',
             showCTA: true,
+            splitImage: null,
             // Design controls
             backgroundType: 'solid', // solid, gradient, image
             backgroundColor: '#667eea',
@@ -249,6 +250,11 @@ function initializeSectionControls() {
     document.querySelectorAll('input[name="heroLayout"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
             appState.sections.hero.layout = e.target.value;
+            // Show/hide split image upload based on layout
+            const heroSplitImageGroup = document.getElementById('heroSplitImageGroup');
+            if (heroSplitImageGroup) {
+                heroSplitImageGroup.style.display = e.target.value === 'split' ? 'block' : 'none';
+            }
             updatePreview();
             saveToLocalStorage();
         });
@@ -530,6 +536,45 @@ function initializeSectionControls() {
         heroImageOverlay.addEventListener('change', () => {
             saveToLocalStorage();
         });
+    }
+    
+    // Hero Split Layout Image Upload
+    const heroSplitImage = document.getElementById('heroSplitImage');
+    const heroSplitImagePreview = document.getElementById('heroSplitImagePreview');
+    const heroSplitImagePreviewImg = document.getElementById('heroSplitImagePreviewImg');
+    const heroSplitImageRemove = document.getElementById('heroSplitImageRemove');
+    const heroSplitImageGroup = document.getElementById('heroSplitImageGroup');
+    
+    if (heroSplitImage) {
+        heroSplitImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    appState.sections.hero.splitImage = event.target.result;
+                    if (heroSplitImagePreviewImg) heroSplitImagePreviewImg.src = event.target.result;
+                    if (heroSplitImagePreview) heroSplitImagePreview.style.display = 'block';
+                    updatePreview();
+                    saveToLocalStorage();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    if (heroSplitImageRemove) {
+        heroSplitImageRemove.addEventListener('click', () => {
+            appState.sections.hero.splitImage = null;
+            if (heroSplitImage) heroSplitImage.value = '';
+            if (heroSplitImagePreview) heroSplitImagePreview.style.display = 'none';
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    // Initialize split image group visibility based on current layout
+    if (heroSplitImageGroup) {
+        heroSplitImageGroup.style.display = appState.sections.hero.layout === 'split' ? 'block' : 'none';
     }
     
     // Products Section
@@ -2063,6 +2108,11 @@ function generatePreviewHTML() {
             .preview-products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
+            .preview-about-two-column,
+            .preview-about-side-image {
+                grid-template-columns: 1fr !important;
+                flex-direction: column-reverse !important;
+            }
         }
         @media (max-width: 480px) {
             .preview-products-grid {
@@ -2125,6 +2175,12 @@ function generatePreviewHTML() {
         .preview-buy-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+        }
+        .compare-price {
+            font-size: 18px;
+            color: #a0aec0;
+            text-decoration: line-through;
+            margin-right: 8px;
         }
         
         /* About Section Styles */
@@ -2358,9 +2414,12 @@ function generatePreviewHTML() {
                         <p>${escapeHtml(subheadline)}</p>
                         ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
                     </div>
-                    <div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border-radius: ${heroCtaBorderRadius}; display: flex; align-items: center; justify-content: center; font-size: 14px; backdrop-filter: blur(10px);">
-                        Hero Image
-                    </div>
+                    ${heroSection.splitImage ? 
+                        `<img src="${heroSection.splitImage}" alt="${escapeHtml(headline)}" style="width: 100%; height: 100%; max-height: 500px; object-fit: cover; border-radius: ${heroCtaBorderRadius}px;">` :
+                        `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border-radius: ${heroCtaBorderRadius}px; display: flex; align-items: center; justify-content: center; font-size: 14px; backdrop-filter: blur(10px);">
+                            Hero Image
+                        </div>`
+                    }
                 </div>
             </section>`;
         } else if (heroLayout === 'minimal') {
@@ -3041,10 +3100,11 @@ function generateCompleteHTML() {
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
+            justify-items: center;
         }
         
         .product-card {
@@ -3114,7 +3174,7 @@ function generateCompleteHTML() {
         .buy-button {
             width: 100%;
             padding: ${14 * styleConfig.spacing}px;
-            background: ${primaryColor};
+            background: ${productsPriceColor};
             color: white;
             border: none;
             border-radius: ${styleConfig.borderRadius}px;
@@ -3125,7 +3185,8 @@ function generateCompleteHTML() {
         }
         
         .buy-button:hover {
-            background: ${secondaryColor};
+            background: ${productsPriceColor};
+            opacity: 0.85;
             transform: ${styleConfig.transition === 'none' ? 'none' : 'scale(1.02)'};
         }
         
@@ -3263,8 +3324,17 @@ function generateCompleteHTML() {
                 font-size: ${28 * styleConfig.fontSize}px;
             }
             
-            .about-section > div {
+            .about-container {
                 grid-template-columns: 1fr !important;
+                flex-direction: column-reverse !important;
+            }
+            
+            .about-image {
+                grid-row: 1 !important;
+            }
+            
+            .about-text {
+                grid-row: 2 !important;
             }
             
             .contact-section > div {
@@ -3283,7 +3353,7 @@ function generateCompleteHTML() {
                 <p>${escapeHtml(subheadline)}</p>
                 ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
             </div>
-            <div class="hero-image-placeholder">Hero Image</div>
+            ${heroSection.splitImage ? `<img src="${heroSection.splitImage}" alt="${escapeHtml(headline)}" style="width: 100%; height: 100%; max-height: 500px; object-fit: cover; border-radius: ${styleConfig.borderRadius}px;">` : '<div class="hero-image-placeholder">Hero Image</div>'}
         ` : heroSection.layout === 'minimal' ? `
             <div class="hero-content">
                 <div>
@@ -3360,12 +3430,12 @@ function generateCompleteHTML() {
     
     ${appState.sections.about.enabled ? `
     <!-- About Section -->
-    <section class="about-section" style="padding: ${aboutPadding}px; background: ${aboutBackgroundColor};">
-        <div style="max-width: ${aboutContentWidth}px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+    <section class="about-section" style="padding: ${aboutPadding}px 20px; background: ${aboutBackgroundColor};">
+        <div class="about-container" style="max-width: ${aboutContentWidth}px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
             ${appState.sections.about.layout !== 'centered' ? (appState.sections.about.image ? 
-                `<img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px;">` : 
-                '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
-            <div>
+                `<img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; grid-row: ${appState.sections.about.layout === 'two-column' ? '1' : 'auto'};">` : 
+                '<div class="about-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280; grid-row: ${appState.sections.about.layout === \'two-column\' ? \'1\' : \'auto\'};">About Image</div>') : ''}
+            <div class="about-text">
                 <h2 style="font-size: ${aboutHeadingSize}px; font-weight: ${aboutHeadingWeight}; margin-bottom: 24px; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
                 <p style="font-size: ${aboutContentSize}px; line-height: ${aboutLineHeight}; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
             </div>
