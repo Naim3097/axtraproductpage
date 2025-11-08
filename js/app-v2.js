@@ -2184,10 +2184,13 @@ function generatePreviewHTML() {
             margin-left: auto;
             margin-right: auto;
         }
+        .preview-section-header {
+            margin-bottom: ${productsHeaderSpacing}px;
+        }
         .preview-section-title {
             font-size: 32px;
             font-weight: 700;
-            margin-bottom: ${productsHeaderSpacing}px;
+            margin-bottom: 8px;
             color: ${productsTextColor};
         }
         .preview-section-subtitle {
@@ -2212,7 +2215,7 @@ function generatePreviewHTML() {
         }
         @media (max-width: 768px) {
             .preview-products-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
             }
             .preview-about-two-column,
             .preview-about-side-image {
@@ -3221,7 +3224,7 @@ function generateCompleteHTML() {
             text-align: center;
             font-size: ${36 * styleConfig.fontSize}px;
             font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${48 * styleConfig.spacing}px;
+            margin-bottom: ${productsHeaderSpacing}px;
             color: ${productsTextColor};
         }
         
@@ -3443,7 +3446,7 @@ function generateCompleteHTML() {
             }
             
             .products-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
             }
             
             .section-title {
