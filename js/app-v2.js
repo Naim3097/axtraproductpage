@@ -1968,7 +1968,7 @@ function generatePreviewHTML() {
     const heroGradientEnd = hero.gradientEnd || '#8b5cf6';
     const heroGradientAngle = hero.gradientAngle || 135;
     const heroBackgroundImage = hero.backgroundImage;
-    const heroImageOverlay = hero.imageOverlay || 50;
+    const heroImageOverlay = hero.imageOverlay !== undefined ? hero.imageOverlay : 50;
     const heroHeadlineSize = hero.headlineSize || 48;
     const heroFontWeight = hero.fontWeight || 700;
     const heroCtaBackground = hero.ctaBackground || '#ffffff';
@@ -2922,7 +2922,7 @@ function generateCompleteHTML() {
     const heroGradientEnd = heroSection.gradientEnd || '#8b5cf6';
     const heroGradientAngle = heroSection.gradientAngle || 135;
     const heroBackgroundImage = heroSection.backgroundImage;
-    const heroImageOverlay = heroSection.imageOverlay || 50;
+    const heroImageOverlay = heroSection.imageOverlay !== undefined ? heroSection.imageOverlay : 50;
     const heroCtaBackground = heroSection.ctaBackground || '#ffffff';
     const heroCtaTextColor = heroSection.ctaTextColor || '#6366f1';
     const heroCtaHoverBg = heroSection.ctaHoverBg || '#f3f4f6';
@@ -3807,8 +3807,10 @@ function loadFromLocalStorage() {
             
             // Hero background image and overlay
             const heroImageOverlay = document.getElementById('heroImageOverlay');
+            const heroOverlayValue = document.getElementById('heroOverlayValue');
             if (heroImageOverlay && appState.sections.hero.imageOverlay !== undefined) {
                 heroImageOverlay.value = appState.sections.hero.imageOverlay;
+                if (heroOverlayValue) heroOverlayValue.textContent = appState.sections.hero.imageOverlay + '%';
             }
             
             // Hero typography
