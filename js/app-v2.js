@@ -2059,7 +2059,7 @@ function generatePreviewHTML() {
             justify-content: center;
         }
         .preview-hero-v2 .hero-content {
-            width: 90%;
+            width: 100%;
             max-width: ${heroContentWidth};
             margin: 0 auto;
         }
@@ -2070,10 +2070,13 @@ function generatePreviewHTML() {
             line-height: 1.2;
         }
         .preview-hero-v2 p {
-            font-size: clamp(16px, 3vw, 20px);
+            font-size: 20px;
             opacity: 0.95;
             margin-bottom: 32px;
             line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .preview-cta-btn {
             display: inline-block;
@@ -2117,7 +2120,7 @@ function generatePreviewHTML() {
             line-height: 1.6;
         }
         .preview-products-section h2 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             text-align: center;
             margin-bottom: 48px;
@@ -2125,10 +2128,11 @@ function generatePreviewHTML() {
         }
         .preview-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(${products.columns === 2 ? '340px' : products.columns === 4 ? '220px' : '280px'}, 1fr));
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
+            justify-items: center;
         }
         @media (max-width: 768px) {
             .preview-products-grid {
@@ -2161,7 +2165,7 @@ function generatePreviewHTML() {
         }
         .preview-product-image {
             width: 100%;
-            height: 250px;
+            height: 300px;
             object-fit: cover;
             background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
         }
@@ -2172,7 +2176,7 @@ function generatePreviewHTML() {
             font-size: ${productsTitleSize}px;
             font-weight: ${productsTitleWeight};
             color: ${productsTextColor};
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .preview-product-desc {
             font-size: 14px;
