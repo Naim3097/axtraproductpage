@@ -2265,13 +2265,11 @@ function generatePreviewHTML() {
             font-weight: ${aboutHeadingWeight};
             margin-bottom: 24px;
             color: ${aboutTextColor};
-            opacity: 0.9;
         }
         .preview-about-section p {
             font-size: ${aboutContentSize}px;
             line-height: ${aboutLineHeight};
             color: ${aboutTextColor};
-            opacity: 0.8;
         }
         @media (max-width: 768px) {
             .preview-about-two-column,
@@ -2287,9 +2285,9 @@ function generatePreviewHTML() {
             background: ${contactBackgroundColor};
         }
         .preview-contact-section h2 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 32px;
+            margin-bottom: 48px;
             color: ${contactTextColor};
             text-align: center;
         }
@@ -3240,33 +3238,33 @@ function generateCompleteHTML() {
         
         /* About Section */
         .about-section {
-            padding: ${aboutPadding};
+            padding: ${aboutPadding}px 20px;
             background: ${aboutBackgroundColor};
         }
         
         .about-section h2 {
-            font-size: ${aboutHeadingSize};
+            font-size: ${aboutHeadingSize}px;
             font-weight: ${aboutHeadingWeight};
-            margin-bottom: ${24 * styleConfig.spacing}px;
+            margin-bottom: 24px;
             color: ${aboutTextColor};
         }
         
         .about-section p {
-            font-size: ${aboutContentSize};
+            font-size: ${aboutContentSize}px;
             line-height: ${aboutLineHeight};
             color: ${aboutTextColor};
         }
         
         /* Contact Section */
         .contact-section {
-            padding: ${contactPadding};
+            padding: ${contactPadding}px 20px;
             background: ${contactBackgroundColor};
         }
         
         .contact-section h2 {
-            font-size: ${36 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${32 * styleConfig.spacing}px;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 48px;
             color: ${contactTextColor};
             text-align: center;
         }
