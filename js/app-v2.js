@@ -3420,9 +3420,11 @@ function generateCompleteHTML() {
                 ${heroSection.showCTA ? `<button class="cta-button" style="padding: 12px 24px; font-size: 14px;" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
             </div>
         ` : `
-            <h1>${escapeHtml(headline)}</h1>
-            <p>${escapeHtml(subheadline)}</p>
-            ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            <div>
+                <h1>${escapeHtml(headline)}</h1>
+                <p>${escapeHtml(subheadline)}</p>
+                ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            </div>
         `}
     </section>
     ` : ''}
