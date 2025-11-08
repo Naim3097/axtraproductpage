@@ -2556,7 +2556,7 @@ function generatePreviewHTML() {
             html += `</div>`;
         } else {
             // Grid layout (default)
-            html += `<div class="preview-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">`;
+            html += `<div class="preview-products-grid">`;
             
             appState.products.forEach(product => {
                 const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
@@ -3432,7 +3432,7 @@ function generateCompleteHTML() {
     <section class="products-section">
         ${productsSection.headline ? `<h2 class="section-title" style="margin-bottom: ${productsHeaderSpacing}px;">${escapeHtml(productsSection.headline)}</h2>` : ''}
         ${productsSection.subheadline ? `<p style="text-align: center; font-size: 16px; color: ${productsTextColor}; opacity: 0.8; max-width: 800px; margin: 0 auto ${productsSectionSpacing}px auto; line-height: 1.6;">${escapeHtml(productsSection.subheadline)}</p>` : ''}
-        <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">
+        <div class="products-grid">
             ${appState.products.map(product => {
                 const imageHtml = product.images && product.images.length > 0 
                     ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="product-image">`
