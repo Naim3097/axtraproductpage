@@ -69,6 +69,7 @@ const appState = {
             hoverBorder: '#667eea',
             titleSize: 16,
             titleWeight: 600,
+            textAlign: 'center',
             priceColor: '#667eea',
             priceSize: 20,
             cardPadding: 16,
@@ -775,6 +776,15 @@ function initializeSectionControls() {
             saveToLocalStorage();
         });
     }
+    
+    // Products text alignment
+    document.querySelectorAll('input[name="productsTextAlign"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.products.textAlign = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
     
     if (productsPriceColor) {
         productsPriceColor.addEventListener('input', debounce((e) => {
@@ -1991,6 +2001,7 @@ function generatePreviewHTML() {
     const productsHoverBorder = products.hoverBorder || '#6366f1';
     const productsTitleSize = products.titleSize || 18;
     const productsTitleWeight = products.titleWeight || 600;
+    const productsTextAlign = products.textAlign || 'center';
     const productsPriceColor = products.priceColor || '#6366f1';
     const productsPriceSize = products.priceSize || 24;
     const productsCardPadding = products.cardPadding || 20;
@@ -2201,6 +2212,7 @@ function generatePreviewHTML() {
         }
         .preview-product-info {
             padding: ${productsCardPadding}px;
+            text-align: ${productsTextAlign};
         }
         .preview-product-name {
             font-size: ${productsTitleSize}px;
@@ -2945,6 +2957,7 @@ function generateCompleteHTML() {
     const productsHoverBorder = productsSection.hoverBorder || '#6366f1';
     const productsTitleSize = productsSection.titleSize || 18;
     const productsTitleWeight = productsSection.titleWeight || 600;
+    const productsTextAlign = productsSection.textAlign || 'center';
     const productsPriceColor = productsSection.priceColor || '#6366f1';
     const productsPriceSize = productsSection.priceSize || 24;
     const productsCardPadding = productsSection.cardPadding || 20;
@@ -3206,6 +3219,7 @@ function generateCompleteHTML() {
         
         .product-info {
             padding: ${productsCardPadding}px;
+            text-align: ${productsTextAlign};
         }
         
         .product-name {
@@ -3869,6 +3883,9 @@ function loadFromLocalStorage() {
             
             const productsLayoutRadio = document.querySelector(`input[name="productsLayout"][value="${appState.sections.products.layout}"]`);
             if (productsLayoutRadio) productsLayoutRadio.checked = true;
+            
+            const productsTextAlignRadio = document.querySelector(`input[name="productsTextAlign"][value="${appState.sections.products.textAlign || 'center'}"]`);
+            if (productsTextAlignRadio) productsTextAlignRadio.checked = true;
             
             const productsColumnsInput = document.getElementById('productsColumns');
             if (productsColumnsInput) productsColumnsInput.value = appState.sections.products.columns || 3;
