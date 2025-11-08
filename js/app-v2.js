@@ -535,7 +535,9 @@ function initializeSectionControls() {
     
     if (heroContentWidth) {
         heroContentWidth.addEventListener('change', (e) => {
-            appState.sections.hero.contentWidth = parseInt(e.target.value);
+            const value = e.target.value;
+            // Store as-is: either a number string like "1000" or "100%"
+            appState.sections.hero.contentWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1139,7 +1141,9 @@ function attachEventListeners() {
     
     if (aboutContentWidth) {
         aboutContentWidth.addEventListener('change', (e) => {
-            appState.sections.about.contentWidth = parseInt(e.target.value);
+            const value = e.target.value;
+            // Store as-is to support future percentage values
+            appState.sections.about.contentWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1306,7 +1310,9 @@ function attachEventListeners() {
     }
     if (contactFormWidth) {
         contactFormWidth.addEventListener('change', () => {
-            appState.sections.contact.formWidth = parseInt(contactFormWidth.value);
+            const value = contactFormWidth.value;
+            // Store as-is to support future percentage values
+            appState.sections.contact.formWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1940,7 +1946,8 @@ function generatePreviewHTML() {
     const heroCtaBorderRadius = hero.ctaBorderRadius || 8;
     const heroHeightValue = hero.height || 600;
     const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
-    const heroContentWidth = hero.contentWidth || 1200;
+    const heroContentWidthValue = hero.contentWidth || 1200;
+    const heroContentWidth = typeof heroContentWidthValue === 'string' && heroContentWidthValue.includes('%') ? heroContentWidthValue : `${heroContentWidthValue}px`;
     const heroPadding = hero.padding || 60;
     
     // Products Section Styles
@@ -1968,7 +1975,8 @@ function generatePreviewHTML() {
     const aboutContentSize = about.contentSize || 16;
     const aboutLineHeight = about.lineHeight || 1.6;
     const aboutPadding = about.padding || 60;
-    const aboutContentWidth = about.contentWidth || 1000;
+    const aboutContentWidthValue = about.contentWidth || 1000;
+    const aboutContentWidth = typeof aboutContentWidthValue === 'string' && aboutContentWidthValue.includes('%') ? aboutContentWidthValue : `${aboutContentWidthValue}px`;
     const aboutAccentColor = about.accentColor || '#6366f1';
     const aboutBorderStyle = about.borderStyle || 'none';
     
@@ -1986,7 +1994,8 @@ function generatePreviewHTML() {
     const contactLabelSize = contact.labelSize || 14;
     const contactLabelWeight = contact.labelWeight || 500;
     const contactPadding = contact.padding || 60;
-    const contactFormWidth = contact.formWidth || 600;
+    const contactFormWidthValue = contact.formWidth || 600;
+    const contactFormWidth = typeof contactFormWidthValue === 'string' && contactFormWidthValue.includes('%') ? contactFormWidthValue : `${contactFormWidthValue}px`;
     
     // WhatsApp Button Styles
     const whatsappBgColor = whatsapp.bgColor || '#25D366';
@@ -2051,7 +2060,7 @@ function generatePreviewHTML() {
         }
         .preview-hero-v2 .hero-content {
             width: 90%;
-            max-width: 1200px;
+            max-width: ${heroContentWidth};
             margin: 0 auto;
         }
         .preview-hero-v2 h1 {
@@ -2212,14 +2221,14 @@ function generatePreviewHTML() {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 48px;
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             align-items: center;
         }
         .preview-about-side-image {
             display: flex;
             gap: 48px;
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             align-items: center;
         }
@@ -2243,7 +2252,7 @@ function generatePreviewHTML() {
             border: 2px dashed ${aboutAccentColor}33;
         }
         .preview-about-centered {
-            max-width: ${aboutContentWidth}px;
+            max-width: ${aboutContentWidth};
             margin: 0 auto;
             text-align: center;
         }
@@ -2281,7 +2290,7 @@ function generatePreviewHTML() {
             text-align: center;
         }
         .preview-contact-form {
-            max-width: ${contactFormWidth}px;
+            max-width: ${contactFormWidth};
             margin: 0 auto;
         }
         .contact-form-field {
@@ -2891,6 +2900,8 @@ function generateCompleteHTML() {
     const heroPadding = heroSection.padding || 60;
     const heroHeightValue = heroSection.height || 600;
     const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
+    const heroContentWidthValue = heroSection.contentWidth || 1200;
+    const heroContentWidth = typeof heroContentWidthValue === 'string' && heroContentWidthValue.includes('%') ? heroContentWidthValue : `${heroContentWidthValue}px`;
     
     // Get products section styling (match generatePreviewHTML)
     const productsSectionBg = productsSection.sectionBg || '#f7fafc';
@@ -2918,7 +2929,8 @@ function generateCompleteHTML() {
     const aboutContentSize = aboutSection.contentSize || 16;
     const aboutLineHeight = aboutSection.lineHeight || 1.6;
     const aboutPadding = aboutSection.padding || 60;
-    const aboutContentWidth = aboutSection.contentWidth || 1000;
+    const aboutContentWidthValue = aboutSection.contentWidth || 1000;
+    const aboutContentWidth = typeof aboutContentWidthValue === 'string' && aboutContentWidthValue.includes('%') ? aboutContentWidthValue : `${aboutContentWidthValue}px`;
     const aboutAccentColor = aboutSection.accentColor || '#6366f1';
     const aboutBorderStyle = aboutSection.borderStyle || 'none';
     
@@ -2937,7 +2949,8 @@ function generateCompleteHTML() {
     const contactLabelSize = contactSection.labelSize || 14;
     const contactLabelWeight = contactSection.labelWeight || 500;
     const contactPadding = contactSection.padding || 60;
-    const contactFormWidth = contactSection.formWidth || 600;
+    const contactFormWidthValue = contactSection.formWidth || 600;
+    const contactFormWidth = typeof contactFormWidthValue === 'string' && contactFormWidthValue.includes('%') ? contactFormWidthValue : `${contactFormWidthValue}px`;
     
     // Get WhatsApp section styling (match generatePreviewHTML)
     const whatsappSection = appState.sections.whatsapp;
@@ -3017,7 +3030,7 @@ function generateCompleteHTML() {
         
         .hero > div {
             width: 100%;
-            max-width: 1200px;
+            max-width: ${heroContentWidth};
         }
         
         .hero-split {
@@ -3042,7 +3055,7 @@ function generateCompleteHTML() {
         }
         
         .hero-minimal .hero-content {
-            max-width: 1200px;
+            max-width: ${heroContentWidth};
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -3462,7 +3475,7 @@ function generateCompleteHTML() {
     ${appState.sections.about.enabled ? `
     <!-- About Section -->
     <section class="about-section" style="padding: ${aboutPadding}px 20px; background: ${aboutBackgroundColor};">
-        <div class="about-container" style="max-width: ${aboutContentWidth}px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+        <div class="about-container" style="max-width: ${aboutContentWidth}; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
             ${appState.sections.about.layout !== 'centered' ? (appState.sections.about.image ? 
                 `<img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; grid-row: ${appState.sections.about.layout === 'two-column' ? '1' : 'auto'};">` : 
                 '<div class="about-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280; grid-row: ${appState.sections.about.layout === \'two-column\' ? \'1\' : \'auto\'};">About Image</div>') : ''}
@@ -3479,7 +3492,7 @@ function generateCompleteHTML() {
     <section class="contact-section" style="padding: ${contactPadding}px; background: ${contactBackgroundColor};">
         <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: ${contactTextColor};">Contact Us</h2>
         ${appState.sections.contact.layout === 'form' ? `
-        <div style="max-width: ${contactFormWidth}px; margin: 0 auto;">
+        <div style="max-width: ${contactFormWidth}; margin: 0 auto;">
             <div style="margin-bottom: 16px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Name</label>
                 <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;">
