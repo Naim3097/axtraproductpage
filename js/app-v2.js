@@ -3477,29 +3477,26 @@ function generateCompleteHTML() {
             }
         }
         
+        @media (max-width: 768px) {
+            .about-container {
+                grid-template-columns: 1fr !important;
+                flex-direction: column !important;
+            }
+            
+            .contact-section > div {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
         @media (max-width: 640px) {
             .products-grid {
                 grid-template-columns: 1fr !important;
                 max-width: 500px;
                 margin: 0 auto;
             }
-        }
             
             .about-container {
-                grid-template-columns: 1fr !important;
                 flex-direction: column-reverse !important;
-            }
-            
-            .about-image {
-                grid-row: 1 !important;
-            }
-            
-            .about-text {
-                grid-row: 2 !important;
-            }
-            
-            .contact-section > div {
-                grid-template-columns: 1fr !important;
             }
         }
     </style>
