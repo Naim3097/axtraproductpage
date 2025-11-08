@@ -2128,15 +2128,14 @@ function generatePreviewHTML() {
         }
         .preview-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(${products.columns === 2 ? '340px' : products.columns === 4 ? '220px' : '280px'}, 1fr));
+            grid-template-columns: repeat(${products.columns || 3}, 1fr);
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
-            justify-items: center;
         }
         @media (max-width: 768px) {
             .preview-products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
             .preview-about-two-column,
             .preview-about-side-image {
@@ -3146,11 +3145,10 @@ function generateCompleteHTML() {
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));
+            grid-template-columns: repeat(${productsSection.columns || 3}, 1fr);
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
-            justify-items: center;
         }
         
         .product-card {
@@ -3183,13 +3181,13 @@ function generateCompleteHTML() {
             font-size: ${productsTitleSize}px;
             font-weight: ${productsTitleWeight};
             color: ${productsTextColor};
-            margin-bottom: ${8 * styleConfig.spacing}px;
+            margin-bottom: 8px;
         }
         
         .product-description {
             font-size: 14px;
             color: #718096;
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            margin-bottom: 16px;
             line-height: 1.6;
         }
         
@@ -3197,7 +3195,7 @@ function generateCompleteHTML() {
             font-size: ${productsPriceSize}px;
             font-weight: ${productsTitleWeight};
             color: ${productsPriceColor};
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            margin-bottom: 16px;
         }
         
         .compare-price {
@@ -3210,30 +3208,29 @@ function generateCompleteHTML() {
         .variant-info {
             font-size: 12px;
             color: #718096;
-            margin-bottom: ${12 * styleConfig.spacing}px;
+            margin-bottom: 12px;
             padding: 8px 12px;
             background: #f7fafc;
-            border-radius: ${styleConfig.borderRadius / 2}px;
+            border-radius: 4px;
             display: inline-block;
         }
         
         .buy-button {
             width: 100%;
-            padding: ${14 * styleConfig.spacing}px;
+            padding: 12px;
             background: ${productsPriceColor};
             color: white;
             border: none;
-            border-radius: ${styleConfig.borderRadius}px;
+            border-radius: ${productsCardRadius}px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: ${styleConfig.transition};
+            transition: all 0.3s ease;
         }
         
         .buy-button:hover {
-            background: ${productsPriceColor};
-            opacity: 0.85;
-            transform: ${styleConfig.transition === 'none' ? 'none' : 'scale(1.02)'};
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
         
         /* About Section */
@@ -3355,7 +3352,7 @@ function generateCompleteHTML() {
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: ${32 * styleConfig.fontSize}px;
+                font-size: 32px;
             }
             
             .hero-split {
@@ -3363,11 +3360,17 @@ function generateCompleteHTML() {
             }
             
             .products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .section-title {
-                font-size: ${28 * styleConfig.fontSize}px;
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
             }
             
             .about-container {
