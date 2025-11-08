@@ -3780,6 +3780,54 @@ function loadFromLocalStorage() {
                 heroGradientAngle.value = appState.sections.hero.gradientAngle;
             }
             
+            // Hero background image and overlay
+            const heroImageOverlay = document.getElementById('heroImageOverlay');
+            if (heroImageOverlay && appState.sections.hero.imageOverlay !== undefined) {
+                heroImageOverlay.value = appState.sections.hero.imageOverlay;
+            }
+            
+            // Hero typography
+            const heroHeadlineSize = document.getElementById('heroHeadlineSize');
+            const heroFontWeight = document.getElementById('heroFontWeight');
+            if (heroHeadlineSize && appState.sections.hero.headlineSize !== undefined) {
+                heroHeadlineSize.value = appState.sections.hero.headlineSize;
+            }
+            if (heroFontWeight && appState.sections.hero.fontWeight !== undefined) {
+                heroFontWeight.value = appState.sections.hero.fontWeight;
+            }
+            
+            // Hero CTA design
+            const heroCtaBackground = document.getElementById('heroCtaBackground');
+            const heroCtaTextColor = document.getElementById('heroCtaTextColor');
+            const heroCtaHoverBg = document.getElementById('heroCtaHoverBg');
+            const heroCtaBorderRadius = document.getElementById('heroCtaBorderRadius');
+            if (heroCtaBackground && appState.sections.hero.ctaBackground) {
+                heroCtaBackground.value = appState.sections.hero.ctaBackground;
+            }
+            if (heroCtaTextColor && appState.sections.hero.ctaTextColor) {
+                heroCtaTextColor.value = appState.sections.hero.ctaTextColor;
+            }
+            if (heroCtaHoverBg && appState.sections.hero.ctaHoverBg) {
+                heroCtaHoverBg.value = appState.sections.hero.ctaHoverBg;
+            }
+            if (heroCtaBorderRadius && appState.sections.hero.ctaBorderRadius !== undefined) {
+                heroCtaBorderRadius.value = appState.sections.hero.ctaBorderRadius;
+            }
+            
+            // Hero dimensions
+            const heroPadding = document.getElementById('heroPadding');
+            const heroHeight = document.getElementById('heroHeight');
+            const heroContentWidth = document.getElementById('heroContentWidth');
+            if (heroPadding && appState.sections.hero.padding !== undefined) {
+                heroPadding.value = appState.sections.hero.padding;
+            }
+            if (heroHeight && appState.sections.hero.height !== undefined) {
+                heroHeight.value = appState.sections.hero.height;
+            }
+            if (heroContentWidth && appState.sections.hero.contentWidth !== undefined) {
+                heroContentWidth.value = appState.sections.hero.contentWidth;
+            }
+            
             // Products
             const productsEnabled = document.getElementById('productsEnabled');
             const productsHeadline = document.getElementById('productsHeadline');
@@ -3798,6 +3846,39 @@ function loadFromLocalStorage() {
             const productsColumnsInput = document.getElementById('productsColumns');
             if (productsColumnsInput) productsColumnsInput.value = appState.sections.products.columns || 3;
             
+            // Restore products design controls
+            const productsSectionBg = document.getElementById('productsSectionBg');
+            const productsCardBg = document.getElementById('productsCardBg');
+            const productsTextColor = document.getElementById('productsTextColor');
+            const productsCardRadius = document.getElementById('productsCardRadius');
+            const productsCardShadow = document.getElementById('productsCardShadow');
+            const productsHoverEffect = document.getElementById('productsHoverEffect');
+            const productsHoverBorder = document.getElementById('productsHoverBorder');
+            const productsTitleSize = document.getElementById('productsTitleSize');
+            const productsTitleWeight = document.getElementById('productsTitleWeight');
+            const productsPriceColor = document.getElementById('productsPriceColor');
+            const productsPriceSize = document.getElementById('productsPriceSize');
+            const productsCardPadding = document.getElementById('productsCardPadding');
+            const productsGap = document.getElementById('productsGap');
+            const productsHeaderSpacing = document.getElementById('productsHeaderSpacing');
+            const productsSectionSpacing = document.getElementById('productsSectionSpacing');
+            
+            if (productsSectionBg && appState.sections.products.sectionBg) productsSectionBg.value = appState.sections.products.sectionBg;
+            if (productsCardBg && appState.sections.products.cardBg) productsCardBg.value = appState.sections.products.cardBg;
+            if (productsTextColor && appState.sections.products.textColor) productsTextColor.value = appState.sections.products.textColor;
+            if (productsCardRadius && appState.sections.products.cardRadius !== undefined) productsCardRadius.value = appState.sections.products.cardRadius;
+            if (productsCardShadow && appState.sections.products.cardShadow) productsCardShadow.value = appState.sections.products.cardShadow;
+            if (productsHoverEffect && appState.sections.products.hoverEffect) productsHoverEffect.value = appState.sections.products.hoverEffect;
+            if (productsHoverBorder && appState.sections.products.hoverBorder) productsHoverBorder.value = appState.sections.products.hoverBorder;
+            if (productsTitleSize && appState.sections.products.titleSize !== undefined) productsTitleSize.value = appState.sections.products.titleSize;
+            if (productsTitleWeight && appState.sections.products.titleWeight !== undefined) productsTitleWeight.value = appState.sections.products.titleWeight;
+            if (productsPriceColor && appState.sections.products.priceColor) productsPriceColor.value = appState.sections.products.priceColor;
+            if (productsPriceSize && appState.sections.products.priceSize !== undefined) productsPriceSize.value = appState.sections.products.priceSize;
+            if (productsCardPadding && appState.sections.products.cardPadding !== undefined) productsCardPadding.value = appState.sections.products.cardPadding;
+            if (productsGap && appState.sections.products.gap !== undefined) productsGap.value = appState.sections.products.gap;
+            if (productsHeaderSpacing && appState.sections.products.headerSpacing !== undefined) productsHeaderSpacing.value = appState.sections.products.headerSpacing;
+            if (productsSectionSpacing && appState.sections.products.sectionSpacing !== undefined) productsSectionSpacing.value = appState.sections.products.sectionSpacing;
+            
             // About
             const aboutEnabled = document.getElementById('aboutEnabled');
             if (aboutEnabled) aboutEnabled.checked = appState.sections.about.enabled;
@@ -3805,12 +3886,64 @@ function loadFromLocalStorage() {
             const aboutLayoutRadio = document.querySelector(`input[name="aboutLayout"][value="${appState.sections.about.layout}"]`);
             if (aboutLayoutRadio) aboutLayoutRadio.checked = true;
             
+            // Restore about design controls
+            const aboutBackgroundColor = document.getElementById('aboutBackgroundColor');
+            const aboutTextColor = document.getElementById('aboutTextColor');
+            const aboutHeadingSize = document.getElementById('aboutHeadingSize');
+            const aboutHeadingWeight = document.getElementById('aboutHeadingWeight');
+            const aboutContentSize = document.getElementById('aboutContentSize');
+            const aboutLineHeight = document.getElementById('aboutLineHeight');
+            const aboutPadding = document.getElementById('aboutPadding');
+            const aboutContentWidth = document.getElementById('aboutContentWidth');
+            const aboutAccentColor = document.getElementById('aboutAccentColor');
+            const aboutBorderStyle = document.getElementById('aboutBorderStyle');
+            
+            if (aboutBackgroundColor && appState.sections.about.backgroundColor) aboutBackgroundColor.value = appState.sections.about.backgroundColor;
+            if (aboutTextColor && appState.sections.about.textColor) aboutTextColor.value = appState.sections.about.textColor;
+            if (aboutHeadingSize && appState.sections.about.headingSize !== undefined) aboutHeadingSize.value = appState.sections.about.headingSize;
+            if (aboutHeadingWeight && appState.sections.about.headingWeight !== undefined) aboutHeadingWeight.value = appState.sections.about.headingWeight;
+            if (aboutContentSize && appState.sections.about.contentSize !== undefined) aboutContentSize.value = appState.sections.about.contentSize;
+            if (aboutLineHeight && appState.sections.about.lineHeight !== undefined) aboutLineHeight.value = appState.sections.about.lineHeight;
+            if (aboutPadding && appState.sections.about.padding !== undefined) aboutPadding.value = appState.sections.about.padding;
+            if (aboutContentWidth && appState.sections.about.contentWidth !== undefined) aboutContentWidth.value = appState.sections.about.contentWidth;
+            if (aboutAccentColor && appState.sections.about.accentColor) aboutAccentColor.value = appState.sections.about.accentColor;
+            if (aboutBorderStyle && appState.sections.about.borderStyle) aboutBorderStyle.value = appState.sections.about.borderStyle;
+            
             // Contact
             const contactEnabled = document.getElementById('contactEnabled');
             if (contactEnabled) contactEnabled.checked = appState.sections.contact.enabled;
             
             const contactLayoutRadio = document.querySelector(`input[name="contactLayout"][value="${appState.sections.contact.layout}"]`);
             if (contactLayoutRadio) contactLayoutRadio.checked = true;
+            
+            // Restore contact design controls
+            const contactBackgroundColor = document.getElementById('contactBackgroundColor');
+            const contactTextColor = document.getElementById('contactTextColor');
+            const contactInputBg = document.getElementById('contactInputBg');
+            const contactInputBorder = document.getElementById('contactInputBorder');
+            const contactFocusBorder = document.getElementById('contactFocusBorder');
+            const contactInputRadius = document.getElementById('contactInputRadius');
+            const contactButtonBg = document.getElementById('contactButtonBg');
+            const contactButtonText = document.getElementById('contactButtonText');
+            const contactButtonHover = document.getElementById('contactButtonHover');
+            const contactButtonSize = document.getElementById('contactButtonSize');
+            const contactLabelSize = document.getElementById('contactLabelSize');
+            const contactLabelWeight = document.getElementById('contactLabelWeight');
+            const contactPadding = document.getElementById('contactPadding');
+            
+            if (contactBackgroundColor && appState.sections.contact.backgroundColor) contactBackgroundColor.value = appState.sections.contact.backgroundColor;
+            if (contactTextColor && appState.sections.contact.textColor) contactTextColor.value = appState.sections.contact.textColor;
+            if (contactInputBg && appState.sections.contact.inputBg) contactInputBg.value = appState.sections.contact.inputBg;
+            if (contactInputBorder && appState.sections.contact.inputBorder) contactInputBorder.value = appState.sections.contact.inputBorder;
+            if (contactFocusBorder && appState.sections.contact.focusBorder) contactFocusBorder.value = appState.sections.contact.focusBorder;
+            if (contactInputRadius && appState.sections.contact.inputRadius !== undefined) contactInputRadius.value = appState.sections.contact.inputRadius;
+            if (contactButtonBg && appState.sections.contact.buttonBg) contactButtonBg.value = appState.sections.contact.buttonBg;
+            if (contactButtonText && appState.sections.contact.buttonText) contactButtonText.value = appState.sections.contact.buttonText;
+            if (contactButtonHover && appState.sections.contact.buttonHover) contactButtonHover.value = appState.sections.contact.buttonHover;
+            if (contactButtonSize && appState.sections.contact.buttonSize !== undefined) contactButtonSize.value = appState.sections.contact.buttonSize;
+            if (contactLabelSize && appState.sections.contact.labelSize !== undefined) contactLabelSize.value = appState.sections.contact.labelSize;
+            if (contactLabelWeight && appState.sections.contact.labelWeight !== undefined) contactLabelWeight.value = appState.sections.contact.labelWeight;
+            if (contactPadding && appState.sections.contact.padding !== undefined) contactPadding.value = appState.sections.contact.padding;
             
             // WhatsApp
             const whatsappEnabled = document.getElementById('whatsappEnabled');
