@@ -2208,14 +2208,23 @@ function generatePreviewHTML() {
         }
         .preview-products-grid {
             display: grid;
-            grid-template-columns: repeat(${products.columns || 3}, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(${productsColumns >= 4 ? '200px' : productsColumns === 3 ? '250px' : productsColumns === 2 ? '300px' : '100%'}, 1fr));
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
+        }
+        .preview-products-section {
+            overflow-x: hidden;
+        }
+        @media (max-width: 1024px) {
+            .preview-products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(${productsColumns >= 3 ? '200px' : '250px'}, 1fr));
+            }
         }
         @media (max-width: 768px) {
             .preview-products-grid {
-                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
             .preview-about-two-column,
             .preview-about-side-image {
@@ -2223,9 +2232,10 @@ function generatePreviewHTML() {
                 flex-direction: column-reverse !important;
             }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
             .preview-products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                max-width: 500px;
             }
         }
         .preview-product-card {
@@ -3234,6 +3244,11 @@ function generateCompleteHTML() {
             gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .products-section {
+            overflow-x: hidden;
         }
         
         .product-card {
@@ -3436,6 +3451,12 @@ function generateCompleteHTML() {
         }
         
         /* Responsive */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(${productsColumns >= 4 ? 3 : productsColumns >= 3 ? 2 : productsColumns}, 1fr);
+            }
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 32px;
@@ -3454,10 +3475,13 @@ function generateCompleteHTML() {
             }
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
             .products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                max-width: 500px;
+                margin: 0 auto;
             }
+        }
             
             .about-container {
                 grid-template-columns: 1fr !important;
