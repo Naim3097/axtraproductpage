@@ -408,11 +408,34 @@ function initializeSectionControls() {
     
     heroBackgroundTypeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
-            appState.sections.hero.backgroundType = e.target.value;
+            const newType = e.target.value;
+            appState.sections.hero.backgroundType = newType;
+            
+            // Clear opposing state properties to prevent conflicts
+            if (newType === 'solid') {
+                // When switching to solid, clear gradient and image data
+                appState.sections.hero.gradientStart = null;
+                appState.sections.hero.gradientEnd = null;
+                appState.sections.hero.gradientAngle = null;
+                appState.sections.hero.backgroundImage = null;
+                appState.sections.hero.imageOverlay = null;
+            } else if (newType === 'gradient') {
+                // When switching to gradient, clear solid and image data
+                appState.sections.hero.backgroundColor = null;
+                appState.sections.hero.backgroundImage = null;
+                appState.sections.hero.imageOverlay = null;
+            } else if (newType === 'image') {
+                // When switching to image, clear solid and gradient data
+                appState.sections.hero.backgroundColor = null;
+                appState.sections.hero.gradientStart = null;
+                appState.sections.hero.gradientEnd = null;
+                appState.sections.hero.gradientAngle = null;
+            }
+            
             // Show/hide relevant controls
-            if (heroSolidBg) heroSolidBg.style.display = e.target.value === 'solid' ? 'grid' : 'none';
-            if (heroGradientBg) heroGradientBg.style.display = e.target.value === 'gradient' ? 'block' : 'none';
-            if (heroImageBg) heroImageBg.style.display = e.target.value === 'image' ? 'block' : 'none';
+            if (heroSolidBg) heroSolidBg.style.display = newType === 'solid' ? 'grid' : 'none';
+            if (heroGradientBg) heroGradientBg.style.display = newType === 'gradient' ? 'block' : 'none';
+            if (heroImageBg) heroImageBg.style.display = newType === 'image' ? 'block' : 'none';
             updatePreview();
             saveToLocalStorage();
         });
