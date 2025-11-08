@@ -3594,11 +3594,14 @@ function generateCompleteHTML() {
     ${appState.sections.about.enabled ? `
     <!-- About Section -->
     <section class="about-section" style="padding: ${aboutPadding}px 20px; background: ${aboutBackgroundColor};">
-        <div class="about-container" style="max-width: ${aboutContentWidth}; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;' : 'text-align: center; max-width: 800px;'}">
-            ${appState.sections.about.layout !== 'centered' ? (appState.sections.about.image ? 
-                `<div style="width: 100%;"><img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 100%; max-width: 100%; height: 300px; max-height: 300px; object-fit: cover; border-radius: 12px; display: block; grid-row: ${appState.sections.about.layout === 'two-column' ? '1' : 'auto'};"></div>` : 
-                '<div class="about-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280; grid-row: ${appState.sections.about.layout === \'two-column\' ? \'1\' : \'auto\'};">About Image</div>') : ''}
-            <div class="about-text">
+        <div class="about-container" style="max-width: ${aboutContentWidth}; margin: 0 auto; ${appState.sections.about.layout === 'two-column' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;' : appState.sections.about.layout === 'side-image' ? 'display: flex; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+            ${appState.sections.about.layout === 'two-column' ? (appState.sections.about.image ? 
+                `<div style="width: 100%;"><img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 100%; max-width: 100%; height: 300px; max-height: 300px; object-fit: cover; border-radius: 12px; display: block;"></div>` : 
+                '<div class="about-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
+            ${appState.sections.about.layout === 'side-image' ? (appState.sections.about.image ? 
+                `<div style="flex: 0 0 300px;"><img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 300px; max-width: 100%; height: 300px; object-fit: cover; border-radius: 12px; display: block;"></div>` : 
+                '<div class="about-image" style="flex: 0 0 300px; width: 300px; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
+            <div class="about-text" style="${appState.sections.about.layout === 'side-image' ? 'flex: 1;' : ''}">
                 <h2 style="font-size: ${aboutHeadingSize}px; font-weight: ${aboutHeadingWeight}; margin-bottom: 24px; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
                 <p style="font-size: ${aboutContentSize}px; line-height: ${aboutLineHeight}; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
             </div>
