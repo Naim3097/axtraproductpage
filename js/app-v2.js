@@ -72,6 +72,9 @@ const appState = {
             textAlign: 'center',
             priceColor: '#667eea',
             priceSize: 20,
+            buttonBg: '#667eea',
+            buttonText: '#ffffff',
+            buttonHover: '#5568d3',
             cardPadding: 16,
             gap: 24,
             headerSpacing: 8,
@@ -800,6 +803,35 @@ function initializeSectionControls() {
             updatePreview();
             saveToLocalStorage();
         });
+    }
+    
+    // Products button styling
+    const productsButtonBg = document.getElementById('productsButtonBg');
+    const productsButtonText = document.getElementById('productsButtonText');
+    const productsButtonHover = document.getElementById('productsButtonHover');
+    
+    if (productsButtonBg) {
+        productsButtonBg.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonBg = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsButtonText) {
+        productsButtonText.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonText = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsButtonHover) {
+        productsButtonHover.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonHover = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
     }
     
     if (productsCardPadding) {
@@ -2004,6 +2036,9 @@ function generatePreviewHTML() {
     const productsTextAlign = products.textAlign || 'center';
     const productsPriceColor = products.priceColor || '#6366f1';
     const productsPriceSize = products.priceSize || 24;
+    const productsButtonBg = products.buttonBg || '#6366f1';
+    const productsButtonText = products.buttonText || '#ffffff';
+    const productsButtonHover = products.buttonHover || '#5568d3';
     const productsCardPadding = products.cardPadding || 20;
     const productsGap = products.gap || 24;
     const productsHeaderSpacing = products.headerSpacing || 12;
@@ -2236,8 +2271,8 @@ function generatePreviewHTML() {
         .preview-buy-btn {
             width: 100%;
             padding: 12px;
-            background: ${productsPriceColor};
-            color: white;
+            background: ${productsButtonBg};
+            color: ${productsButtonText};
             border: none;
             border-radius: ${productsCardRadius}px;
             font-weight: 600;
@@ -2245,7 +2280,7 @@ function generatePreviewHTML() {
             transition: all 0.3s ease;
         }
         .preview-buy-btn:hover {
-            opacity: 0.9;
+            background: ${productsButtonHover};
             transform: translateY(-2px);
         }
         .compare-price {
@@ -2960,6 +2995,9 @@ function generateCompleteHTML() {
     const productsTextAlign = productsSection.textAlign || 'center';
     const productsPriceColor = productsSection.priceColor || '#6366f1';
     const productsPriceSize = productsSection.priceSize || 24;
+    const productsButtonBg = productsSection.buttonBg || '#6366f1';
+    const productsButtonText = productsSection.buttonText || '#ffffff';
+    const productsButtonHover = productsSection.buttonHover || '#5568d3';
     const productsCardPadding = productsSection.cardPadding || 20;
     const productsGap = productsSection.gap || 24;
     const productsHeaderSpacing = productsSection.headerSpacing || 12;
@@ -3263,8 +3301,8 @@ function generateCompleteHTML() {
         .buy-button {
             width: 100%;
             padding: 12px;
-            background: ${productsPriceColor};
-            color: white;
+            background: ${productsButtonBg};
+            color: ${productsButtonText};
             border: none;
             border-radius: ${productsCardRadius}px;
             font-weight: 600;
@@ -3274,7 +3312,7 @@ function generateCompleteHTML() {
         }
         
         .buy-button:hover {
-            opacity: 0.9;
+            background: ${productsButtonHover};
             transform: translateY(-2px);
         }
         
@@ -3922,6 +3960,14 @@ function loadFromLocalStorage() {
             if (productsGap && appState.sections.products.gap !== undefined) productsGap.value = appState.sections.products.gap;
             if (productsHeaderSpacing && appState.sections.products.headerSpacing !== undefined) productsHeaderSpacing.value = appState.sections.products.headerSpacing;
             if (productsSectionSpacing && appState.sections.products.sectionSpacing !== undefined) productsSectionSpacing.value = appState.sections.products.sectionSpacing;
+            
+            // Restore products button styling
+            const productsButtonBg = document.getElementById('productsButtonBg');
+            const productsButtonText = document.getElementById('productsButtonText');
+            const productsButtonHover = document.getElementById('productsButtonHover');
+            if (productsButtonBg && appState.sections.products.buttonBg) productsButtonBg.value = appState.sections.products.buttonBg;
+            if (productsButtonText && appState.sections.products.buttonText) productsButtonText.value = appState.sections.products.buttonText;
+            if (productsButtonHover && appState.sections.products.buttonHover) productsButtonHover.value = appState.sections.products.buttonHover;
             
             // About
             const aboutEnabled = document.getElementById('aboutEnabled');
