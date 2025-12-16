@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X.IDE - AI Website Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/ai-builder.css">
+</head>
+<body>
+    <!-- Background Gradients -->
+    <div class="gradient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo-area">
+                <a href="index.html" class="back-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <div class="logo">X.IDE</div>
+                <div class="divider">/</div>
+                <div class="app-name">AI Builder</div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="user-profile">
+                    <div class="avatar">MW</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="ai-workspace">
+        <div class="ai-container">
+            <!-- Hero Section -->
+            <div class="ai-hero">
+                <h1>Hi, how can I help you build your site?</h1>
+            </div>
+
+            <!-- Type Selection -->
+            <div class="type-selection">
+                <label class="type-option">
+                    <input type="radio" name="site-type" value="landing" checked>
+                    <div class="option-card">
+                        <span class="option-label">Landing Page</span>
+                    </div>
+                </label>
+                <label class="type-option">
+                    <input type="radio" name="site-type" value="corporate">
+                    <div class="option-card">
+                        <span class="option-label">Corporate Website</span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Prompt Interface -->
+            <div class="prompt-interface">
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box">
+                        <textarea placeholder="Describe the website you want to create... e.g. A modern portfolio for a photographer with a dark theme and gallery section."></textarea>
+                        <div class="prompt-actions">
+                            <button class="attach-btn" title="Attach reference">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                </svg>
+                            </button>
+                            <button class="generate-btn" title="Generate Site">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="suggestions-grid">
+                    <button class="suggestion-card" data-prompt="Create a minimalist portfolio website for a digital artist. The design should be clean and dark-themed, featuring a masonry grid gallery to showcase artwork, an 'About Me' section with a biography, and a contact form. Use high-contrast typography and subtle animations.">
+                        <div class="suggestion-text">
+                            <strong>Portfolio Site</strong>
+                            <span>Minimalist design for a digital artist</span>
+                        </div>
+                    </button>
+                    <button class="suggestion-card" data-prompt="Build a high-conversion landing page for a new AI SaaS startup. The hero section should have a compelling headline and a call-to-action button. Include sections for features with icons, a pricing table with three tiers, customer testimonials, and a footer with social links. Use a modern, tech-focused color palette.">
+                        <div class="suggestion-text">
+                            <strong>SaaS Landing</strong>
+                            <span>High-conversion page for a new startup</span>
+                        </div>
+                    </button>
+                    <button class="suggestion-card" data-prompt="Design a modern e-commerce storefront for a handmade goods brand. The homepage should feature a hero slider, a 'New Arrivals' product grid, and categories for 'Home Decor', 'Jewelry', and 'Gifts'. Include a shopping cart functionality, product detail pages with reviews, and a newsletter signup form. Use warm, earthy tones.">
+                        <div class="suggestion-text">
+                            <strong>E-commerce</strong>
+                            <span>Modern shop for handmade goods</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="generation-loading" class="generation-loading hidden">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <div class="loading-text-container">
+                        <div class="loading-step active" id="step-1">Analyzing requirements...</div>
+                        <div class="loading-step" id="step-2">Generating layout structure...</div>
+                        <div class="loading-step" id="step-3">Applying design system...</div>
+                        <div class="loading-step" id="step-4">Finalizing content...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Preview -->
+            <div id="generation-result" class="generation-result hidden">
+                <div class="result-header">
+                    <h3>Generated Preview</h3>
+                    <div class="result-actions">
+                        <a href="level-2.html" class="action-btn secondary" style="text-decoration: none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            Edit
+                        </a>
+                        <button class="action-btn primary" id="make-live-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Make Website Live
+                        </button>
+                    </div>
+                </div>
+                <div class="browser-mockup">
+                    <div class="browser-bar">
+                        <div class="browser-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="browser-address">https://preview.xide.ai/generated-site</div>
+                    </div>
+                    <div class="browser-viewport" id="mock-site-content">
+                        <!-- Content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast">
+        <div class="notification-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Request received! We're working on it.</span>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Make Your Website Live</h3>
+                <button class="close-modal-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/logo/LeanX.png" alt="LeanX Logo" class="modal-logo">
+                <p>Register with <strong>Lean.x</strong> to get your domain setup and publish your website to the world.</p>
+                <div class="modal-features">
+                    <div class="feature-row">
+                        <span>Free custom domain</span>
+                    </div>
+                    <div class="feature-row">
+                        <span>SSL Security included</span>
+                    </div>
+                    <div class="feature-row">
+                        <span>Global CDN hosting</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn secondary close-modal-btn">Cancel</button>
+                <a href="https://leanx-sign-up.vercel.app/signup.html" class="action-btn primary" style="text-decoration: none;">Register Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction for the radio buttons to add active class
+        const options = document.querySelectorAll('.type-option input');
+        options.forEach(option => {
+            option.addEventListener('change', (e) => {
+                document.querySelectorAll('.option-card').forEach(card => card.classList.remove('active'));
+                e.target.nextElementSibling.classList.add('active');
+            });
+        });
+
+        // Handle suggestion clicks
+        const suggestionCards = document.querySelectorAll('.suggestion-card');
+        const promptTextarea = document.querySelector('.prompt-box textarea');
+
+        suggestionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const prompt = card.getAttribute('data-prompt');
+                if (prompt) {
+                    promptTextarea.value = prompt;
+                    // Optional: Focus the textarea and scroll to it
+                    promptTextarea.focus();
+                }
+            });
+        });
+
+        // Handle Generate Button Click
+        const generateBtn = document.querySelector('.generate-btn');
+        const notificationToast = document.getElementById('notification-toast');
+        const loadingContainer = document.getElementById('generation-loading');
+        const resultContainer = document.getElementById('generation-result');
+        const mockSiteContent = document.getElementById('mock-site-content');
+        const loadingSteps = document.querySelectorAll('.loading-step');
+
+        // Templates with Multi-page Support
+        const templates = {
+            portfolio: {
+                home: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('portfolio', 'home')" style="cursor: pointer">ALEX.DESIGN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('portfolio', 'work')" style="cursor: pointer">Work</span>
+                                <span onclick="renderPage('portfolio', 'about')" style="cursor: pointer">About</span>
+                                <span onclick="renderPage('portfolio', 'contact')" style="cursor: pointer">Contact</span>
+                            </div>
+                        </nav>
+                        <div class="mock-hero">
+                            <h1>Visual Storytelling for Brands</h1>
+                            <p>I create digital experiences that leave a lasting impression. Minimalist, functional, and beautiful.</p>
+                            <a onclick="renderPage('portfolio', 'work')" class="mock-btn" style="cursor: pointer">View Projects</a>
+                        </div>
+                        <div class="mock-grid">
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #e2e8f0"></div>
+                                <h3>Fintech App Redesign</h3>
+                                <p>UI/UX Case Study</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #cbd5e1"></div>
+                                <h3>EcoTravel Brand Identity</h3>
+                                <p>Branding & Logo</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #94a3b8"></div>
+                                <h3>Modern Architecture</h3>
+                                <p>Web Design</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                work: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('portfolio', 'home')" style="cursor: pointer">ALEX.DESIGN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('portfolio', 'work')" style="cursor: pointer; font-weight: 600; color: #000;">Work</span>
+                                <span onclick="renderPage('portfolio', 'about')" style="cursor: pointer">About</span>
+                                <span onclick="renderPage('portfolio', 'contact')" style="cursor: pointer">Contact</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 60px 40px;">
+                            <h2 style="font-size: 2rem; margin-bottom: 40px;">Selected Works</h2>
+                            <div class="mock-grid" style="padding: 0; grid-template-columns: repeat(2, 1fr);">
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #e2e8f0; height: 240px;"></div>
+                                    <h3>Fintech App Redesign</h3>
+                                    <p>Product Design • 2024</p>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #cbd5e1; height: 240px;"></div>
+                                    <h3>EcoTravel Brand Identity</h3>
+                                    <p>Branding • 2023</p>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #94a3b8; height: 240px;"></div>
+                                    <h3>Modern Architecture</h3>
+                                    <p>Web Design • 2023</p>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #f1f5f9; height: 240px;"></div>
+                                    <h3>Neon Stream App</h3>
+                                    <p>Mobile UI • 2022</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                about: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('portfolio', 'home')" style="cursor: pointer">ALEX.DESIGN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('portfolio', 'work')" style="cursor: pointer">Work</span>
+                                <span onclick="renderPage('portfolio', 'about')" style="cursor: pointer; font-weight: 600; color: #000;">About</span>
+                                <span onclick="renderPage('portfolio', 'contact')" style="cursor: pointer">Contact</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 80px 40px; max-width: 800px; margin: 0 auto;">
+                            <div style="width: 100px; height: 100px; background: #333; border-radius: 50%; margin-bottom: 30px;"></div>
+                            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Hi, I'm Alex.</h2>
+                            <p style="font-size: 1.2rem; line-height: 1.6; color: #444; margin-bottom: 20px;">
+                                I am a multidisciplinary designer focusing on digital experiences. With over 5 years of experience, I help brands tell their stories through clean, functional, and beautiful design.
+                            </p>
+                            <p style="font-size: 1.2rem; line-height: 1.6; color: #444;">
+                                Currently based in New York, working with clients worldwide.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                contact: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('portfolio', 'home')" style="cursor: pointer">ALEX.DESIGN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('portfolio', 'work')" style="cursor: pointer">Work</span>
+                                <span onclick="renderPage('portfolio', 'about')" style="cursor: pointer">About</span>
+                                <span onclick="renderPage('portfolio', 'contact')" style="cursor: pointer; font-weight: 600; color: #000;">Contact</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 80px 40px; max-width: 600px; margin: 0 auto;">
+                            <h2 style="font-size: 2rem; margin-bottom: 10px;">Let's work together</h2>
+                            <p style="color: #666; margin-bottom: 40px;">Have a project in mind? Fill out the form below.</p>
+                            <div style="display: flex; flex-direction: column; gap: 20px;">
+                                <input type="text" placeholder="Name" style="padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="email" placeholder="Email" style="padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                                <textarea placeholder="Message" style="padding: 12px; border: 1px solid #ddd; border-radius: 6px; height: 120px;"></textarea>
+                                <button class="mock-btn" style="border: none; cursor: pointer;">Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            saas: {
+                home: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('saas', 'home')" style="cursor: pointer">ScaleUp.ai</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('saas', 'features')" style="cursor: pointer">Features</span>
+                                <span onclick="renderPage('saas', 'pricing')" style="cursor: pointer">Pricing</span>
+                                <span onclick="renderPage('saas', 'login')" style="cursor: pointer">Login</span>
+                            </div>
+                        </nav>
+                        <div class="mock-hero">
+                            <h1>Automate Your Workflow with AI</h1>
+                            <p>Stop wasting time on manual tasks. Our AI-powered platform handles the busy work so you can focus on growth.</p>
+                            <a onclick="renderPage('saas', 'pricing')" class="mock-btn" style="background: #2563eb; cursor: pointer;">Start Free Trial</a>
+                        </div>
+                        <div class="mock-grid">
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #dbeafe"></div>
+                                <h3>Smart Analytics</h3>
+                                <p>Real-time insights into your data.</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #bfdbfe"></div>
+                                <h3>Team Collaboration</h3>
+                                <p>Work together seamlessly.</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #93c5fd"></div>
+                                <h3>Automated Reports</h3>
+                                <p>Weekly summaries delivered to inbox.</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                features: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('saas', 'home')" style="cursor: pointer">ScaleUp.ai</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('saas', 'features')" style="cursor: pointer; font-weight: 600; color: #2563eb;">Features</span>
+                                <span onclick="renderPage('saas', 'pricing')" style="cursor: pointer">Pricing</span>
+                                <span onclick="renderPage('saas', 'login')" style="cursor: pointer">Login</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 60px 40px;">
+                            <h2 style="text-align: center; font-size: 2rem; margin-bottom: 60px;">Powerful Features</h2>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                                <div style="height: 300px; background: #eff6ff; border-radius: 12px;"></div>
+                                <div>
+                                    <h3 style="font-size: 1.5rem; margin-bottom: 16px;">Advanced Analytics</h3>
+                                    <p style="color: #666; line-height: 1.6;">Get deep insights into your business performance with our AI-driven analytics dashboard. Track key metrics in real-time.</p>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 60px;">
+                                <div>
+                                    <h3 style="font-size: 1.5rem; margin-bottom: 16px;">Automated Workflows</h3>
+                                    <p style="color: #666; line-height: 1.6;">Set up triggers and actions to automate repetitive tasks. Save hours every week and reduce human error.</p>
+                                </div>
+                                <div style="height: 300px; background: #f0f9ff; border-radius: 12px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                pricing: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('saas', 'home')" style="cursor: pointer">ScaleUp.ai</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('saas', 'features')" style="cursor: pointer">Features</span>
+                                <span onclick="renderPage('saas', 'pricing')" style="cursor: pointer; font-weight: 600; color: #2563eb;">Pricing</span>
+                                <span onclick="renderPage('saas', 'login')" style="cursor: pointer">Login</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 60px 40px; text-align: center;">
+                            <h2 style="font-size: 2rem; margin-bottom: 10px;">Simple Pricing</h2>
+                            <p style="color: #666; margin-bottom: 50px;">Start for free, upgrade as you grow.</p>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                                <div class="mock-card" style="text-align: center; padding: 40px 20px;">
+                                    <h3 style="font-size: 1.2rem;">Starter</h3>
+                                    <div style="font-size: 2.5rem; font-weight: 700; margin: 20px 0;">$0</div>
+                                    <p style="color: #666; margin-bottom: 20px;">For individuals</p>
+                                    <button style="width: 100%; padding: 10px; border: 1px solid #2563eb; color: #2563eb; background: white; border-radius: 6px; cursor: pointer;">Get Started</button>
+                                </div>
+                                <div class="mock-card" style="text-align: center; padding: 40px 20px; border: 2px solid #2563eb; position: relative;">
+                                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #2563eb; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem;">POPULAR</div>
+                                    <h3 style="font-size: 1.2rem;">Pro</h3>
+                                    <div style="font-size: 2.5rem; font-weight: 700; margin: 20px 0;">$29</div>
+                                    <p style="color: #666; margin-bottom: 20px;">For small teams</p>
+                                    <button style="width: 100%; padding: 10px; border: none; background: #2563eb; color: white; border-radius: 6px; cursor: pointer;">Start Trial</button>
+                                </div>
+                                <div class="mock-card" style="text-align: center; padding: 40px 20px;">
+                                    <h3 style="font-size: 1.2rem;">Enterprise</h3>
+                                    <div style="font-size: 2.5rem; font-weight: 700; margin: 20px 0;">$99</div>
+                                    <p style="color: #666; margin-bottom: 20px;">For large orgs</p>
+                                    <button style="width: 100%; padding: 10px; border: 1px solid #2563eb; color: #2563eb; background: white; border-radius: 6px; cursor: pointer;">Contact Sales</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                login: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('saas', 'home')" style="cursor: pointer">ScaleUp.ai</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('saas', 'features')" style="cursor: pointer">Features</span>
+                                <span onclick="renderPage('saas', 'pricing')" style="cursor: pointer">Pricing</span>
+                                <span onclick="renderPage('saas', 'login')" style="cursor: pointer; font-weight: 600; color: #2563eb;">Login</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 80px 40px; display: flex; justify-content: center;">
+                            <div style="width: 100%; max-width: 400px; padding: 40px; border: 1px solid #eee; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                <h2 style="text-align: center; margin-bottom: 30px;">Welcome Back</h2>
+                                <div style="display: flex; flex-direction: column; gap: 16px;">
+                                    <input type="email" placeholder="Email address" style="padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                                    <input type="password" placeholder="Password" style="padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                                    <button style="padding: 12px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Sign In</button>
+                                    <p style="text-align: center; font-size: 0.9rem; color: #666;">Don't have an account? <span style="color: #2563eb; cursor: pointer;" onclick="renderPage('saas', 'pricing')">Sign up</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            ecommerce: {
+                home: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('ecommerce', 'home')" style="cursor: pointer">ARTISAN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('ecommerce', 'shop')" style="cursor: pointer">Shop</span>
+                                <span onclick="renderPage('ecommerce', 'collections')" style="cursor: pointer">Collections</span>
+                                <span onclick="renderPage('ecommerce', 'cart')" style="cursor: pointer">Cart (0)</span>
+                            </div>
+                        </nav>
+                        <div class="mock-hero" style="background: #fff7ed">
+                            <h1 style="color: #7c2d12">Handcrafted with Love</h1>
+                            <p style="color: #9a3412">Discover unique, sustainable goods for your home and lifestyle.</p>
+                            <a onclick="renderPage('ecommerce', 'shop')" class="mock-btn" style="background: #c2410c; cursor: pointer;">Shop New Arrivals</a>
+                        </div>
+                        <div class="mock-grid">
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #ffedd5"></div>
+                                <h3>Ceramic Vase</h3>
+                                <p>$45.00</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #fed7aa"></div>
+                                <h3>Woven Basket</h3>
+                                <p>$32.00</p>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-card-img" style="background: #fdba74"></div>
+                                <h3>Linen Throw</h3>
+                                <p>$89.00</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                shop: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('ecommerce', 'home')" style="cursor: pointer">ARTISAN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('ecommerce', 'shop')" style="cursor: pointer; font-weight: 600; color: #c2410c;">Shop</span>
+                                <span onclick="renderPage('ecommerce', 'collections')" style="cursor: pointer">Collections</span>
+                                <span onclick="renderPage('ecommerce', 'cart')" style="cursor: pointer">Cart (0)</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 60px 40px;">
+                            <h2 style="font-size: 2rem; margin-bottom: 40px; color: #7c2d12;">All Products</h2>
+                            <div class="mock-grid" style="padding: 0; grid-template-columns: repeat(3, 1fr); gap: 30px;">
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #ffedd5; height: 200px;"></div>
+                                    <h3>Ceramic Vase</h3>
+                                    <p>$45.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #fed7aa; height: 200px;"></div>
+                                    <h3>Woven Basket</h3>
+                                    <p>$32.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #fdba74; height: 200px;"></div>
+                                    <h3>Linen Throw</h3>
+                                    <p>$89.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #fde68a; height: 200px;"></div>
+                                    <h3>Wooden Bowl</h3>
+                                    <p>$28.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #fcd34d; height: 200px;"></div>
+                                    <h3>Brass Candle</h3>
+                                    <p>$24.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                                <div class="mock-card">
+                                    <div class="mock-card-img" style="background: #fbbf24; height: 200px;"></div>
+                                    <h3>Cotton Rug</h3>
+                                    <p>$120.00</p>
+                                    <button style="margin-top: 10px; width: 100%; padding: 8px; background: #c2410c; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                collections: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('ecommerce', 'home')" style="cursor: pointer">ARTISAN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('ecommerce', 'shop')" style="cursor: pointer">Shop</span>
+                                <span onclick="renderPage('ecommerce', 'collections')" style="cursor: pointer; font-weight: 600; color: #c2410c;">Collections</span>
+                                <span onclick="renderPage('ecommerce', 'cart')" style="cursor: pointer">Cart (0)</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 60px 40px;">
+                            <h2 style="font-size: 2rem; margin-bottom: 40px; color: #7c2d12;">Collections</h2>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                <div style="height: 300px; background: #ffedd5; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <h3 style="font-size: 2rem; color: #7c2d12;">Home Decor</h3>
+                                </div>
+                                <div style="height: 300px; background: #fed7aa; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <h3 style="font-size: 2rem; color: #7c2d12;">Kitchen & Dining</h3>
+                                </div>
+                                <div style="height: 300px; background: #fdba74; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <h3 style="font-size: 2rem; color: #7c2d12;">Textiles</h3>
+                                </div>
+                                <div style="height: 300px; background: #fde68a; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <h3 style="font-size: 2rem; color: #7c2d12;">Gifts</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                cart: `
+                    <div class="mock-site">
+                        <nav class="mock-nav">
+                            <div class="mock-logo" onclick="renderPage('ecommerce', 'home')" style="cursor: pointer">ARTISAN</div>
+                            <div class="mock-links">
+                                <span onclick="renderPage('ecommerce', 'shop')" style="cursor: pointer">Shop</span>
+                                <span onclick="renderPage('ecommerce', 'collections')" style="cursor: pointer">Collections</span>
+                                <span onclick="renderPage('ecommerce', 'cart')" style="cursor: pointer; font-weight: 600; color: #c2410c;">Cart (0)</span>
+                            </div>
+                        </nav>
+                        <div style="padding: 80px 40px; text-align: center;">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">🛒</div>
+                            <h2 style="font-size: 2rem; margin-bottom: 20px; color: #7c2d12;">Your cart is empty</h2>
+                            <p style="color: #666; margin-bottom: 40px;">Looks like you haven't added anything yet.</p>
+                            <a onclick="renderPage('ecommerce', 'shop')" class="mock-btn" style="background: #c2410c; cursor: pointer;">Start Shopping</a>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Function to render pages within the mock browser
+        window.renderPage = function(type, page) {
+            const content = templates[type][page];
+            const mockSiteContent = document.getElementById('mock-site-content');
+            const browserAddress = document.querySelector('.browser-address');
+            
+            if (content && mockSiteContent) {
+                mockSiteContent.innerHTML = content;
+                // Update fake URL
+                browserAddress.textContent = `https://preview.xide.ai/${type}/${page === 'home' ? '' : page}`;
+            }
+        };
+
+        generateBtn.addEventListener('click', () => {
+            const prompt = promptTextarea.value.toLowerCase();
+            
+            // 1. Show Notification
+            notificationToast.classList.add('show');
+            setTimeout(() => notificationToast.classList.remove('show'), 3000);
+
+            // 2. Reset & Show Loading
+            resultContainer.classList.add('hidden');
+            loadingContainer.classList.remove('hidden');
+            
+            // Scroll to loading
+            loadingContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // 3. Simulate Steps (10 seconds total)
+            let currentStep = 0;
+            const stepInterval = setInterval(() => {
+                loadingSteps.forEach(s => s.classList.remove('active'));
+                if (loadingSteps[currentStep]) {
+                    loadingSteps[currentStep].classList.add('active');
+                }
+                currentStep++;
+                
+                if (currentStep > loadingSteps.length) {
+                    clearInterval(stepInterval);
+                }
+            }, 2500); // 4 steps * 2.5s = 10s
+
+            // 4. Show Result after 10s
+            setTimeout(() => {
+                loadingContainer.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+                
+                // Determine content based on prompt
+                let type = 'saas'; // Default
+                if (prompt.includes('portfolio') || prompt.includes('artist')) {
+                    type = 'portfolio';
+                } else if (prompt.includes('shop') || prompt.includes('commerce') || prompt.includes('store')) {
+                    type = 'ecommerce';
+                }
+                
+                // Render the home page of the selected type
+                renderPage(type, 'home');
+                
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+            }, 10000);
+        });
+
+        // Handle Modal
+        const makeLiveBtn = document.getElementById('make-live-btn');
+        const modal = document.getElementById('registration-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal-btn');
+
+        if (makeLiveBtn) {
+            makeLiveBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+            });
+        }
+
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

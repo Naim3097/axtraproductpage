@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X.IDE - Template Library</title>
+    <link rel="stylesheet" href="css/front-page.css">
+    <link rel="stylesheet" href="css/templates.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo" style="text-decoration: none;">X.IDE</a>
+            <div class="nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="#" class="active">Templates</a>
+                <a href="#">Projects</a>
+                <a href="#">Analytics</a>
+            </div>
+            <div class="nav-profile">
+                <span class="user-name">My Workspace</span>
+                <div class="avatar">MW</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <h1>Template Library</h1>
+            <p>Choose a starting point for your next project. Filter by industry to find the perfect match.</p>
+        </header>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All Templates</button>
+            <button class="filter-btn" data-filter="business">Business</button>
+            <button class="filter-btn" data-filter="creative">Creative</button>
+            <button class="filter-btn" data-filter="retail">Retail</button>
+            <button class="filter-btn" data-filter="hospitality">Hospitality</button>
+            <button class="filter-btn" data-filter="health">Health</button>
+            <button class="filter-btn" data-filter="services">Services</button>
+            <button class="filter-btn" data-filter="editorial">Editorial</button>
+        </div>
+
+        <div class="template-grid" id="templateGrid">
+            <!-- Template 1: SaaS Bold -->
+            <div class="template-card" data-category="business">
+                <div class="card-image">
+                    <img src="assets/Website Templates/SAAS Bold Template.jpeg" alt="SaaS Bold">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/saas_bold_0453596c/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>SaaS Bold</h3>
+                    <span class="category-tag">Business</span>
+                </div>
+            </div>
+
+            <!-- Template 2: Portfolio Minimal -->
+            <div class="template-card" data-category="creative">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Portfolio Minimal Template.jpeg" alt="Portfolio Minimal">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/portfolio_minimal_22d83524/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Portfolio Minimal</h3>
+                    <span class="category-tag">Creative</span>
+                </div>
+            </div>
+
+            <!-- Template 3: E-Commerce Bold -->
+            <div class="template-card" data-category="retail">
+                <div class="card-image">
+                    <img src="assets/Website Templates/E Commerce Bold Template.jpeg" alt="E-Commerce Bold">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/ecommerce_bold_9a8b7c6d/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>E-Commerce Bold</h3>
+                    <span class="category-tag">Retail</span>
+                </div>
+            </div>
+
+            <!-- Template 4: Restaurant Creative -->
+            <div class="template-card" data-category="hospitality">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Restaurant Creative Template.jpeg" alt="Restaurant Creative">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/restaurant_creative_418334b4/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Restaurant Creative</h3>
+                    <span class="category-tag">Hospitality</span>
+                </div>
+            </div>
+
+            <!-- Template 5: Medical Elegant -->
+            <div class="template-card" data-category="health">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Medical Elegant Template.jpeg" alt="Medical Elegant">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/medical_elegant_2b3c4d5e/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Medical Elegant</h3>
+                    <span class="category-tag">Health</span>
+                </div>
+            </div>
+
+            <!-- Template 6: Legal Professional -->
+            <div class="template-card" data-category="services">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Legal Professional Template.jpeg" alt="Legal Professional">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/legal_professional_1a2b3c4d/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Legal Professional</h3>
+                    <span class="category-tag">Services</span>
+                </div>
+            </div>
+
+            <!-- Template 7: Fitness Bold -->
+            <div class="template-card" data-category="health">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Fitness Bold Template.jpeg" alt="Fitness Bold">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/fitness_bold_fcbe0d96/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Fitness Bold</h3>
+                    <span class="category-tag">Health</span>
+                </div>
+            </div>
+
+            <!-- Template 8: Blog Style -->
+            <div class="template-card" data-category="editorial">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Blog Style Template.jpeg" alt="Blog Style">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/blog_tech_7d8e9f0a/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Blog Style</h3>
+                    <span class="category-tag">Editorial</span>
+                </div>
+            </div>
+
+            <!-- Template 9: Professional Portfolio -->
+            <div class="template-card" data-category="creative">
+                <div class="card-image">
+                    <img src="assets/Website Templates/Professional Portfolio Template.jpeg" alt="Professional Portfolio">
+                    <div class="card-overlay">
+                        <a href="level-2.html?skipModal=true" class="btn-use">Use Template</a>
+                        <a href="https://axtratemplates.vercel.app/built_templates/portfolio_professional_1e5ab469/index.html" target="_blank" class="btn-preview">Full Preview</a>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <h3>Professional Portfolio</h3>
+                    <span class="category-tag">Creative</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">X.IDE</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Support</a>
+            </div>
+            <div class="copyright">&copy; 2025 X.IDE. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const templateCards = document.querySelectorAll('.template-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                templateCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        // Add a small animation
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.opacity = '1', 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -6,7 +6,7 @@
     <title>X.IDE - Dynamic Website Builder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles-v2.css">
     <link rel="stylesheet" href="css/template-modal.css">
 </head>
@@ -23,7 +23,7 @@
                     </a>
                     <div class="logo">X.IDE</div>
                     <div class="divider">/</div>
-                    <div class="app-name">Builder</div>
+                    <div class="app-name">Dynamic Website Builder</div>
                 </div>
                 
                 <div class="header-actions">
@@ -1340,5 +1340,15 @@
 
     <script src="js/design-engine.js"></script>
     <script src="js/app-v2.js"></script>
+    <script>
+        // Check for skipModal parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('skipModal') === 'true') {
+            const modal = document.getElementById('templateModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
 </body>
 </html>
