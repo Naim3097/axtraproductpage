@@ -4202,3 +4202,15 @@ function debounce(func, wait) {
 }
 
 console.log('✅ Axtra Product Page Builder V2 loaded successfully!');
+
+// Template Modal Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const templatesBtn = document.getElementById('templatesBtn');
+    const templateModal = document.getElementById('templateModal');
+    
+    if (templatesBtn && templateModal) {
+        templatesBtn.addEventListener('click', () => {
+            templateModal.classList.add('active');
+        });
+    }
+});

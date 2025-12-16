@@ -5,25 +5,25 @@
 
 :root {
   /* Grayscale Palette */
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
   
   /* Semantic Colors */
-  --color-primary: #000000;
+  --color-primary: #1a1a1a;
   --color-bg: #ffffff;
-  --color-bg-secondary: var(--gray-50);
-  --color-border: var(--gray-200);
-  --color-text-primary: var(--gray-900);
-  --color-text-secondary: var(--gray-700);
-  --color-text-tertiary: var(--gray-500);
+  --color-bg-secondary: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
   
   /* Spacing */
   --space-xs: 0.5rem;
@@ -33,7 +33,7 @@
   --space-xl: 3rem;
   
   /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   
   /* Transitions */
   --transition: all 0.2s ease;
@@ -81,21 +81,56 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
+  padding: 0 24px;
+  height: 64px;
   max-width: 100%;
   position: relative;
 }
 
-.logo {
+.logo-area {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.logo-img {
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
   height: 32px;
-  width: auto;
-  display: block;
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.back-link:hover {
+  background-color: var(--gray-100);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}
+
+.divider {
+  color: var(--gray-300);
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+.app-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--gray-100);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .header-actions {
@@ -257,22 +292,36 @@ body {
   flex-direction: column;
   background: var(--gray-50);
   overflow: hidden;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-/* Desktop: preview always visible in side-by-side layout */
+/* Desktop: Preview can be toggled - when NOT active, hide it and expand form panel */
+@media (min-width: 601px) {
+  .preview-panel:not(.active) {
+    display: none;
+  }
+  
+  .workspace:has(.preview-panel:not(.active)) .form-panel {
+    flex: 1;
+    max-width: 100%;
+  }
+  
+  .workspace:has(.preview-panel.active) .form-panel {
+    flex: 0 0 50%;
+  }
+  
+  .preview-panel.active {
+    display: flex;
+  }
+}
+
 /* Mobile: preview is overlay that can be toggled */
 
 .preview-close-btn {
   display: none; /* Hidden on desktop, shown on mobile when active */
 }
 
-/* Hide preview toggle button on desktop - preview always visible */
-#previewToggleBtn {
-  display: none;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   /* Show toggle button on mobile */
   #previewToggleBtn {
     display: inline-flex;
@@ -497,6 +546,10 @@ body {
   transition: var(--transition);
   border: none;
   font-family: var(--font-sans);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-sm {
@@ -510,7 +563,8 @@ body {
 }
 
 .btn-primary:hover {
-  background: var(--gray-800);
+  background: #333;
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -521,6 +575,7 @@ body {
 
 .btn-secondary:hover {
   background: var(--gray-50);
+  border-color: var(--gray-300);
 }
 
 .btn-ghost {
@@ -530,17 +585,7 @@ body {
 
 .btn-ghost:hover {
   background: var(--gray-100);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-}
-
-.btn-secondary:hover {
-  background: var(--gray-50);
-  border-color: var(--gray-300);
+  color: var(--color-text-primary);
 }
 
 .btn-success {
@@ -549,6 +594,8 @@ body {
 }
 
 .btn-success:hover {
+  background: black;
+}
   background: var(--gray-800);
 }
 
@@ -854,6 +901,64 @@ body {
 }
 
 /* ============================================
+   COLLAPSIBLE DESIGN CONTROLS
+   ============================================ */
+
+.design-control-group {
+  margin-bottom: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.design-control-header {
+  padding: 12px 16px;
+  background: var(--gray-50);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.design-control-header:hover {
+  background: var(--gray-100);
+}
+
+.design-control-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.design-control-icon {
+  transition: transform 0.3s ease;
+  color: var(--gray-500);
+}
+
+.design-control-group.collapsed .design-control-icon {
+  transform: rotate(-90deg);
+}
+
+.design-control-body {
+  padding: 16px;
+  max-height: 2000px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.design-control-group.collapsed .design-control-body {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+/* ============================================
    MODAL
    ============================================ */
 
@@ -1024,7 +1129,7 @@ body {
    ============================================ */
 
 /* Only change layout on tablet/mobile, not on desktop */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .workspace {
     flex-direction: column;
   }
@@ -1044,10 +1149,12 @@ body {
     bottom: 0;
     z-index: 9999;
     background: white;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .preview-panel.active {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
   }
   

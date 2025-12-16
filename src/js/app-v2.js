@@ -31,6 +31,7 @@ const appState = {
             subheadline: '',
             ctaText: 'Shop Now',
             showCTA: true,
+            splitImage: null,
             // Design controls
             backgroundType: 'solid', // solid, gradient, image
             backgroundColor: '#667eea',
@@ -47,10 +48,13 @@ const appState = {
             ctaHoverBg: '#f0f0f0',
             ctaBorderRadius: 8,
             height: 600,
-            contentWidth: 1000
+            contentWidth: 1000,
+            padding: 60
         },
         products: {
             enabled: true,
+            headline: 'Our Products',
+            subheadline: '',
             layout: 'grid',
             columns: 3,
             showPricing: true,
@@ -65,10 +69,16 @@ const appState = {
             hoverBorder: '#667eea',
             titleSize: 16,
             titleWeight: 600,
+            textAlign: 'center',
             priceColor: '#667eea',
             priceSize: 20,
+            buttonBg: '#667eea',
+            buttonText: '#ffffff',
+            buttonHover: '#5568d3',
             cardPadding: 16,
-            gap: 24
+            gap: 24,
+            headerSpacing: 8,
+            sectionSpacing: 48
         },
         about: {
             enabled: false,
@@ -203,6 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
     attachEventListeners();
     loadFromLocalStorage();
+    
+    // Initialize preview panel as visible (active) by default on desktop
+    const previewPanel = document.getElementById('previewPanel');
+    if (previewPanel && window.innerWidth > 768) {
+        previewPanel.classList.add('active');
+    }
 });
 
 function initializeApp() {
@@ -239,6 +255,11 @@ function initializeSectionControls() {
     document.querySelectorAll('input[name="heroLayout"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
             appState.sections.hero.layout = e.target.value;
+            // Show/hide split image upload based on layout
+            const heroSplitImageGroup = document.getElementById('heroSplitImageGroup');
+            if (heroSplitImageGroup) {
+                heroSplitImageGroup.style.display = e.target.value === 'split' ? 'block' : 'none';
+            }
             updatePreview();
             saveToLocalStorage();
         });
@@ -247,8 +268,12 @@ function initializeSectionControls() {
     heroShowCTA.addEventListener('change', (e) => {
         appState.sections.hero.showCTA = e.target.checked;
         const ctaTextGroup = document.getElementById('ctaTextGroup');
+        const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
         if (ctaTextGroup) {
             ctaTextGroup.style.display = e.target.checked ? 'block' : 'none';
+        }
+        if (heroCtaDesignGroup) {
+            heroCtaDesignGroup.style.display = e.target.checked ? 'block' : 'none';
         }
         updatePreview();
         saveToLocalStorage();
@@ -286,6 +311,12 @@ function initializeSectionControls() {
         ctaTextGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
     }
     
+    // Initialize CTA design group visibility
+    const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
+    if (heroCtaDesignGroup) {
+        heroCtaDesignGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
+    }
+    
     // Hero section styling controls
     const heroBackgroundColor = document.getElementById('heroBackgroundColor');
     const heroTextColor = document.getElementById('heroTextColor');
@@ -301,6 +332,26 @@ function initializeSectionControls() {
     
     if (heroTextColor) {
         heroTextColor.addEventListener('input', debounce((e) => {
+            appState.sections.hero.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    // Hero Text Color for Gradient Background
+    const heroTextColorGradient = document.getElementById('heroTextColorGradient');
+    if (heroTextColorGradient) {
+        heroTextColorGradient.addEventListener('input', debounce((e) => {
+            appState.sections.hero.textColor = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    // Hero Text Color for Image Background
+    const heroTextColorImage = document.getElementById('heroTextColorImage');
+    if (heroTextColorImage) {
+        heroTextColorImage.addEventListener('input', debounce((e) => {
             appState.sections.hero.textColor = e.target.value;
             updatePreview();
             saveToLocalStorage();
@@ -361,11 +412,34 @@ function initializeSectionControls() {
     
     heroBackgroundTypeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
-            appState.sections.hero.backgroundType = e.target.value;
+            const newType = e.target.value;
+            appState.sections.hero.backgroundType = newType;
+            
+            // Clear opposing state properties to prevent conflicts
+            if (newType === 'solid') {
+                // When switching to solid, clear gradient and image data
+                appState.sections.hero.gradientStart = null;
+                appState.sections.hero.gradientEnd = null;
+                appState.sections.hero.gradientAngle = null;
+                appState.sections.hero.backgroundImage = null;
+                appState.sections.hero.imageOverlay = null;
+            } else if (newType === 'gradient') {
+                // When switching to gradient, clear solid and image data
+                appState.sections.hero.backgroundColor = null;
+                appState.sections.hero.backgroundImage = null;
+                appState.sections.hero.imageOverlay = null;
+            } else if (newType === 'image') {
+                // When switching to image, clear solid and gradient data
+                appState.sections.hero.backgroundColor = null;
+                appState.sections.hero.gradientStart = null;
+                appState.sections.hero.gradientEnd = null;
+                appState.sections.hero.gradientAngle = null;
+            }
+            
             // Show/hide relevant controls
-            if (heroSolidBg) heroSolidBg.style.display = e.target.value === 'solid' ? 'grid' : 'none';
-            if (heroGradientBg) heroGradientBg.style.display = e.target.value === 'gradient' ? 'block' : 'none';
-            if (heroImageBg) heroImageBg.style.display = e.target.value === 'image' ? 'block' : 'none';
+            if (heroSolidBg) heroSolidBg.style.display = newType === 'solid' ? 'grid' : 'none';
+            if (heroGradientBg) heroGradientBg.style.display = newType === 'gradient' ? 'block' : 'none';
+            if (heroImageBg) heroImageBg.style.display = newType === 'image' ? 'block' : 'none';
             updatePreview();
             saveToLocalStorage();
         });
@@ -461,12 +535,26 @@ function initializeSectionControls() {
     }
     
     // Hero Spacing Controls
+    const heroPadding = document.getElementById('heroPadding');
     const heroHeight = document.getElementById('heroHeight');
     const heroContentWidth = document.getElementById('heroContentWidth');
     
+    if (heroPadding) {
+        heroPadding.addEventListener('input', (e) => {
+            appState.sections.hero.padding = parseInt(e.target.value);
+            updatePreview();
+        });
+        
+        heroPadding.addEventListener('change', () => {
+            saveToLocalStorage();
+        });
+    }
+    
     if (heroHeight) {
         heroHeight.addEventListener('change', (e) => {
-            appState.sections.hero.height = e.target.value;
+            const value = e.target.value;
+            // Store as-is: either a number string like "600" or "100vh"
+            appState.sections.hero.height = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -474,7 +562,9 @@ function initializeSectionControls() {
     
     if (heroContentWidth) {
         heroContentWidth.addEventListener('change', (e) => {
-            appState.sections.hero.contentWidth = e.target.value;
+            const value = e.target.value;
+            // Store as-is: either a number string like "1000" or "100%"
+            appState.sections.hero.contentWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -492,11 +582,56 @@ function initializeSectionControls() {
         });
     }
     
+    // Hero Split Layout Image Upload
+    const heroSplitImage = document.getElementById('heroSplitImage');
+    const heroSplitImagePreview = document.getElementById('heroSplitImagePreview');
+    const heroSplitImagePreviewImg = document.getElementById('heroSplitImagePreviewImg');
+    const heroSplitImageRemove = document.getElementById('heroSplitImageRemove');
+    const heroSplitImageGroup = document.getElementById('heroSplitImageGroup');
+    
+    if (heroSplitImage) {
+        heroSplitImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    appState.sections.hero.splitImage = event.target.result;
+                    if (heroSplitImagePreviewImg) heroSplitImagePreviewImg.src = event.target.result;
+                    if (heroSplitImagePreview) heroSplitImagePreview.style.display = 'block';
+                    updatePreview();
+                    saveToLocalStorage();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    if (heroSplitImageRemove) {
+        heroSplitImageRemove.addEventListener('click', () => {
+            appState.sections.hero.splitImage = null;
+            if (heroSplitImage) heroSplitImage.value = '';
+            if (heroSplitImagePreview) heroSplitImagePreview.style.display = 'none';
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    // Initialize split image group visibility based on current layout
+    if (heroSplitImageGroup) {
+        heroSplitImageGroup.style.display = appState.sections.hero.layout === 'split' ? 'block' : 'none';
+    }
+    
     // Products Section
     const productsEnabled = document.getElementById('productsEnabled');
     const productsOptions = document.getElementById('productsOptions');
+    const productsHeadline = document.getElementById('productsHeadline');
+    const productsSubheadline = document.getElementById('productsSubheadline');
     const productsShowDescription = document.getElementById('productsShowDescription');
     const productsShowPricing = document.getElementById('productsShowPricing');
+    
+    if (!productsShowDescription || !productsShowPricing) {
+        console.error('Product description/pricing toggles not found');
+    }
     
     productsEnabled.addEventListener('change', (e) => {
         appState.sections.products.enabled = e.target.checked;
@@ -504,6 +639,22 @@ function initializeSectionControls() {
         updatePreview();
         saveToLocalStorage();
     });
+    
+    if (productsHeadline) {
+        productsHeadline.addEventListener('input', debounce(() => {
+            appState.sections.products.headline = productsHeadline.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
+    
+    if (productsSubheadline) {
+        productsSubheadline.addEventListener('input', debounce(() => {
+            appState.sections.products.subheadline = productsSubheadline.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 500));
+    }
     
     document.querySelectorAll('input[name="productsLayout"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
@@ -513,16 +664,25 @@ function initializeSectionControls() {
         });
     });
     
-    document.querySelectorAll('input[name="productsColumns"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            appState.sections.products.columns = parseInt(e.target.value);
+    const productsColumns = document.getElementById('productsColumns');
+    if (productsColumns) {
+        productsColumns.addEventListener('input', (e) => {
+            let value = parseInt(e.target.value);
+            // Clamp between 1-6
+            if (value < 1) value = 1;
+            if (value > 6) value = 6;
+            appState.sections.products.columns = value;
             updatePreview();
+        });
+        
+        productsColumns.addEventListener('change', () => {
             saveToLocalStorage();
         });
-    });
+    }
     
     productsShowDescription.addEventListener('change', (e) => {
         appState.sections.products.showDescription = e.target.checked;
+        console.log('Show description toggled:', e.target.checked);
         updatePreview();
         saveToLocalStorage();
     });
@@ -620,6 +780,15 @@ function initializeSectionControls() {
         });
     }
     
+    // Products text alignment
+    document.querySelectorAll('input[name="productsTextAlign"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            appState.sections.products.textAlign = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        });
+    });
+    
     if (productsPriceColor) {
         productsPriceColor.addEventListener('input', debounce((e) => {
             appState.sections.products.priceColor = e.target.value;
@@ -636,6 +805,35 @@ function initializeSectionControls() {
         });
     }
     
+    // Products button styling
+    const productsButtonBg = document.getElementById('productsButtonBg');
+    const productsButtonText = document.getElementById('productsButtonText');
+    const productsButtonHover = document.getElementById('productsButtonHover');
+    
+    if (productsButtonBg) {
+        productsButtonBg.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonBg = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsButtonText) {
+        productsButtonText.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonText = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
+    if (productsButtonHover) {
+        productsButtonHover.addEventListener('input', debounce((e) => {
+            appState.sections.products.buttonHover = e.target.value;
+            updatePreview();
+            saveToLocalStorage();
+        }, 300));
+    }
+    
     if (productsCardPadding) {
         productsCardPadding.addEventListener('change', (e) => {
             appState.sections.products.cardPadding = parseInt(e.target.value);
@@ -647,6 +845,25 @@ function initializeSectionControls() {
     if (productsGap) {
         productsGap.addEventListener('change', (e) => {
             appState.sections.products.gap = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    const productsHeaderSpacing = document.getElementById('productsHeaderSpacing');
+    const productsSectionSpacing = document.getElementById('productsSectionSpacing');
+    
+    if (productsHeaderSpacing) {
+        productsHeaderSpacing.addEventListener('change', (e) => {
+            appState.sections.products.headerSpacing = parseInt(e.target.value);
+            updatePreview();
+            saveToLocalStorage();
+        });
+    }
+    
+    if (productsSectionSpacing) {
+        productsSectionSpacing.addEventListener('change', (e) => {
+            appState.sections.products.sectionSpacing = parseInt(e.target.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -687,8 +904,18 @@ function initializeSectionControls() {
             appState.sections.contact.layout = e.target.value;
             // Show/hide map embed field based on layout
             const mapLinkGroup = document.getElementById('mapLinkGroup');
+            const contactFormStyleGroup = document.getElementById('contactFormStyleGroup');
+            const contactButtonGroup = document.getElementById('contactButtonGroup');
+            
             if (mapLinkGroup) {
                 mapLinkGroup.style.display = e.target.value === 'map' ? 'block' : 'none';
+            }
+            // Show form styling and button styling only for 'form' layout
+            if (contactFormStyleGroup) {
+                contactFormStyleGroup.style.display = e.target.value === 'form' ? 'block' : 'none';
+            }
+            if (contactButtonGroup) {
+                contactButtonGroup.style.display = e.target.value === 'form' ? 'block' : 'none';
             }
             updatePreview();
             saveToLocalStorage();
@@ -767,22 +994,19 @@ function attachEventListeners() {
     const previewToggleBtn = document.getElementById('previewToggleBtn');
     const previewCloseBtn = document.getElementById('previewCloseBtn');
     
-    // Toggle button behavior - only for mobile
+    // Toggle button behavior - works for both mobile and desktop
     if (previewToggleBtn) {
         previewToggleBtn.addEventListener('click', () => {
-            // Only allow toggling on mobile (< 768px)
-            if (window.innerWidth <= 768) {
-                const previewPanel = document.getElementById('previewPanel');
-                previewPanel.classList.toggle('active');
-                const isActive = previewPanel.classList.contains('active');
-                
-                previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
-                
-                // Update mobile menu text if exists
-                const mobileToggleText = document.querySelector('.mobile-toggle-text');
-                if (mobileToggleText) {
-                    mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
-                }
+            const previewPanel = document.getElementById('previewPanel');
+            previewPanel.classList.toggle('active');
+            const isActive = previewPanel.classList.contains('active');
+            
+            previewToggleBtn.querySelector('.toggle-text').textContent = isActive ? 'Hide Preview' : 'Show Preview';
+            
+            // Update mobile menu text if exists
+            const mobileToggleText = document.querySelector('.mobile-toggle-text');
+            if (mobileToggleText) {
+                mobileToggleText.textContent = isActive ? 'Hide Preview' : 'Show Preview';
             }
         });
     }
@@ -801,12 +1025,6 @@ function attachEventListeners() {
                 mobileToggleText.textContent = 'Show Preview';
             }
         });
-    }
-    
-    // Full preview button (opens in new window)
-    const openFullPreviewBtn = document.getElementById('openFullPreviewBtn');
-    if (openFullPreviewBtn) {
-        openFullPreviewBtn.addEventListener('click', generatePage);
     }
     
     // Industry selection
@@ -881,6 +1099,10 @@ function attachEventListeners() {
     const aboutHeadline = document.getElementById('aboutHeadline');
     const aboutContent = document.getElementById('aboutContent');
     const aboutImage = document.getElementById('aboutImage');
+    const aboutImagePreview = document.getElementById('aboutImagePreview');
+    const aboutImagePreviewImg = document.getElementById('aboutImagePreviewImg');
+    const aboutImageRemove = document.getElementById('aboutImageRemove');
+    
     if (aboutHeadline) {
         aboutHeadline.addEventListener('input', debounce(() => {
             appState.sections.about.headline = aboutHeadline.value;
@@ -896,11 +1118,30 @@ function attachEventListeners() {
         }, 500));
     }
     if (aboutImage) {
-        aboutImage.addEventListener('input', debounce(() => {
-            appState.sections.about.image = aboutImage.value;
+        aboutImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    appState.sections.about.image = event.target.result;
+                    if (aboutImagePreviewImg) aboutImagePreviewImg.src = event.target.result;
+                    if (aboutImagePreview) aboutImagePreview.style.display = 'block';
+                    updatePreview();
+                    saveToLocalStorage();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    if (aboutImageRemove) {
+        aboutImageRemove.addEventListener('click', () => {
+            appState.sections.about.image = null;
+            if (aboutImage) aboutImage.value = '';
+            if (aboutImagePreview) aboutImagePreview.style.display = 'none';
             updatePreview();
             saveToLocalStorage();
-        }, 500));
+        });
     }
     
     // About Design Controls
@@ -973,7 +1214,9 @@ function attachEventListeners() {
     
     if (aboutContentWidth) {
         aboutContentWidth.addEventListener('change', (e) => {
-            appState.sections.about.contentWidth = parseInt(e.target.value);
+            const value = e.target.value;
+            // Store as-is to support future percentage values
+            appState.sections.about.contentWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1084,7 +1327,7 @@ function attachEventListeners() {
     }
     if (contactInputRadius) {
         contactInputRadius.addEventListener('change', () => {
-            appState.sections.contact.inputRadius = contactInputRadius.value;
+            appState.sections.contact.inputRadius = parseInt(contactInputRadius.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -1119,28 +1362,30 @@ function attachEventListeners() {
     }
     if (contactLabelSize) {
         contactLabelSize.addEventListener('change', () => {
-            appState.sections.contact.labelSize = contactLabelSize.value;
+            appState.sections.contact.labelSize = parseInt(contactLabelSize.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactLabelWeight) {
         contactLabelWeight.addEventListener('change', () => {
-            appState.sections.contact.labelWeight = contactLabelWeight.value;
+            appState.sections.contact.labelWeight = parseInt(contactLabelWeight.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactPadding) {
         contactPadding.addEventListener('change', () => {
-            appState.sections.contact.padding = contactPadding.value;
+            appState.sections.contact.padding = parseInt(contactPadding.value);
             updatePreview();
             saveToLocalStorage();
         });
     }
     if (contactFormWidth) {
         contactFormWidth.addEventListener('change', () => {
-            appState.sections.contact.formWidth = contactFormWidth.value;
+            const value = contactFormWidth.value;
+            // Store as-is to support future percentage values
+            appState.sections.contact.formWidth = value;
             updatePreview();
             saveToLocalStorage();
         });
@@ -1188,7 +1433,7 @@ function attachEventListeners() {
     }
     if (whatsappSize) {
         whatsappSize.addEventListener('change', () => {
-            appState.sections.whatsapp.size = whatsappSize.value;
+            appState.sections.whatsapp.size = parseInt(whatsappSize.value);
             updatePreview();
             saveToLocalStorage();
         });
@@ -1763,65 +2008,76 @@ function generatePreviewHTML() {
     const heroTextColor = hero.textColor || '#ffffff';
     const heroGradientStart = hero.gradientStart || '#6366f1';
     const heroGradientEnd = hero.gradientEnd || '#8b5cf6';
-    const heroGradientAngle = hero.gradientAngle || '135';
+    const heroGradientAngle = hero.gradientAngle || 135;
     const heroBackgroundImage = hero.backgroundImage;
-    const heroImageOverlay = hero.imageOverlay || 50;
-    const heroHeadlineSize = hero.headlineSize || '48px';
-    const heroFontWeight = hero.fontWeight || '700';
+    const heroImageOverlay = hero.imageOverlay !== undefined ? hero.imageOverlay : 50;
+    const heroHeadlineSize = hero.headlineSize || 48;
+    const heroFontWeight = hero.fontWeight || 700;
     const heroCtaBackground = hero.ctaBackground || '#ffffff';
     const heroCtaTextColor = hero.ctaTextColor || '#6366f1';
     const heroCtaHoverBg = hero.ctaHoverBg || '#f3f4f6';
-    const heroCtaBorderRadius = hero.ctaBorderRadius || '8px';
-    const heroHeight = hero.height || '600px';
-    const heroContentWidth = hero.contentWidth || '1200px';
+    const heroCtaBorderRadius = hero.ctaBorderRadius || 8;
+    const heroHeightValue = hero.height || 600;
+    const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
+    const heroContentWidthValue = hero.contentWidth || 1200;
+    const heroContentWidth = typeof heroContentWidthValue === 'string' && heroContentWidthValue.includes('%') ? heroContentWidthValue : `${heroContentWidthValue}px`;
+    const heroPadding = hero.padding || 60;
     
     // Products Section Styles
     const productsSectionBg = products.sectionBg || '#f7fafc';
     const productsCardBg = products.cardBg || '#ffffff';
     const productsTextColor = products.textColor || '#1a202c';
-    const productsCardRadius = products.cardRadius || '8px';
+    const productsCardRadius = products.cardRadius || 8;
     const productsCardShadow = products.cardShadow || 'md';
     const productsHoverEffect = products.hoverEffect || 'lift';
     const productsHoverBorder = products.hoverBorder || '#6366f1';
-    const productsTitleSize = products.titleSize || '18px';
-    const productsTitleWeight = products.titleWeight || '600';
+    const productsTitleSize = products.titleSize || 18;
+    const productsTitleWeight = products.titleWeight || 600;
+    const productsTextAlign = products.textAlign || 'center';
     const productsPriceColor = products.priceColor || '#6366f1';
-    const productsPriceSize = products.priceSize || '24px';
-    const productsCardPadding = products.cardPadding || '20px';
-    const productsGap = products.gap || '24px';
+    const productsPriceSize = products.priceSize || 24;
+    const productsButtonBg = products.buttonBg || '#6366f1';
+    const productsButtonText = products.buttonText || '#ffffff';
+    const productsButtonHover = products.buttonHover || '#5568d3';
+    const productsCardPadding = products.cardPadding || 20;
+    const productsGap = products.gap || 24;
+    const productsHeaderSpacing = products.headerSpacing || 12;
+    const productsSectionSpacing = products.sectionSpacing || 48;
     
     // About Section Styles
     const aboutBackgroundColor = about.backgroundColor || '#ffffff';
     const aboutTextColor = about.textColor || '#4a5568';
-    const aboutHeadingSize = about.headingSize || '32px';
-    const aboutHeadingWeight = about.headingWeight || '700';
-    const aboutContentSize = about.contentSize || '16px';
-    const aboutLineHeight = about.lineHeight || '1.6';
-    const aboutPadding = about.padding || '60px';
-    const aboutContentWidth = about.contentWidth || '1000px';
+    const aboutHeadingSize = about.headingSize || 32;
+    const aboutHeadingWeight = about.headingWeight || 700;
+    const aboutContentSize = about.contentSize || 16;
+    const aboutLineHeight = about.lineHeight || 1.6;
+    const aboutPadding = about.padding || 60;
+    const aboutContentWidthValue = about.contentWidth || 1000;
+    const aboutContentWidth = typeof aboutContentWidthValue === 'string' && aboutContentWidthValue.includes('%') ? aboutContentWidthValue : `${aboutContentWidthValue}px`;
     const aboutAccentColor = about.accentColor || '#6366f1';
     const aboutBorderStyle = about.borderStyle || 'none';
     
     // Contact Section Styles
-    const contactBackgroundColor = contact.backgroundColor || '#f7fafc';
-    const contactTextColor = contact.textColor || '#1a202c';
+    const contactBackgroundColor = contact.backgroundColor || '#f8f9fa';
+    const contactTextColor = contact.textColor || '#1e293b';
     const contactInputBg = contact.inputBg || '#ffffff';
     const contactInputBorder = contact.inputBorder || '#e2e8f0';
-    const contactFocusBorder = contact.focusBorder || '#6366f1';
-    const contactInputRadius = contact.inputRadius || '8px';
-    const contactButtonBg = contact.buttonBg || '#6366f1';
+    const contactFocusBorder = contact.focusBorder || '#667eea';
+    const contactInputRadius = contact.inputRadius || 8;
+    const contactButtonBg = contact.buttonBg || '#667eea';
     const contactButtonText = contact.buttonText || '#ffffff';
-    const contactButtonHover = contact.buttonHover || '#4f46e5';
+    const contactButtonHover = contact.buttonHover || '#5568d3';
     const contactButtonSize = contact.buttonSize || 'md';
-    const contactLabelSize = contact.labelSize || '14px';
-    const contactLabelWeight = contact.labelWeight || '500';
-    const contactPadding = contact.padding || '60px';
-    const contactFormWidth = contact.formWidth || '600px';
+    const contactLabelSize = contact.labelSize || 14;
+    const contactLabelWeight = contact.labelWeight || 500;
+    const contactPadding = contact.padding || 60;
+    const contactFormWidthValue = contact.formWidth || 600;
+    const contactFormWidth = typeof contactFormWidthValue === 'string' && contactFormWidthValue.includes('%') ? contactFormWidthValue : `${contactFormWidthValue}px`;
     
     // WhatsApp Button Styles
     const whatsappBgColor = whatsapp.bgColor || '#25D366';
     const whatsappIconColor = whatsapp.iconColor || '#ffffff';
-    const whatsappSize = whatsapp.size || '60px';
+    const whatsappSize = whatsapp.size || 60;
     const whatsappShadow = whatsapp.shadow || 'lg';
     const whatsappHoverBg = whatsapp.hoverBg || '#128C7E';
     const whatsappHoverEffect = whatsapp.hoverEffect || 'scale';
@@ -1870,7 +2126,7 @@ function generatePreviewHTML() {
         /* Hero Section Styles */
         .preview-hero-v2 {
             min-height: ${heroHeight};
-            padding: 60px 20px;
+            padding: ${heroPadding}px 20px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
@@ -1880,28 +2136,31 @@ function generatePreviewHTML() {
             justify-content: center;
         }
         .preview-hero-v2 .hero-content {
-            width: 90%;
-            max-width: 1200px;
+            width: 100%;
+            max-width: ${heroContentWidth};
             margin: 0 auto;
         }
         .preview-hero-v2 h1 {
-            font-size: clamp(32px, 5vw, ${heroHeadlineSize});
+            font-size: clamp(32px, 5vw, ${heroHeadlineSize}px);
             font-weight: ${heroFontWeight};
             margin-bottom: 24px;
             line-height: 1.2;
         }
         .preview-hero-v2 p {
-            font-size: clamp(16px, 3vw, 20px);
+            font-size: 20px;
             opacity: 0.95;
             margin-bottom: 32px;
             line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .preview-cta-btn {
             display: inline-block;
             padding: 16px 40px;
             background: ${heroCtaBackground};
             color: ${heroCtaTextColor};
-            border-radius: ${heroCtaBorderRadius};
+            border-radius: ${heroCtaBorderRadius}px;
             text-decoration: none;
             font-weight: 600;
             box-shadow: ${shadowMap[productsCardShadow]};
@@ -1918,8 +2177,30 @@ function generatePreviewHTML() {
             padding: 60px 20px;
             background: ${productsSectionBg};
         }
-        .preview-products-section h2 {
+        .preview-section-header {
+            text-align: center;
+            margin-bottom: ${productsSectionSpacing}px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .preview-section-header {
+            margin-bottom: ${productsHeaderSpacing}px;
+        }
+        .preview-section-title {
             font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: ${productsTextColor};
+        }
+        .preview-section-subtitle {
+            font-size: 16px;
+            color: ${productsTextColor};
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        .preview-products-section h2 {
+            font-size: 36px;
             font-weight: 700;
             text-align: center;
             margin-bottom: 48px;
@@ -1927,24 +2208,41 @@ function generatePreviewHTML() {
         }
         .preview-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: ${productsGap};
-            max-width: 1200px;
+            grid-template-columns: repeat(${products.columns || 3}, 1fr);
+            gap: ${Math.max(productsGap * 0.5, 12)}px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 12px;
+        }
+        .preview-products-section {
+            overflow-x: hidden;
+            transform: scale(0.8);
+            transform-origin: top center;
+        }
+        @media (max-width: 1024px) {
+            .preview-products-grid {
+                grid-template-columns: repeat(${productsColumns >= 4 ? 3 : productsColumns >= 3 ? 2 : productsColumns}, 1fr);
+            }
         }
         @media (max-width: 768px) {
             .preview-products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
+            }
+            .preview-about-two-column,
+            .preview-about-side-image {
+                grid-template-columns: 1fr !important;
+                flex-direction: column-reverse !important;
             }
         }
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
             .preview-products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                max-width: 500px;
             }
         }
         .preview-product-card {
             background: ${productsCardBg};
-            border-radius: ${productsCardRadius};
+            border-radius: ${productsCardRadius}px;
             overflow: hidden;
             box-shadow: ${shadowMap[productsCardShadow]};
             transition: all 0.3s ease;
@@ -1958,18 +2256,19 @@ function generatePreviewHTML() {
         }
         .preview-product-image {
             width: 100%;
-            height: 250px;
+            height: 300px;
             object-fit: cover;
             background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
         }
         .preview-product-info {
-            padding: ${productsCardPadding};
+            padding: ${productsCardPadding}px;
+            text-align: ${productsTextAlign};
         }
         .preview-product-name {
-            font-size: ${productsTitleSize};
+            font-size: ${productsTitleSize}px;
             font-weight: ${productsTitleWeight};
             color: ${productsTextColor};
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .preview-product-desc {
             font-size: 14px;
@@ -1979,7 +2278,7 @@ function generatePreviewHTML() {
             line-height: 1.6;
         }
         .preview-product-price {
-            font-size: ${productsPriceSize};
+            font-size: ${productsPriceSize}px;
             font-weight: ${productsTitleWeight};
             color: ${productsPriceColor};
             margin-bottom: 16px;
@@ -1987,22 +2286,28 @@ function generatePreviewHTML() {
         .preview-buy-btn {
             width: 100%;
             padding: 12px;
-            background: ${productsPriceColor};
-            color: white;
+            background: ${productsButtonBg};
+            color: ${productsButtonText};
             border: none;
-            border-radius: ${productsCardRadius};
+            border-radius: ${productsCardRadius}px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .preview-buy-btn:hover {
-            opacity: 0.9;
+            background: ${productsButtonHover};
             transform: translateY(-2px);
+        }
+        .compare-price {
+            font-size: 18px;
+            color: #a0aec0;
+            text-decoration: line-through;
+            margin-right: 8px;
         }
         
         /* About Section Styles */
         .preview-about-section {
-            padding: ${aboutPadding} 20px;
+            padding: ${aboutPadding}px 20px;
             background: ${aboutBackgroundColor};
             ${aboutBorderStyle === 'top' ? `border-top: 3px solid ${aboutAccentColor};` : ''}
             ${aboutBorderStyle === 'bottom' ? `border-bottom: 3px solid ${aboutAccentColor};` : ''}
@@ -2048,17 +2353,15 @@ function generatePreviewHTML() {
             text-align: center;
         }
         .preview-about-section h2 {
-            font-size: ${aboutHeadingSize};
+            font-size: ${aboutHeadingSize}px;
             font-weight: ${aboutHeadingWeight};
             margin-bottom: 24px;
             color: ${aboutTextColor};
-            opacity: 0.9;
         }
         .preview-about-section p {
-            font-size: ${aboutContentSize};
+            font-size: ${aboutContentSize}px;
             line-height: ${aboutLineHeight};
             color: ${aboutTextColor};
-            opacity: 0.8;
         }
         @media (max-width: 768px) {
             .preview-about-two-column,
@@ -2070,13 +2373,13 @@ function generatePreviewHTML() {
         
         /* Contact Section Styles */
         .preview-contact-section {
-            padding: ${contactPadding} 20px;
+            padding: ${contactPadding}px 20px;
             background: ${contactBackgroundColor};
         }
         .preview-contact-section h2 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 32px;
+            margin-bottom: 48px;
             color: ${contactTextColor};
             text-align: center;
         }
@@ -2091,7 +2394,7 @@ function generatePreviewHTML() {
             display: block;
             margin-bottom: 8px;
             font-weight: ${contactLabelWeight};
-            font-size: ${contactLabelSize};
+            font-size: ${contactLabelSize}px;
             color: ${contactTextColor};
         }
         .contact-form-field input,
@@ -2100,7 +2403,7 @@ function generatePreviewHTML() {
             padding: ${contactButtonSize === 'sm' ? '10px' : contactButtonSize === 'lg' ? '16px' : '12px'};
             background: ${contactInputBg};
             border: 2px solid ${contactInputBorder};
-            border-radius: ${contactInputRadius};
+            border-radius: ${contactInputRadius}px;
             font-family: inherit;
             font-size: 14px;
             color: ${contactTextColor};
@@ -2117,7 +2420,7 @@ function generatePreviewHTML() {
             background: ${contactButtonBg};
             color: ${contactButtonText};
             border: none;
-            border-radius: ${contactInputRadius};
+            border-radius: ${contactInputRadius}px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
@@ -2127,14 +2430,52 @@ function generatePreviewHTML() {
             background: ${contactButtonHover};
             transform: translateY(-2px);
         }
+        .preview-contact-map {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+        .preview-contact-details {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .contact-info-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: white;
+            border-radius: ${contactInputRadius}px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .contact-info-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: ${contactTextColor};
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%);
+            border-radius: ${contactInputRadius}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-weight: 500;
+        }
         
         /* WhatsApp Button */
         .whatsapp-button {
             position: fixed;
             bottom: 24px;
             z-index: 1000;
-            width: ${whatsappSize};
-            height: ${whatsappSize};
+            width: ${whatsappSize}px;
+            height: ${whatsappSize}px;
             background: ${whatsappBgColor};
             border-radius: 50%;
             display: flex;
@@ -2186,21 +2527,24 @@ function generatePreviewHTML() {
         
         if (heroLayout === 'split') {
             // Split layout: text left, image right - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: 0 !important; text-align: left; padding: 60px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; text-align: left; padding: ${heroPadding}px 40px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%;">
                     <div>
                         <h1>${escapeHtml(headline)}</h1>
                         <p>${escapeHtml(subheadline)}</p>
                         ${heroSection.showCTA ? `<a href="#" class="preview-cta-btn">${escapeHtml(ctaText)}</a>` : ''}
                     </div>
-                    <div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border-radius: ${heroCtaBorderRadius}; display: flex; align-items: center; justify-content: center; font-size: 14px; backdrop-filter: blur(10px);">
-                        Hero Image
-                    </div>
+                    ${heroSection.splitImage ? 
+                        `<img src="${heroSection.splitImage}" alt="${escapeHtml(headline)}" style="width: 100%; height: 100%; max-height: 500px; object-fit: cover; border-radius: ${heroCtaBorderRadius}px;">` :
+                        `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); border-radius: ${heroCtaBorderRadius}px; display: flex; align-items: center; justify-content: center; font-size: 14px; backdrop-filter: blur(10px);">
+                            Hero Image
+                        </div>`
+                    }
                 </div>
             </section>`;
         } else if (heroLayout === 'minimal') {
             // Minimal layout: compact header style - full width, auto height
-            html += `<section class="preview-hero-v2" style="min-height: 0 !important; padding: 40px 40px;">
+            html += `<section class="preview-hero-v2" style="min-height: 0 !important; padding: ${heroPadding}px 40px;">
                 <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; text-align: left;">
                     <div style="flex: 1; min-width: 250px;">
                         <h1 style="font-size: ${parseInt(heroHeadlineSize) * 0.7}px !important; margin-bottom: 8px;">${escapeHtml(headline)}</h1>
@@ -2225,8 +2569,25 @@ function generatePreviewHTML() {
     const productsSection = appState.sections.products;
     if (productsSection.enabled && appState.products.length > 0) {
         const productsLayout = productsSection.layout || 'grid';
+        const productsHeadline = productsSection.headline || 'Our Products';
+        const productsSubheadline = productsSection.subheadline || '';
+        
+        console.log('Products section showDescription:', productsSection.showDescription);
+        console.log('First product:', appState.products[0]);
         
         html += `<section class="preview-products-section">`;
+        
+        // Section header
+        if (productsHeadline || productsSubheadline) {
+            html += `<div class="preview-section-header">`;
+            if (productsHeadline) {
+                html += `<h2 class="preview-section-title">${escapeHtml(productsHeadline)}</h2>`;
+            }
+            if (productsSubheadline) {
+                html += `<p class="preview-section-subtitle">${escapeHtml(productsSubheadline)}</p>`;
+            }
+            html += `</div>`;
+        }
         
         if (productsLayout === 'list') {
             // List layout: full width cards with horizontal layout
@@ -2239,7 +2600,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-list-item">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-list-image">` : '<div class="preview-product-list-image"></div>'}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-list-image" style="object-fit: cover;">` : '<div class="preview-product-list-image"></div>'}
                         <div class="preview-product-list-content">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
@@ -2267,7 +2628,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-card" style="height: ${cardHeight};">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="height: 60%;">` : `<div class="preview-product-image" style="height: 60%;"></div>`}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="height: 60%; object-fit: cover;">` : `<div class="preview-product-image" style="height: 60%;"></div>`}
                         <div class="preview-product-info" style="padding: 16px;">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc" style="font-size: 13px; margin: 8px 0;">${escapeHtml(product.description)}</div>` : ''}
@@ -2280,7 +2641,7 @@ function generatePreviewHTML() {
             html += `</div>`;
         } else {
             // Grid layout (default)
-            html += `<div class="preview-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">`;
+            html += `<div class="preview-products-grid">`;
             
             appState.products.forEach(product => {
                 const currencySymbol = product.currency === 'USD' ? '$' : product.currency === 'EUR' ? '€' : product.currency === 'GBP' ? '£' : product.currency;
@@ -2290,7 +2651,7 @@ function generatePreviewHTML() {
                 
                 html += `
                     <div class="preview-product-card">
-                        ${product.image ? `<img src="${product.image}" alt="${escapeHtml(product.name)}" class="preview-product-image">` : '<div class="preview-product-image"></div>'}
+                        ${product.images && product.images[0] ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="preview-product-image" style="object-fit: cover;">` : '<div class="preview-product-image"></div>'}
                         <div class="preview-product-info">
                             <div class="preview-product-name">${escapeHtml(product.name)}</div>
                             ${productsSection.showDescription && product.description ? `<div class="preview-product-desc">${escapeHtml(product.description)}</div>` : ''}
@@ -2320,7 +2681,7 @@ function generatePreviewHTML() {
             html += `
                 <div class="preview-about-two-column">
                     ${aboutImage ? 
-                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px;">` :
+                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 100%; max-width: 100%; height: 300px; object-fit: cover; border-radius: 12px; display: block;">` :
                         `<div class="about-image-placeholder">About Image</div>`
                     }
                     <div>
@@ -2333,7 +2694,7 @@ function generatePreviewHTML() {
             html += `
                 <div class="preview-about-side-image">
                     ${aboutImage ? 
-                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 300px; height: 300px; object-fit: cover; border-radius: 12px;">` :
+                        `<img src="${aboutImage}" alt="${escapeHtml(aboutHeadline)}" style="width: 300px; max-width: 100%; height: 300px; object-fit: cover; border-radius: 12px; display: block;">` :
                         `<div class="about-image-placeholder">About Image</div>`
                     }
                     <div>
@@ -2399,7 +2760,7 @@ function generatePreviewHTML() {
                 <div class="preview-contact-map">
                     ${mapSrc ? 
                         `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>` :
-                        `<div class="map-placeholder">📍 Add Google Maps embed link in settings</div>`
+                        `<div class="map-placeholder">Add Google Maps embed link in settings</div>`
                     }
                     <div>
                         <div class="contact-info-item">
@@ -2537,7 +2898,7 @@ function generatePage() {
         console.log('✅ Product page opened in new window');
     } else {
         // If popup blocked, offer download
-        alert('⚠️ Pop-up blocked! Click OK to download the HTML file instead.');
+        alert('Pop-up blocked! Click OK to download the HTML file instead.');
         downloadHTML(fullHTML);
     }
 }
@@ -2615,16 +2976,109 @@ function generateCompleteHTML() {
     const subheadline = heroSection.subheadline || appState.content.heroSubheadline || 'Discover amazing products that transform your life';
     const ctaText = heroSection.ctaText || 'Shop Now';
     
-    // Get hero section styling
-    const heroBgColor = heroSection.backgroundColor || primaryColor;
+    // Get hero section styling (match generatePreviewHTML)
+    const heroBackgroundType = heroSection.backgroundType || 'solid';
+    const heroBgColor = heroSection.backgroundColor || '#6366f1';
     const heroTextColor = heroSection.textColor || '#ffffff';
-    const heroUseGradient = heroSection.useGradient !== false;
+    const heroGradientStart = heroSection.gradientStart || '#6366f1';
+    const heroGradientEnd = heroSection.gradientEnd || '#8b5cf6';
+    const heroGradientAngle = heroSection.gradientAngle || 135;
     const heroBackgroundImage = heroSection.backgroundImage;
-    const heroImageOverlay = heroSection.imageOverlay || 50;
+    const heroImageOverlay = heroSection.imageOverlay !== undefined ? heroSection.imageOverlay : 50;
+    const heroCtaBackground = heroSection.ctaBackground || '#ffffff';
+    const heroCtaTextColor = heroSection.ctaTextColor || '#6366f1';
+    const heroCtaHoverBg = heroSection.ctaHoverBg || '#f3f4f6';
+    const heroCtaBorderRadius = heroSection.ctaBorderRadius || 8;
+    const heroHeadlineSize = heroSection.headlineSize || 48;
+    const heroFontWeight = heroSection.fontWeight || 700;
+    const heroPadding = heroSection.padding || 60;
+    const heroHeightValue = heroSection.height || 600;
+    const heroHeight = typeof heroHeightValue === 'string' && heroHeightValue.includes('vh') ? heroHeightValue : `${heroHeightValue}px`;
+    const heroContentWidthValue = heroSection.contentWidth || 1200;
+    const heroContentWidth = typeof heroContentWidthValue === 'string' && heroContentWidthValue.includes('%') ? heroContentWidthValue : `${heroContentWidthValue}px`;
     
-    // Generate hero background
+    // Get products section styling (match generatePreviewHTML)
+    const productsSectionBg = productsSection.sectionBg || '#f7fafc';
+    const productsCardBg = productsSection.cardBg || '#ffffff';
+    const productsTextColor = productsSection.textColor || '#1a202c';
+    const productsCardRadius = productsSection.cardRadius || 8;
+    const productsCardShadow = productsSection.cardShadow || 'md';
+    const productsHoverEffect = productsSection.hoverEffect || 'lift';
+    const productsHoverBorder = productsSection.hoverBorder || '#6366f1';
+    const productsTitleSize = productsSection.titleSize || 18;
+    const productsTitleWeight = productsSection.titleWeight || 600;
+    const productsTextAlign = productsSection.textAlign || 'center';
+    const productsPriceColor = productsSection.priceColor || '#6366f1';
+    const productsPriceSize = productsSection.priceSize || 24;
+    const productsButtonBg = productsSection.buttonBg || '#6366f1';
+    const productsButtonText = productsSection.buttonText || '#ffffff';
+    const productsButtonHover = productsSection.buttonHover || '#5568d3';
+    const productsCardPadding = productsSection.cardPadding || 20;
+    const productsGap = productsSection.gap || 24;
+    const productsHeaderSpacing = productsSection.headerSpacing || 12;
+    const productsSectionSpacing = productsSection.sectionSpacing || 48;
+    
+    // Get about section styling (match generatePreviewHTML)
+    const aboutSection = appState.sections.about;
+    const aboutBackgroundColor = aboutSection.backgroundColor || '#ffffff';
+    const aboutTextColor = aboutSection.textColor || '#4a5568';
+    const aboutHeadingSize = aboutSection.headingSize || 32;
+    const aboutHeadingWeight = aboutSection.headingWeight || 700;
+    const aboutContentSize = aboutSection.contentSize || 16;
+    const aboutLineHeight = aboutSection.lineHeight || 1.6;
+    const aboutPadding = aboutSection.padding || 60;
+    const aboutContentWidthValue = aboutSection.contentWidth || 1000;
+    const aboutContentWidth = typeof aboutContentWidthValue === 'string' && aboutContentWidthValue.includes('%') ? aboutContentWidthValue : `${aboutContentWidthValue}px`;
+    const aboutAccentColor = aboutSection.accentColor || '#6366f1';
+    const aboutBorderStyle = aboutSection.borderStyle || 'none';
+    
+    // Get contact section styling (match generatePreviewHTML)
+    const contactSection = appState.sections.contact;
+    const contactBackgroundColor = contactSection.backgroundColor || '#f8f9fa';
+    const contactTextColor = contactSection.textColor || '#1e293b';
+    const contactInputBg = contactSection.inputBg || '#ffffff';
+    const contactInputBorder = contactSection.inputBorder || '#e2e8f0';
+    const contactFocusBorder = contactSection.focusBorder || '#667eea';
+    const contactInputRadius = contactSection.inputRadius || 8;
+    const contactButtonBg = contactSection.buttonBg || '#667eea';
+    const contactButtonText = contactSection.buttonText || '#ffffff';
+    const contactButtonHover = contactSection.buttonHover || '#5568d3';
+    const contactButtonSize = contactSection.buttonSize || 'md';
+    const contactLabelSize = contactSection.labelSize || 14;
+    const contactLabelWeight = contactSection.labelWeight || 500;
+    const contactPadding = contactSection.padding || 60;
+    const contactFormWidthValue = contactSection.formWidth || 600;
+    const contactFormWidth = typeof contactFormWidthValue === 'string' && contactFormWidthValue.includes('%') ? contactFormWidthValue : `${contactFormWidthValue}px`;
+    
+    // Get WhatsApp section styling (match generatePreviewHTML)
+    const whatsappSection = appState.sections.whatsapp;
+    const whatsappBgColor = whatsappSection.bgColor || '#25D366';
+    const whatsappIconColor = whatsappSection.iconColor || '#ffffff';
+    const whatsappSize = whatsappSection.size || 60;
+    const whatsappShadow = whatsappSection.shadow || 'lg';
+    const whatsappHoverBg = whatsappSection.hoverBg || '#128C7E';
+    const whatsappHoverEffect = whatsappSection.hoverEffect || 'scale';
+    
+    // Shadow mapping (same as generatePreviewHTML)
+    const shadowMap = {
+        'none': 'none',
+        'sm': '0 1px 2px rgba(0,0,0,0.05)',
+        'md': '0 4px 6px rgba(0,0,0,0.1)',
+        'lg': '0 10px 15px rgba(0,0,0,0.1)',
+        'xl': '0 20px 25px rgba(0,0,0,0.15)'
+    };
+    
+    const shadowHoverMap = {
+        'none': 'none',
+        'sm': '0 2px 4px rgba(0,0,0,0.1)',
+        'md': '0 8px 12px rgba(0,0,0,0.15)',
+        'lg': '0 15px 25px rgba(0,0,0,0.15)',
+        'xl': '0 25px 35px rgba(0,0,0,0.2)'
+    };
+    
+    // Generate hero background (match generatePreviewHTML logic)
     let heroBackgroundStyle;
-    if (heroBackgroundImage) {
+    if (heroBackgroundType === 'image' && heroBackgroundImage) {
         const overlayOpacity = heroImageOverlay / 100;
         heroBackgroundStyle = `
             background-image: linear-gradient(rgba(0,0,0,${overlayOpacity}), rgba(0,0,0,${overlayOpacity})), url('${heroBackgroundImage}');
@@ -2632,11 +3086,10 @@ function generateCompleteHTML() {
             background-position: center;
             background-repeat: no-repeat;
         `;
+    } else if (heroBackgroundType === 'gradient') {
+        heroBackgroundStyle = `background: linear-gradient(${heroGradientAngle}deg, ${heroGradientStart} 0%, ${heroGradientEnd} 100%);`;
     } else {
-        const heroBackground = heroUseGradient 
-            ? `linear-gradient(135deg, ${heroBgColor} 0%, ${secondaryColor} 100%)`
-            : heroBgColor;
-        heroBackgroundStyle = `background: ${heroBackground};`;
+        heroBackgroundStyle = `background: ${heroBgColor};`;
     }
     
     // Build complete HTML document
@@ -2662,26 +3115,37 @@ function generateCompleteHTML() {
         
         /* Hero Section */
         .hero {
-            padding: ${sectionPadding}px ${basePadding}px;
+            min-height: ${heroHeight};
+            padding: ${heroPadding}px ${basePadding}px;
             text-align: center;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero > div {
+            width: 100%;
+            max-width: ${heroContentWidth};
         }
         
         .hero-split {
+            min-height: ${heroHeight};
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 48px;
             align-items: center;
-            padding: ${sectionPadding}px ${basePadding}px;
+            padding: ${heroPadding}px ${basePadding}px;
             ${heroBackgroundStyle}
             color: ${heroTextColor};
             text-align: left;
         }
         
         .hero-minimal {
-            padding: ${basePadding}px;
+            min-height: ${heroHeight === '100vh' ? 'auto' : heroHeight};
+            padding: ${heroPadding}px ${basePadding}px;
             text-align: left;
             ${heroBackgroundImage ? heroBackgroundStyle : `background: ${heroBgColor};`}
             color: ${heroTextColor};
@@ -2689,7 +3153,7 @@ function generateCompleteHTML() {
         }
         
         .hero-minimal .hero-content {
-            max-width: 1200px;
+            max-width: ${heroContentWidth};
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -2711,14 +3175,15 @@ function generateCompleteHTML() {
         }
         
         .hero h1 {
-            font-size: ${48 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
+            font-size: clamp(32px, 5vw, ${heroHeadlineSize}px);
+            font-weight: ${heroFontWeight};
             margin-bottom: ${16 * styleConfig.spacing}px;
             line-height: 1.2;
         }
         
         .hero-minimal h1 {
-            font-size: ${32 * styleConfig.fontSize}px;
+            font-size: ${parseInt(heroHeadlineSize) * 0.7}px;
+            font-weight: ${heroFontWeight};
             margin-bottom: 8px;
         }
         
@@ -2743,9 +3208,9 @@ function generateCompleteHTML() {
         .cta-button {
             display: inline-block;
             padding: ${16 * styleConfig.spacing}px ${40 * styleConfig.spacing}px;
-            background: ${heroTextColor === '#ffffff' ? 'white' : heroBgColor};
-            color: ${heroTextColor === '#ffffff' ? heroBgColor : '#ffffff'};
-            border-radius: ${styleConfig.borderRadius}px;
+            background: ${heroCtaBackground};
+            color: ${heroCtaTextColor};
+            border-radius: ${heroCtaBorderRadius}px;
             text-decoration: none;
             font-weight: 600;
             font-size: 18px;
@@ -2756,6 +3221,7 @@ function generateCompleteHTML() {
         }
         
         .cta-button:hover {
+            background: ${heroCtaHoverBg};
             box-shadow: ${styleConfig.shadowHover};
             transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-2px)'};
         }
@@ -2763,37 +3229,43 @@ function generateCompleteHTML() {
         /* Products Section */
         .products-section {
             padding: ${sectionPadding}px ${basePadding}px;
-            background: #f7fafc;
+            background: ${productsSectionBg};
         }
         
         .section-title {
             text-align: center;
             font-size: ${36 * styleConfig.fontSize}px;
             font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${48 * styleConfig.spacing}px;
-            color: #1a202c;
+            margin-bottom: ${productsHeaderSpacing}px;
+            color: ${productsTextColor};
         }
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: ${gap}px;
+            grid-template-columns: repeat(${productsSection.columns || 3}, 1fr);
+            gap: ${productsGap}px;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .products-section {
+            overflow-x: hidden;
         }
         
         .product-card {
-            background: white;
-            border-radius: ${styleConfig.borderRadius}px;
+            background: ${productsCardBg};
+            border-radius: ${productsCardRadius}px;
             overflow: hidden;
-            box-shadow: ${styleConfig.shadow};
+            box-shadow: ${shadowMap[productsCardShadow]};
             transition: ${styleConfig.transition};
             cursor: pointer;
         }
         
         .product-card:hover {
-            transform: ${styleConfig.transition === 'none' ? 'none' : 'translateY(-8px)'};
-            box-shadow: ${styleConfig.shadowHover};
+            transform: ${productsHoverEffect === 'lift' ? 'translateY(-8px)' : productsHoverEffect === 'grow' ? 'scale(1.05)' : 'none'};
+            box-shadow: ${shadowHoverMap[productsCardShadow]};
+            ${productsHoverEffect === 'glow' ? `border: 2px solid ${productsHoverBorder};` : ''}
         }
         
         .product-image {
@@ -2804,28 +3276,29 @@ function generateCompleteHTML() {
         }
         
         .product-info {
-            padding: ${cardPadding}px;
+            padding: ${productsCardPadding}px;
+            text-align: ${productsTextAlign};
         }
         
         .product-name {
-            font-size: ${24 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            color: #1a202c;
-            margin-bottom: ${8 * styleConfig.spacing}px;
+            font-size: ${productsTitleSize}px;
+            font-weight: ${productsTitleWeight};
+            color: ${productsTextColor};
+            margin-bottom: 8px;
         }
         
         .product-description {
             font-size: 14px;
             color: #718096;
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            margin-bottom: 16px;
             line-height: 1.6;
         }
         
         .product-price {
-            font-size: ${32 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            color: ${primaryColor};
-            margin-bottom: ${16 * styleConfig.spacing}px;
+            font-size: ${productsPriceSize}px;
+            font-weight: ${productsTitleWeight};
+            color: ${productsPriceColor};
+            margin-bottom: 16px;
         }
         
         .compare-price {
@@ -2838,61 +3311,61 @@ function generateCompleteHTML() {
         .variant-info {
             font-size: 12px;
             color: #718096;
-            margin-bottom: ${12 * styleConfig.spacing}px;
+            margin-bottom: 12px;
             padding: 8px 12px;
             background: #f7fafc;
-            border-radius: ${styleConfig.borderRadius / 2}px;
+            border-radius: 4px;
             display: inline-block;
         }
         
         .buy-button {
             width: 100%;
-            padding: ${14 * styleConfig.spacing}px;
-            background: ${primaryColor};
-            color: white;
+            padding: 12px;
+            background: ${productsButtonBg};
+            color: ${productsButtonText};
             border: none;
-            border-radius: ${styleConfig.borderRadius}px;
+            border-radius: ${productsCardRadius}px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: ${styleConfig.transition};
+            transition: all 0.3s ease;
         }
         
         .buy-button:hover {
-            background: ${secondaryColor};
-            transform: ${styleConfig.transition === 'none' ? 'none' : 'scale(1.02)'};
+            background: ${productsButtonHover};
+            transform: translateY(-2px);
         }
         
         /* About Section */
         .about-section {
-            padding: ${sectionPadding}px ${basePadding}px;
-            background: white;
+            padding: ${aboutPadding}px 20px;
+            background: ${aboutBackgroundColor};
         }
         
         .about-section h2 {
-            font-size: ${36 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${24 * styleConfig.spacing}px;
-            color: #1a202c;
+            font-size: ${aboutHeadingSize}px;
+            font-weight: ${aboutHeadingWeight};
+            margin-bottom: 24px;
+            color: ${aboutTextColor};
         }
         
         .about-section p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #4a5568;
+            font-size: ${aboutContentSize}px;
+            line-height: ${aboutLineHeight};
+            color: ${aboutTextColor};
         }
         
         /* Contact Section */
         .contact-section {
-            padding: ${sectionPadding}px ${basePadding}px;
-            background: #f7fafc;
+            padding: ${contactPadding}px 20px;
+            background: ${contactBackgroundColor};
         }
         
         .contact-section h2 {
-            font-size: ${36 * styleConfig.fontSize}px;
-            font-weight: ${styleConfig.fontWeight};
-            margin-bottom: ${32 * styleConfig.spacing}px;
-            color: #1a202c;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            color: ${contactTextColor};
             text-align: center;
         }
         
@@ -2937,22 +3410,28 @@ function generateCompleteHTML() {
         .whatsapp-btn {
             position: fixed;
             bottom: 24px;
-            width: 60px;
-            height: 60px;
-            background: #25D366;
+            width: ${whatsappSize}px;
+            height: ${whatsappSize}px;
+            background: ${whatsappBgColor};
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            box-shadow: ${shadowMap[whatsappShadow]};
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             z-index: 1000;
         }
         .whatsapp-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            background: ${whatsappHoverBg};
+            transform: ${whatsappHoverEffect === 'scale' ? 'scale(1.15)' : whatsappHoverEffect === 'rotate' ? 'rotate(15deg)' : 'none'};
+            box-shadow: ${shadowHoverMap[whatsappShadow]};
+        }
+        .whatsapp-btn svg {
+            width: ${parseInt(whatsappSize) * 0.5}px;
+            height: ${parseInt(whatsappSize) * 0.5}px;
+            fill: ${whatsappIconColor};
         }
         .whatsapp-bottom-right {
             right: 24px;
@@ -2974,9 +3453,15 @@ function generateCompleteHTML() {
         }
         
         /* Responsive */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(${productsColumns >= 4 ? 3 : productsColumns >= 3 ? 2 : productsColumns}, 1fr);
+            }
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: ${32 * styleConfig.fontSize}px;
+                font-size: 32px;
             }
             
             .hero-split {
@@ -2984,19 +3469,34 @@ function generateCompleteHTML() {
             }
             
             .products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(${productsColumns >= 3 ? 2 : productsColumns}, 1fr);
             }
             
             .section-title {
-                font-size: ${28 * styleConfig.fontSize}px;
+                font-size: 28px;
             }
-            
-            .about-section > div {
+        }
+        
+        @media (max-width: 768px) {
+            .about-container {
                 grid-template-columns: 1fr !important;
+                flex-direction: column !important;
             }
             
             .contact-section > div {
                 grid-template-columns: 1fr !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .products-grid {
+                grid-template-columns: 1fr !important;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .about-container {
+                flex-direction: column-reverse !important;
             }
         }
     </style>
@@ -3011,7 +3511,7 @@ function generateCompleteHTML() {
                 <p>${escapeHtml(subheadline)}</p>
                 ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
             </div>
-            <div class="hero-image-placeholder">Hero Image</div>
+            ${heroSection.splitImage ? `<img src="${heroSection.splitImage}" alt="${escapeHtml(headline)}" style="width: 100%; height: 100%; max-height: 500px; object-fit: cover; border-radius: ${styleConfig.borderRadius}px;">` : '<div class="hero-image-placeholder">Hero Image</div>'}
         ` : heroSection.layout === 'minimal' ? `
             <div class="hero-content">
                 <div>
@@ -3021,9 +3521,11 @@ function generateCompleteHTML() {
                 ${heroSection.showCTA ? `<button class="cta-button" style="padding: 12px 24px; font-size: 14px;" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
             </div>
         ` : `
-            <h1>${escapeHtml(headline)}</h1>
-            <p>${escapeHtml(subheadline)}</p>
-            ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            <div>
+                <h1>${escapeHtml(headline)}</h1>
+                <p>${escapeHtml(subheadline)}</p>
+                ${heroSection.showCTA ? `<button class="cta-button" onclick="document.querySelector('.products-section').scrollIntoView({behavior: 'smooth'})">${escapeHtml(ctaText)}</button>` : ''}
+            </div>
         `}
     </section>
     ` : ''}
@@ -3031,8 +3533,9 @@ function generateCompleteHTML() {
     ${productsSection.enabled && appState.products.length > 0 ? `
     <!-- Products Section -->
     <section class="products-section">
-        <h2 class="section-title">Our Products</h2>
-        <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(${productsSection.columns === 2 ? '340px' : productsSection.columns === 4 ? '220px' : '280px'}, 1fr));">
+        ${productsSection.headline ? `<h2 class="section-title" style="margin-bottom: ${productsHeaderSpacing}px;">${escapeHtml(productsSection.headline)}</h2>` : ''}
+        ${productsSection.subheadline ? `<p style="text-align: center; font-size: 16px; color: ${productsTextColor}; opacity: 0.8; max-width: 800px; margin: 0 auto ${productsSectionSpacing}px auto; line-height: 1.6;">${escapeHtml(productsSection.subheadline)}</p>` : ''}
+        <div class="products-grid">
             ${appState.products.map(product => {
                 const imageHtml = product.images && product.images.length > 0 
                     ? `<img src="${product.images[0]}" alt="${escapeHtml(product.name)}" class="product-image">`
@@ -3078,7 +3581,6 @@ function generateCompleteHTML() {
         <div class="features-grid">
             ${appState.content.features.map(feature => `
                 <div class="feature-card">
-                    <div class="feature-icon">✨</div>
                     <div class="feature-title">${escapeHtml(feature)}</div>
                 </div>
             `).join('')}
@@ -3088,12 +3590,17 @@ function generateCompleteHTML() {
     
     ${appState.sections.about.enabled ? `
     <!-- About Section -->
-    <section class="about-section" style="padding: 80px 20px; background: white;">
-        <div style="max-width: 1200px; margin: 0 auto; ${appState.sections.about.layout === 'two-column' || appState.sections.about.layout === 'side-image' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
-            ${appState.sections.about.layout !== 'centered' ? '<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>' : ''}
-            <div>
-                <h2 style="font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 24px; color: #1a202c;">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
-                <p style="font-size: 16px; line-height: 1.8; color: #4a5568;">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
+    <section class="about-section" style="padding: ${aboutPadding}px 20px; background: ${aboutBackgroundColor};">
+        <div class="about-container" style="max-width: ${aboutContentWidth}; margin: 0 auto; ${appState.sections.about.layout === 'two-column' ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;' : appState.sections.about.layout === 'side-image' ? 'display: flex; gap: 48px; align-items: center;' : 'text-align: center; max-width: 800px;'}">
+            ${appState.sections.about.layout === 'two-column' ? (appState.sections.about.image ? 
+                `<div style="width: 100%;"><img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 100%; max-width: 100%; height: 300px; max-height: 300px; object-fit: cover; border-radius: 12px; display: block;"></div>` : 
+                '<div class="about-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
+            ${appState.sections.about.layout === 'side-image' ? (appState.sections.about.image ? 
+                `<div style="flex: 0 0 300px;"><img src="${appState.sections.about.image}" alt="${escapeHtml(appState.sections.about.headline || 'About Us')}" class="about-image" style="width: 300px; max-width: 100%; height: 300px; object-fit: cover; border-radius: 12px; display: block;"></div>` : 
+                '<div class="about-image" style="flex: 0 0 300px; width: 300px; height: 300px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280;">About Image</div>') : ''}
+            <div class="about-text" style="${appState.sections.about.layout === 'side-image' ? 'flex: 1;' : ''}">
+                <h2 style="font-size: ${aboutHeadingSize}px; font-weight: ${aboutHeadingWeight}; margin-bottom: 24px; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.headline || 'About Us')}</h2>
+                <p style="font-size: ${aboutContentSize}px; line-height: ${aboutLineHeight}; color: ${aboutTextColor};">${escapeHtml(appState.sections.about.content || 'We are passionate about delivering exceptional products and services.')}</p>
             </div>
         </div>
     </section>
@@ -3101,23 +3608,23 @@ function generateCompleteHTML() {
     
     ${appState.sections.contact.enabled ? `
     <!-- Contact Section -->
-    <section class="contact-section" style="padding: 80px 20px; background: #f7fafc;">
-        <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: #1a202c;">Contact Us</h2>
+    <section class="contact-section" style="padding: ${contactPadding}px; background: ${contactBackgroundColor};">
+        <h2 style="text-align: center; font-size: 36px; font-weight: ${styleConfig.fontWeight}; margin-bottom: 48px; color: ${contactTextColor};">Contact Us</h2>
         ${appState.sections.contact.layout === 'form' ? `
-        <div style="max-width: 600px; margin: 0 auto;">
+        <div style="max-width: ${contactFormWidth}; margin: 0 auto;">
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Name</label>
-                <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Name</label>
+                <input type="text" placeholder="Your name" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;">
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Email</label>
-                <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Email</label>
+                <input type="email" placeholder="your@email.com" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;">
             </div>
             <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2d3748;">Message</label>
-                <textarea rows="5" placeholder="Your message" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: ${styleConfig.borderRadius}px; font-family: inherit; font-size: 14px;"></textarea>
+                <label style="display: block; margin-bottom: 8px; font-weight: ${contactLabelWeight}; font-size: ${contactLabelSize}px; color: ${contactTextColor};">Message</label>
+                <textarea rows="5" placeholder="Your message" style="width: 100%; padding: 12px; border: 1px solid ${contactInputBorder}; background: ${contactInputBg}; border-radius: ${contactInputRadius}px; font-family: inherit; font-size: 14px;"></textarea>
             </div>
-            <button style="width: 100%; padding: 16px; background: ${primaryColor}; color: white; border: none; border-radius: ${styleConfig.borderRadius}px; font-weight: 600; font-size: 16px; cursor: pointer;">Send Message</button>
+            <button style="width: 100%; padding: 16px; background: ${contactButtonBg}; color: ${contactButtonText}; border: none; border-radius: ${contactInputRadius}px; font-weight: 600; font-size: 16px; cursor: pointer;" onmouseover="this.style.background='${contactButtonHover}'" onmouseout="this.style.background='${contactButtonBg}'">Send Message</button>
         </div>
         ` : appState.sections.contact.layout === 'map' ? `
         <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px;">
@@ -3133,7 +3640,7 @@ function generateCompleteHTML() {
                 }
                 return mapSrc 
                     ? `<iframe src="${mapSrc}" width="100%" height="400" style="border:0; border-radius: ${styleConfig.borderRadius}px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
-                    : `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">📍 Map Location</div>`;
+                    : `<div style="width: 100%; height: 400px; background: linear-gradient(135deg, #e0e7ff 0%, #cfd9ff 100%); border-radius: ${styleConfig.borderRadius}px; display: flex; align-items: center; justify-content: center; color: #6b7280;">Map Location</div>`;
             })()}
             <div>
                 <div style="margin-bottom: 24px; padding: 20px; background: white; border-radius: ${styleConfig.borderRadius}px; box-shadow: ${styleConfig.shadow};">
@@ -3324,6 +3831,8 @@ function loadFromLocalStorage() {
             // Hero styling
             const heroBackgroundColor = document.getElementById('heroBackgroundColor');
             const heroTextColor = document.getElementById('heroTextColor');
+            const heroTextColorGradient = document.getElementById('heroTextColorGradient');
+            const heroTextColorImage = document.getElementById('heroTextColorImage');
             const heroUseGradient = document.getElementById('heroUseGradient');
             const ctaTextPreset = document.getElementById('ctaTextPreset');
             const ctaTextCustom = document.getElementById('ctaTextCustom');
@@ -3333,6 +3842,12 @@ function loadFromLocalStorage() {
             }
             if (heroTextColor && appState.sections.hero.textColor) {
                 heroTextColor.value = appState.sections.hero.textColor;
+            }
+            if (heroTextColorGradient && appState.sections.hero.textColor) {
+                heroTextColorGradient.value = appState.sections.hero.textColor;
+            }
+            if (heroTextColorImage && appState.sections.hero.textColor) {
+                heroTextColorImage.value = appState.sections.hero.textColor;
             }
             if (heroUseGradient) {
                 heroUseGradient.checked = appState.sections.hero.useGradient !== false;
@@ -3351,19 +3866,137 @@ function loadFromLocalStorage() {
                 }
             }
             
+            // Hero background type
+            if (appState.sections.hero.backgroundType) {
+                const heroBackgroundTypeRadio = document.querySelector(`input[name="heroBackgroundType"][value="${appState.sections.hero.backgroundType}"]`);
+                if (heroBackgroundTypeRadio) heroBackgroundTypeRadio.checked = true;
+            }
+            
+            // Hero gradient colors
+            const heroGradientStart = document.getElementById('heroGradientStart');
+            const heroGradientEnd = document.getElementById('heroGradientEnd');
+            const heroGradientAngle = document.getElementById('heroGradientAngle');
+            if (heroGradientStart && appState.sections.hero.gradientStart) {
+                heroGradientStart.value = appState.sections.hero.gradientStart;
+            }
+            if (heroGradientEnd && appState.sections.hero.gradientEnd) {
+                heroGradientEnd.value = appState.sections.hero.gradientEnd;
+            }
+            if (heroGradientAngle && appState.sections.hero.gradientAngle !== undefined) {
+                heroGradientAngle.value = appState.sections.hero.gradientAngle;
+            }
+            
+            // Hero background image and overlay
+            const heroImageOverlay = document.getElementById('heroImageOverlay');
+            const heroOverlayValue = document.getElementById('heroOverlayValue');
+            if (heroImageOverlay && appState.sections.hero.imageOverlay !== undefined) {
+                heroImageOverlay.value = appState.sections.hero.imageOverlay;
+                if (heroOverlayValue) heroOverlayValue.textContent = appState.sections.hero.imageOverlay + '%';
+            }
+            
+            // Hero typography
+            const heroHeadlineSize = document.getElementById('heroHeadlineSize');
+            const heroFontWeight = document.getElementById('heroFontWeight');
+            if (heroHeadlineSize && appState.sections.hero.headlineSize !== undefined) {
+                heroHeadlineSize.value = appState.sections.hero.headlineSize;
+            }
+            if (heroFontWeight && appState.sections.hero.fontWeight !== undefined) {
+                heroFontWeight.value = appState.sections.hero.fontWeight;
+            }
+            
+            // Hero CTA design
+            const heroCtaBackground = document.getElementById('heroCtaBackground');
+            const heroCtaTextColor = document.getElementById('heroCtaTextColor');
+            const heroCtaHoverBg = document.getElementById('heroCtaHoverBg');
+            const heroCtaBorderRadius = document.getElementById('heroCtaBorderRadius');
+            if (heroCtaBackground && appState.sections.hero.ctaBackground) {
+                heroCtaBackground.value = appState.sections.hero.ctaBackground;
+            }
+            if (heroCtaTextColor && appState.sections.hero.ctaTextColor) {
+                heroCtaTextColor.value = appState.sections.hero.ctaTextColor;
+            }
+            if (heroCtaHoverBg && appState.sections.hero.ctaHoverBg) {
+                heroCtaHoverBg.value = appState.sections.hero.ctaHoverBg;
+            }
+            if (heroCtaBorderRadius && appState.sections.hero.ctaBorderRadius !== undefined) {
+                heroCtaBorderRadius.value = appState.sections.hero.ctaBorderRadius;
+            }
+            
+            // Hero dimensions
+            const heroPadding = document.getElementById('heroPadding');
+            const heroHeight = document.getElementById('heroHeight');
+            const heroContentWidth = document.getElementById('heroContentWidth');
+            if (heroPadding && appState.sections.hero.padding !== undefined) {
+                heroPadding.value = appState.sections.hero.padding;
+            }
+            if (heroHeight && appState.sections.hero.height !== undefined) {
+                heroHeight.value = appState.sections.hero.height;
+            }
+            if (heroContentWidth && appState.sections.hero.contentWidth !== undefined) {
+                heroContentWidth.value = appState.sections.hero.contentWidth;
+            }
+            
             // Products
             const productsEnabled = document.getElementById('productsEnabled');
+            const productsHeadline = document.getElementById('productsHeadline');
+            const productsSubheadline = document.getElementById('productsSubheadline');
             const productsShowDescription = document.getElementById('productsShowDescription');
             const productsShowPricing = document.getElementById('productsShowPricing');
             if (productsEnabled) productsEnabled.checked = appState.sections.products.enabled;
+            if (productsHeadline && appState.sections.products.headline) productsHeadline.value = appState.sections.products.headline;
+            if (productsSubheadline && appState.sections.products.subheadline) productsSubheadline.value = appState.sections.products.subheadline;
             if (productsShowDescription) productsShowDescription.checked = appState.sections.products.showDescription;
             if (productsShowPricing) productsShowPricing.checked = appState.sections.products.showPricing;
             
             const productsLayoutRadio = document.querySelector(`input[name="productsLayout"][value="${appState.sections.products.layout}"]`);
             if (productsLayoutRadio) productsLayoutRadio.checked = true;
             
-            const productsColumnsRadio = document.querySelector(`input[name="productsColumns"][value="${appState.sections.products.columns}"]`);
-            if (productsColumnsRadio) productsColumnsRadio.checked = true;
+            const productsTextAlignRadio = document.querySelector(`input[name="productsTextAlign"][value="${appState.sections.products.textAlign || 'center'}"]`);
+            if (productsTextAlignRadio) productsTextAlignRadio.checked = true;
+            
+            const productsColumnsInput = document.getElementById('productsColumns');
+            if (productsColumnsInput) productsColumnsInput.value = appState.sections.products.columns || 3;
+            
+            // Restore products design controls
+            const productsSectionBg = document.getElementById('productsSectionBg');
+            const productsCardBg = document.getElementById('productsCardBg');
+            const productsTextColor = document.getElementById('productsTextColor');
+            const productsCardRadius = document.getElementById('productsCardRadius');
+            const productsCardShadow = document.getElementById('productsCardShadow');
+            const productsHoverEffect = document.getElementById('productsHoverEffect');
+            const productsHoverBorder = document.getElementById('productsHoverBorder');
+            const productsTitleSize = document.getElementById('productsTitleSize');
+            const productsTitleWeight = document.getElementById('productsTitleWeight');
+            const productsPriceColor = document.getElementById('productsPriceColor');
+            const productsPriceSize = document.getElementById('productsPriceSize');
+            const productsCardPadding = document.getElementById('productsCardPadding');
+            const productsGap = document.getElementById('productsGap');
+            const productsHeaderSpacing = document.getElementById('productsHeaderSpacing');
+            const productsSectionSpacing = document.getElementById('productsSectionSpacing');
+            
+            if (productsSectionBg && appState.sections.products.sectionBg) productsSectionBg.value = appState.sections.products.sectionBg;
+            if (productsCardBg && appState.sections.products.cardBg) productsCardBg.value = appState.sections.products.cardBg;
+            if (productsTextColor && appState.sections.products.textColor) productsTextColor.value = appState.sections.products.textColor;
+            if (productsCardRadius && appState.sections.products.cardRadius !== undefined) productsCardRadius.value = appState.sections.products.cardRadius;
+            if (productsCardShadow && appState.sections.products.cardShadow) productsCardShadow.value = appState.sections.products.cardShadow;
+            if (productsHoverEffect && appState.sections.products.hoverEffect) productsHoverEffect.value = appState.sections.products.hoverEffect;
+            if (productsHoverBorder && appState.sections.products.hoverBorder) productsHoverBorder.value = appState.sections.products.hoverBorder;
+            if (productsTitleSize && appState.sections.products.titleSize !== undefined) productsTitleSize.value = appState.sections.products.titleSize;
+            if (productsTitleWeight && appState.sections.products.titleWeight !== undefined) productsTitleWeight.value = appState.sections.products.titleWeight;
+            if (productsPriceColor && appState.sections.products.priceColor) productsPriceColor.value = appState.sections.products.priceColor;
+            if (productsPriceSize && appState.sections.products.priceSize !== undefined) productsPriceSize.value = appState.sections.products.priceSize;
+            if (productsCardPadding && appState.sections.products.cardPadding !== undefined) productsCardPadding.value = appState.sections.products.cardPadding;
+            if (productsGap && appState.sections.products.gap !== undefined) productsGap.value = appState.sections.products.gap;
+            if (productsHeaderSpacing && appState.sections.products.headerSpacing !== undefined) productsHeaderSpacing.value = appState.sections.products.headerSpacing;
+            if (productsSectionSpacing && appState.sections.products.sectionSpacing !== undefined) productsSectionSpacing.value = appState.sections.products.sectionSpacing;
+            
+            // Restore products button styling
+            const productsButtonBg = document.getElementById('productsButtonBg');
+            const productsButtonText = document.getElementById('productsButtonText');
+            const productsButtonHover = document.getElementById('productsButtonHover');
+            if (productsButtonBg && appState.sections.products.buttonBg) productsButtonBg.value = appState.sections.products.buttonBg;
+            if (productsButtonText && appState.sections.products.buttonText) productsButtonText.value = appState.sections.products.buttonText;
+            if (productsButtonHover && appState.sections.products.buttonHover) productsButtonHover.value = appState.sections.products.buttonHover;
             
             // About
             const aboutEnabled = document.getElementById('aboutEnabled');
@@ -3372,12 +4005,64 @@ function loadFromLocalStorage() {
             const aboutLayoutRadio = document.querySelector(`input[name="aboutLayout"][value="${appState.sections.about.layout}"]`);
             if (aboutLayoutRadio) aboutLayoutRadio.checked = true;
             
+            // Restore about design controls
+            const aboutBackgroundColor = document.getElementById('aboutBackgroundColor');
+            const aboutTextColor = document.getElementById('aboutTextColor');
+            const aboutHeadingSize = document.getElementById('aboutHeadingSize');
+            const aboutHeadingWeight = document.getElementById('aboutHeadingWeight');
+            const aboutContentSize = document.getElementById('aboutContentSize');
+            const aboutLineHeight = document.getElementById('aboutLineHeight');
+            const aboutPadding = document.getElementById('aboutPadding');
+            const aboutContentWidth = document.getElementById('aboutContentWidth');
+            const aboutAccentColor = document.getElementById('aboutAccentColor');
+            const aboutBorderStyle = document.getElementById('aboutBorderStyle');
+            
+            if (aboutBackgroundColor && appState.sections.about.backgroundColor) aboutBackgroundColor.value = appState.sections.about.backgroundColor;
+            if (aboutTextColor && appState.sections.about.textColor) aboutTextColor.value = appState.sections.about.textColor;
+            if (aboutHeadingSize && appState.sections.about.headingSize !== undefined) aboutHeadingSize.value = appState.sections.about.headingSize;
+            if (aboutHeadingWeight && appState.sections.about.headingWeight !== undefined) aboutHeadingWeight.value = appState.sections.about.headingWeight;
+            if (aboutContentSize && appState.sections.about.contentSize !== undefined) aboutContentSize.value = appState.sections.about.contentSize;
+            if (aboutLineHeight && appState.sections.about.lineHeight !== undefined) aboutLineHeight.value = appState.sections.about.lineHeight;
+            if (aboutPadding && appState.sections.about.padding !== undefined) aboutPadding.value = appState.sections.about.padding;
+            if (aboutContentWidth && appState.sections.about.contentWidth !== undefined) aboutContentWidth.value = appState.sections.about.contentWidth;
+            if (aboutAccentColor && appState.sections.about.accentColor) aboutAccentColor.value = appState.sections.about.accentColor;
+            if (aboutBorderStyle && appState.sections.about.borderStyle) aboutBorderStyle.value = appState.sections.about.borderStyle;
+            
             // Contact
             const contactEnabled = document.getElementById('contactEnabled');
             if (contactEnabled) contactEnabled.checked = appState.sections.contact.enabled;
             
             const contactLayoutRadio = document.querySelector(`input[name="contactLayout"][value="${appState.sections.contact.layout}"]`);
             if (contactLayoutRadio) contactLayoutRadio.checked = true;
+            
+            // Restore contact design controls
+            const contactBackgroundColor = document.getElementById('contactBackgroundColor');
+            const contactTextColor = document.getElementById('contactTextColor');
+            const contactInputBg = document.getElementById('contactInputBg');
+            const contactInputBorder = document.getElementById('contactInputBorder');
+            const contactFocusBorder = document.getElementById('contactFocusBorder');
+            const contactInputRadius = document.getElementById('contactInputRadius');
+            const contactButtonBg = document.getElementById('contactButtonBg');
+            const contactButtonText = document.getElementById('contactButtonText');
+            const contactButtonHover = document.getElementById('contactButtonHover');
+            const contactButtonSize = document.getElementById('contactButtonSize');
+            const contactLabelSize = document.getElementById('contactLabelSize');
+            const contactLabelWeight = document.getElementById('contactLabelWeight');
+            const contactPadding = document.getElementById('contactPadding');
+            
+            if (contactBackgroundColor && appState.sections.contact.backgroundColor) contactBackgroundColor.value = appState.sections.contact.backgroundColor;
+            if (contactTextColor && appState.sections.contact.textColor) contactTextColor.value = appState.sections.contact.textColor;
+            if (contactInputBg && appState.sections.contact.inputBg) contactInputBg.value = appState.sections.contact.inputBg;
+            if (contactInputBorder && appState.sections.contact.inputBorder) contactInputBorder.value = appState.sections.contact.inputBorder;
+            if (contactFocusBorder && appState.sections.contact.focusBorder) contactFocusBorder.value = appState.sections.contact.focusBorder;
+            if (contactInputRadius && appState.sections.contact.inputRadius !== undefined) contactInputRadius.value = appState.sections.contact.inputRadius;
+            if (contactButtonBg && appState.sections.contact.buttonBg) contactButtonBg.value = appState.sections.contact.buttonBg;
+            if (contactButtonText && appState.sections.contact.buttonText) contactButtonText.value = appState.sections.contact.buttonText;
+            if (contactButtonHover && appState.sections.contact.buttonHover) contactButtonHover.value = appState.sections.contact.buttonHover;
+            if (contactButtonSize && appState.sections.contact.buttonSize !== undefined) contactButtonSize.value = appState.sections.contact.buttonSize;
+            if (contactLabelSize && appState.sections.contact.labelSize !== undefined) contactLabelSize.value = appState.sections.contact.labelSize;
+            if (contactLabelWeight && appState.sections.contact.labelWeight !== undefined) contactLabelWeight.value = appState.sections.contact.labelWeight;
+            if (contactPadding && appState.sections.contact.padding !== undefined) contactPadding.value = appState.sections.contact.padding;
             
             // WhatsApp
             const whatsappEnabled = document.getElementById('whatsappEnabled');
@@ -3401,15 +4086,18 @@ function loadFromLocalStorage() {
         if (appState.sections && appState.sections.about) {
             const aboutHeadline = document.getElementById('aboutHeadline');
             const aboutContent = document.getElementById('aboutContent');
-            const aboutImage = document.getElementById('aboutImage');
+            const aboutImagePreview = document.getElementById('aboutImagePreview');
+            const aboutImagePreviewImg = document.getElementById('aboutImagePreviewImg');
+            
             if (aboutHeadline && appState.sections.about.headline) {
                 aboutHeadline.value = appState.sections.about.headline;
             }
             if (aboutContent && appState.sections.about.content) {
                 aboutContent.value = appState.sections.about.content;
             }
-            if (aboutImage && appState.sections.about.image) {
-                aboutImage.value = appState.sections.about.image;
+            if (appState.sections.about.image) {
+                if (aboutImagePreviewImg) aboutImagePreviewImg.src = appState.sections.about.image;
+                if (aboutImagePreview) aboutImagePreview.style.display = 'block';
             }
         }
         
@@ -3471,6 +4159,23 @@ function syncSectionOptionsDisplay() {
     if (whatsappOptions) {
         whatsappOptions.style.display = appState.sections.whatsapp.enabled ? 'block' : 'none';
     }
+    
+    // Sync conditional design controls
+    // Hero: CTA Button Design only when CTA is enabled
+    const heroCtaDesignGroup = document.getElementById('heroCtaDesignGroup');
+    if (heroCtaDesignGroup) {
+        heroCtaDesignGroup.style.display = appState.sections.hero.showCTA ? 'block' : 'none';
+    }
+    
+    // Contact: Form styling and button only for 'form' layout
+    const contactFormStyleGroup = document.getElementById('contactFormStyleGroup');
+    const contactButtonGroup = document.getElementById('contactButtonGroup');
+    if (contactFormStyleGroup) {
+        contactFormStyleGroup.style.display = appState.sections.contact.layout === 'form' ? 'block' : 'none';
+    }
+    if (contactButtonGroup) {
+        contactButtonGroup.style.display = appState.sections.contact.layout === 'form' ? 'block' : 'none';
+    }
 }
 
 // ============================================
@@ -3497,3 +4202,15 @@ function debounce(func, wait) {
 }
 
 console.log('✅ Axtra Product Page Builder V2 loaded successfully!');
+
+// Template Modal Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const templatesBtn = document.getElementById('templatesBtn');
+    const templateModal = document.getElementById('templateModal');
+    
+    if (templatesBtn && templateModal) {
+        templatesBtn.addEventListener('click', () => {
+            templateModal.classList.add('active');
+        });
+    }
+});
